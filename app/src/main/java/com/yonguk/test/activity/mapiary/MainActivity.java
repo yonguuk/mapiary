@@ -3,8 +3,10 @@ package com.yonguk.test.activity.mapiary;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +33,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*Fragment*/
+        FirstFragment firstFragment = FirstFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+
+        /*Bottom Navigation bar*/
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.bottombar_menu);
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(int menuItemId) {
-                if (menuItemId == R.id.bottombar_first) {
-                    // The user selected item number one.
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                switch(menuItemId){
+                    case R.id.bottombar_first:
+                        fragment = FirstFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
+
+                    case R.id.bottombar_sec:
+                        fragment = SecondFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
+
+                    case R.id.bottombar_thd:
+                        fragment = ThirdFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        break;
                 }
             }
 
