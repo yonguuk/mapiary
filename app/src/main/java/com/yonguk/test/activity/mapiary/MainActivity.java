@@ -39,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         /*Bottom Navigation bar*/
         mBottomBar = BottomBar.attach(this, savedInstanceState);
+        /*hiding on scroll
+          Instead of attach(), use attachShy():
+          mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.myCoordinator),
+          findViewById(R.id.myScrollingContent), savedInstanceState);
+        */
         mBottomBar.setItems(R.menu.bottombar_menu);
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
@@ -48,16 +53,19 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottombar_first:
                         fragment = FirstFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        getSupportActionBar().setTitle("First Fragment");
                         break;
 
                     case R.id.bottombar_sec:
                         fragment = SecondFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        getSupportActionBar().setTitle("Second Fragment");
                         break;
 
                     case R.id.bottombar_thd:
                         fragment = ThirdFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        getSupportActionBar().setTitle("Third Fragment");
                         break;
                 }
             }
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setting colors for different tabs when there's more than three of them.
         // You can set colors for tabs in three different ways as shown below.
+        //이 메소드의 기능이 뭔지 잘 모르겠음
         //mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         //mBottomBar.mapColorForTab(1, 0xFF5D4037);
         mBottomBar.mapColorForTab(0, "#7B1FA2");
