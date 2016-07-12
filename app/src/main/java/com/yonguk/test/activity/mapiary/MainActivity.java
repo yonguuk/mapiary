@@ -1,12 +1,17 @@
 package com.yonguk.test.activity.mapiary;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +22,21 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 public class MainActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
+    private AppBarLayout appBarLayout = null;
+    Toolbar toolbar = null;
+    private CollapsingToolbarLayout collapsingToolbarLayout = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_rv);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setTitle("delaroy");
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,19 +67,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bottombar_first:
                         fragment = FirstFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        getSupportActionBar().setTitle("First Fragment");
+                        lockAppBar(true, "First Fragment");
+                        //getSupportActionBar().setTitle("First Fragment");
                         break;
 
                     case R.id.bottombar_sec:
                         fragment = SecondFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        getSupportActionBar().setTitle("Second Fragment");
+                        lockAppBar(false, "Second Fragment");
+                        //getSupportActionBar().setTitle("Second Fragment");
                         break;
 
                     case R.id.bottombar_thd:
                         fragment = ThirdFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        getSupportActionBar().setTitle("Third Fragment");
+                        lockAppBar(true, "Third Fragment");
+                        //getSupportActionBar().setTitle("Third Fragment");
                         break;
                 }
             }
@@ -108,5 +125,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void lockAppBar(boolean locked,String title) {
+        if(locked){
+            appBarLayout.setExpanded(false, true);
+            int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            lp.height = px;
+            appBarLayout.setLayoutParams(lp);
+            collapsingToolbarLayout.setTitleEnabled(false);
+            collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(getApplicationContext(),R.color.colorPrimary));
+            toolbar.setTitle(title);
+        }else{
+            appBarLayout.setExpanded(true, false);
+            appBarLayout.setActivated(true);
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+            lp.height = (int) getResources().getDimension(R.dimen.toolbarExpandHeight);
+            collapsingToolbarLayout.setTitleEnabled(true);
+            collapsingToolbarLayout.setTitle(title);
+        }
     }
 }
