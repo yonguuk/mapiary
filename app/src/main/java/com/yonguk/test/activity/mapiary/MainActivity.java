@@ -1,5 +1,6 @@
 package com.yonguk.test.activity.mapiary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -15,9 +16,14 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
+import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
+import com.yonguk.test.activity.mapiary.fragment.MainFragment;
+import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
+import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,11 +31,13 @@ public class MainActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout = null;
     Toolbar toolbar = null;
     private CollapsingToolbarLayout collapsingToolbarLayout = null;
+    ImageView ivToolbar = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar_rv);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);
@@ -37,7 +45,14 @@ public class MainActivity extends AppCompatActivity {
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle("delaroy");
 
-
+        //Service
+    /*    try {
+            Intent serviceIntent = new Intent(this,BluetoothService.class);
+            startService(serviceIntent);
+        }catch(Exception e){
+            Log.d("uks",e.getMessage());
+        }
+*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /*Fragment*/
-        FirstFragment firstFragment = FirstFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-
+        //FirstFragment firstFragment = FirstFragment.newInstance();
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
+        MainFragment mainFragment = MainFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment).commit();
         /*Bottom Navigation bar*/
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         /*hiding on scroll
@@ -64,24 +80,45 @@ public class MainActivity extends AppCompatActivity {
             public void onMenuTabSelected(int menuItemId) {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 switch(menuItemId){
-                    case R.id.bottombar_first:
-                        fragment = FirstFragment.newInstance();
+                    case R.id.bottombar_main:
+                        fragment = MainFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        lockAppBar(true, "First Fragment");
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Main");
                         //getSupportActionBar().setTitle("First Fragment");
                         break;
 
-                    case R.id.bottombar_sec:
-                        fragment = SecondFragment.newInstance();
+                    case R.id.bottombar_follow:
+                        fragment = FollowFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        lockAppBar(false, "Second Fragment");
+                        lockAppBar(true, "Follow");
+                        //ivToolbar.setImageResource(R.drawable.image3);
+                        //ivToolbar.setVisibility(View.VISIBLE);
+                        ivToolbar.setVisibility(View.GONE);
                         //getSupportActionBar().setTitle("Second Fragment");
                         break;
 
-                    case R.id.bottombar_thd:
-                        fragment = ThirdFragment.newInstance();
+                    case R.id.bottombar_record:
+                        fragment = RecordFragment.newInstance();
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        lockAppBar(true, "Third Fragment");
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Record");
+                        //getSupportActionBar().setTitle("Third Fragment");
+                        break;
+
+                    case R.id.bottombar_news:
+                        fragment = NewsFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "News");
+                        //getSupportActionBar().setTitle("Third Fragment");
+                        break;
+
+                    case R.id.bottombar_profile:
+                        fragment = RecordFragment.newInstance();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Profile");
                         //getSupportActionBar().setTitle("Third Fragment");
                         break;
                 }
@@ -89,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onMenuTabReSelected(int menuItemId) {
-                if (menuItemId == R.id.bottombar_first) {
+                if (menuItemId == R.id.bottombar_main) {
                     // The user reselected item number one, scroll your content to top.
                 }
             }

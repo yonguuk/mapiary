@@ -3,17 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.yonguk.test.activity.mapiary.MainActivity">
     <item
-        android:id="@+id/bottombar_first"
+        android:id="@+id/bottombar_main"
         android:icon="@drawable/ic_friends"
-        android:title="Friends"/>
+        android:title="Main"/>
 
     <item
-        android:id="@+id/bottombar_sec"
+        android:id="@+id/bottombar_follow"
         android:icon="@drawable/ic_favorites"
-        android:title="Favorites"/>
+        android:title="Follower"/>
 
     <item
-        android:id="@+id/bottombar_thd"
+        android:id="@+id/bottombar_record"
         android:icon="@drawable/ic_nearby"
-        android:title="Nearby"/>
+        android:title="Record"/>
+
+    <item
+        android:id="@+id/bottombar_news"
+        android:icon="@drawable/ic_recents"
+        android:title="News"
+        />
+
+    <item
+        android:id="@+id/bottombar_profile"
+        android:icon="@drawable/ic_restaurants"
+        android:title="Profile"
+        />
 </menu>
