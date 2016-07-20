@@ -2,6 +2,7 @@ package com.yonguk.test.activity.mapiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -13,10 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
@@ -25,8 +28,10 @@ import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
+    private long mExitModeTime = 0L;
+    private View rootView = null;
     private BottomBar mBottomBar;
     private AppBarLayout appBarLayout = null;
     Toolbar toolbar = null;
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rootView = findViewById(R.id.root_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar_rv);
@@ -182,5 +188,21 @@ public class MainActivity extends AppCompatActivity {
             collapsingToolbarLayout.setTitleEnabled(true);
             collapsingToolbarLayout.setTitle(title);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mExitModeTime !=0 && SystemClock.uptimeMillis() - mExitModeTime<1500){
+            finish();
+        }else{
+            //Toast.makeText(this, "이전키를 한번 더 누르면 종료됩니다", Toast.LENGTH_LONG).show();
+            Snackbar.make(rootView,"이전키를 한번 더 누르면 종료됩니다",Snackbar.LENGTH_LONG).show();
+            mExitModeTime = SystemClock.uptimeMillis();
+        }
+    }
+
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+        return false;
     }
 }

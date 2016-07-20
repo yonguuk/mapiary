@@ -3,12 +3,14 @@ package com.yonguk.test.activity.mapiary;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-
+    LinearLayout rootLayout = null;
     Context mContext = null;
     EditText etId = null;
     EditText etPassword = null;
@@ -34,11 +36,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setLayout(){
-        mContext = this;
-        etId = (EditText) findViewById(R.id.et_id);
-        etPassword = (EditText) findViewById(R.id.et_password);
-        btnLogin = (Button) findViewById(R.id.btn_login);
-        tvSignUpLink = (TextView) findViewById(R.id.tv_signup);
+            mContext = this;
+            rootLayout = (LinearLayout) findViewById(R.id.ll_root);
+            etId = (EditText) findViewById(R.id.et_id);
+            etPassword = (EditText) findViewById(R.id.et_password);
+            btnLogin = (Button) findViewById(R.id.btn_login);
+            tvSignUpLink = (TextView) findViewById(R.id.tv_signup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 //onLoginFailed();
                 progressDialog.dismiss();
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Override
@@ -91,7 +94,9 @@ public class LoginActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 //TODO : Implement successful signup logic here
                 //By default we just finish the Activity and log them in automatically
-                this.finish();
+                //this.finish();
+                Snackbar.make(rootLayout, "회원가입이 완료되었습니다.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         }
     }
@@ -104,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess(){
         btnLogin.setEnabled(true);
+        Intent intent = new Intent(mContext,MainActivity.class);
+        startActivity(intent);
         finish();
     }
 

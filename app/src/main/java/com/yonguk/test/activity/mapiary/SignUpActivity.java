@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -68,10 +74,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         btnSignUp.setEnabled(false);
 
+/*
         final ProgressDialog progressDialog = new ProgressDialog(mContext,R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
+*/
 
 
         //TODO : Implement your own signup logic here
@@ -82,7 +90,31 @@ public class SignUpActivity extends AppCompatActivity {
         //SignUpRequest s = new SignUpRequest();
         //s.execute(id,name,password);
 
-        new android.os.Handler().postDelayed(new Runnable() {
+        try {
+            String url = "http://kktt0202.dothome.co.kr/sign_up.php?"
+                    + "id=" + id
+                    + "&name=" + name
+                    + "&password=" + password;
+            //Request String response
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Result hadling
+                            Log.d("uks", response.toString());
+                            onSignUpSuccess();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //Error handling
+                    Log.d("uks", "something wrong");
+                    onSignUpFailed();
+                }
+            });
+            Volley.newRequestQueue(mContext).add(stringRequest);
+
+/*        new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 //On complete call either onSignupsuccess or onsignupfailed
@@ -90,7 +122,11 @@ public class SignUpActivity extends AppCompatActivity {
                 onSignUpSuccess();
                 progressDialog.dismiss();
             }
-        }, 3000);
+        },0);*/
+
+        }catch(Exception e){
+            Log.d("uks",e.getMessage());
+        }
     }
 
     private void onSignUpSuccess(){

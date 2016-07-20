@@ -7,7 +7,8 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:orientation="vertical"
-    tools:context="com.yonguk.test.activity.mapiary.LoginActivity">
+    tools:context="com.yonguk.test.activity.mapiary.LoginActivity"
+    android:id="@+id/ll_root">
 
     <ImageView
         android:layout_width="wrap_content"
