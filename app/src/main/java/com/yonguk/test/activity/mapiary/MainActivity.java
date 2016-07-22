@@ -32,7 +32,7 @@ import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
     protected long mExitModeTime = 0L;
-    protected View rootView = null;
+    protected CoordinatorLayout rootView = null;
     protected BottomBar mBottomBar;
     protected AppBarLayout appBarLayout = null;
     protected Toolbar toolbar = null;
@@ -49,15 +49,16 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rootView = findViewById(R.id.root_layout);
+        rootView = (CoordinatorLayout)findViewById(R.id.root_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
+        //ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar_rv);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitle("delaroy");
+        collapsingToolbarLayout.setTitle("Main");
+
         setFragment();
 
         //Service
@@ -94,11 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 .commit();
         /*Bottom Navigation bar*/
         mBottomBar = BottomBar.attach(this, savedInstanceState);
-        /*hiding on scroll
-          Instead of attach(), use attachShy():
-          mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.myCoordinator),
-          findViewById(R.id.myScrollingContent), savedInstanceState);
-        */
+        //hiding on scroll
+         // Instead of attach(), use attachShy():
+          //mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.root_layout),
+          //findViewById(R.id.rv), savedInstanceState);
+
         mBottomBar.setItems(R.menu.bottombar_menu);
 
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
@@ -114,8 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mMainFragment)
                                 .commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Main");
+                        appBarLayout.setExpanded(false, true);
+                        collapsingToolbarLayout.setTitle("Main");
+                        //ivToolbar.setVisibility(View.GONE);
+                        //lockAppBar(true, "Main");
                         break;
 
                     case R.id.bottombar_follow:
@@ -127,8 +130,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mFollowFragment)
                                 .commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Follow");
+                        appBarLayout.setExpanded(true, true);
+                        collapsingToolbarLayout.setTitle("Follow");
+                        //ivToolbar.setVisibility(View.GONE);
+                        //lockAppBar(true, "Follow");
                         break;
 
                     case R.id.bottombar_record:
@@ -140,8 +145,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mProfileFragment)
                                 .show(mRecordFragment)
                                 .commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Record");
+                        appBarLayout.setExpanded(false, true);
+                        collapsingToolbarLayout.setTitle("Record");
+                        //ivToolbar.setVisibility(View.GONE);
+                        //lockAppBar(true, "Record");
                         break;
 
                     case R.id.bottombar_news:
@@ -153,8 +160,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mNewsFragment)
                                 .commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "News");
+                        appBarLayout.setExpanded(false, true);
+                        collapsingToolbarLayout.setTitle("News");
+                        //ivToolbar.setVisibility(View.GONE);
+                        //lockAppBar(true, "News");
                         break;
 
                     case R.id.bottombar_profile:
@@ -166,8 +175,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mProfileFragment)
                                 .commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Profile");
+                        appBarLayout.setExpanded(false, true);
+                        collapsingToolbarLayout.setTitle("Profile");
+                        //ivToolbar.setVisibility(View.GONE);
+                        //lockAppBar(true, "Profile");
                         break;
                 }
             }
@@ -236,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 */
         // Setting colors for different tabs when there's more than three of them.
         // You can set colors for tabs in three different ways as shown below.
-        //이 메소드의 기능이 뭔지 잘 모르겠음
         //mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         //mBottomBar.mapColorForTab(1, 0xFF5D4037);
         mBottomBar.mapColorForTab(0, "#7B1FA2");
@@ -272,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
         return super.onOptionsItemSelected(item);
     }
-
+/*
     public void lockAppBar(boolean locked,String title) {
         if(locked){
             appBarLayout.setExpanded(false, true);
@@ -291,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             collapsingToolbarLayout.setTitleEnabled(true);
             collapsingToolbarLayout.setTitle(title);
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -307,5 +317,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     public boolean onKey(View view, int i, KeyEvent keyEvent) {
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appBarLayout.setExpanded(false, true);
     }
 }

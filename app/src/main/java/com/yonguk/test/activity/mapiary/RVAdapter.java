@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         inflater = LayoutInflater.from(context);
         this.cardData = cardData;
         this.context = context;
+    }
+
+    public void setCardList(ArrayList<RVCardData> cardData){
+        this.cardData = cardData;
+        notifyItemRangeChanged(0, cardData.size());
     }
 
     @Override
