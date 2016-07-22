@@ -26,17 +26,25 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
 import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
+import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
-    private long mExitModeTime = 0L;
-    private View rootView = null;
-    private BottomBar mBottomBar;
-    private AppBarLayout appBarLayout = null;
-    Toolbar toolbar = null;
-    private CollapsingToolbarLayout collapsingToolbarLayout = null;
-    ImageView ivToolbar = null;
+    protected long mExitModeTime = 0L;
+    protected View rootView = null;
+    protected BottomBar mBottomBar;
+    protected AppBarLayout appBarLayout = null;
+    protected Toolbar toolbar = null;
+    protected CollapsingToolbarLayout collapsingToolbarLayout = null;
+    protected ImageView ivToolbar = null;
+
+    protected MainFragment mMainFragment = null;
+    protected FollowFragment mFollowFragment = null;
+    protected NewsFragment mNewsFragment = null;
+    protected ProfileFragment mProfileFragment = null;
+    protected RecordFragment mRecordFragment = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle("delaroy");
+        setFragment();
 
         //Service
     /*    try {
@@ -69,10 +78,20 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         });
 
         /*Fragment*/
-        //FirstFragment firstFragment = FirstFragment.newInstance();
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, firstFragment).commit();
-        MainFragment mainFragment = MainFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment).commit();
+        //MainFragment mainFragment = MainFragment.newInstance();
+        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, mMainFragment)
+                .add(R.id.fragment_container, mFollowFragment)
+                .add(R.id.fragment_container, mNewsFragment)
+                .add(R.id.fragment_container, mProfileFragment)
+                .add(R.id.fragment_container, mRecordFragment)
+                .hide(mFollowFragment)
+                .hide(mNewsFragment)
+                .hide(mProfileFragment)
+                .hide(mRecordFragment)
+                .commit();
         /*Bottom Navigation bar*/
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         /*hiding on scroll
@@ -81,7 +100,84 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
           findViewById(R.id.myScrollingContent), savedInstanceState);
         */
         mBottomBar.setItems(R.menu.bottombar_menu);
+
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
+            @Override
+            public void onMenuTabSelected(int menuItemId) {
+                switch(menuItemId){
+                    case R.id.bottombar_main:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(mFollowFragment)
+                                .hide(mNewsFragment)
+                                .hide(mProfileFragment)
+                                .hide(mRecordFragment)
+                                .show(mMainFragment)
+                                .commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Main");
+                        break;
+
+                    case R.id.bottombar_follow:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(mMainFragment)
+                                .hide(mNewsFragment)
+                                .hide(mProfileFragment)
+                                .hide(mRecordFragment)
+                                .show(mFollowFragment)
+                                .commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Follow");
+                        break;
+
+                    case R.id.bottombar_record:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(mMainFragment)
+                                .hide(mFollowFragment)
+                                .hide(mNewsFragment)
+                                .hide(mProfileFragment)
+                                .show(mRecordFragment)
+                                .commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Record");
+                        break;
+
+                    case R.id.bottombar_news:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(mMainFragment)
+                                .hide(mFollowFragment)
+                                .hide(mProfileFragment)
+                                .hide(mRecordFragment)
+                                .show(mNewsFragment)
+                                .commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "News");
+                        break;
+
+                    case R.id.bottombar_profile:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .hide(mMainFragment)
+                                .hide(mFollowFragment)
+                                .hide(mNewsFragment)
+                                .hide(mRecordFragment)
+                                .show(mProfileFragment)
+                                .commit();
+                        ivToolbar.setVisibility(View.GONE);
+                        lockAppBar(true, "Profile");
+                        break;
+                }
+            }
+
+            @Override
+            public void onMenuTabReSelected(int menuItemId) {
+
+            }
+        });
+        /*mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(int menuItemId) {
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
@@ -137,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 }
             }
         });
-
+*/
         // Setting colors for different tabs when there's more than three of them.
         // You can set colors for tabs in three different ways as shown below.
         //이 메소드의 기능이 뭔지 잘 모르겠음
@@ -146,6 +242,13 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mBottomBar.mapColorForTab(0, "#7B1FA2");
         mBottomBar.mapColorForTab(1, "#FF5252");
         mBottomBar.mapColorForTab(2, "#FF9800");
+    }
+    private void setFragment(){
+        mMainFragment = MainFragment.newInstance();
+        mFollowFragment = FollowFragment.newInstance();
+        mRecordFragment = RecordFragment.newInstance();
+        mNewsFragment = NewsFragment.newInstance();
+        mProfileFragment = ProfileFragment.newInstance();
     }
 
     @Override
