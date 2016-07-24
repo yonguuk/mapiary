@@ -73,7 +73,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
 
-    class RVViewHolder extends RecyclerView.ViewHolder{
+    class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CircleImageView img;
         TextView name;
         TextView date;
@@ -92,6 +92,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             });*/
         }
 
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.profile_image:
+                    Toast.makeText(context,getLayoutPosition() + "th ImageView Clicked",Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /*
