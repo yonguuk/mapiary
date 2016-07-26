@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mFollowFragment)
                                 .commit();
-                        appBarLayout.setExpanded(true, true);
+                        appBarLayout.setExpanded(false, true);
                         collapsingToolbarLayout.setTitle("Follow");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "Follow");

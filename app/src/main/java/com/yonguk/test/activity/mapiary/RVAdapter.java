@@ -6,6 +6,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,16 +75,28 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
 
     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
         CircleImageView img;
         TextView name;
         TextView date;
         TextView textContent;
+        Button btn1,btn2;
         public RVViewHolder(View itemView) {
             super(itemView);
             img = (CircleImageView) itemView.findViewById(R.id.profile_image);
             name = (TextView) itemView.findViewById(R.id.tv_name);
             date = (TextView)itemView.findViewById(R.id.tv_date);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
+            btn1 = (Button) itemView.findViewById(R.id.btn1);
+            btn2 = (Button)itemView.findViewById(R.id.btn2);
+            btn1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context,"button clicked",Toast.LENGTH_LONG).show();
+                }
+            });
+            img.setOnClickListener(this);
+            btn2.setOnClickListener(this);
 /*            img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -97,6 +110,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             switch (view.getId()){
                 case R.id.profile_image:
                     Toast.makeText(context,getLayoutPosition() + "th ImageView Clicked",Toast.LENGTH_LONG).show();
+                    break;
+                case R.id.btn2:
+                    Toast.makeText(context, "button2 clicked", Toast.LENGTH_LONG).show();
             }
         }
     }

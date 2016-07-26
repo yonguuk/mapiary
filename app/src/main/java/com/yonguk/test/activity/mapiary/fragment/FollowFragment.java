@@ -114,18 +114,7 @@ public class FollowFragment extends Fragment{
         mRVAdapter = new RVAdapter(getActivity(),getCardData());
         mRecyclerView.setAdapter(mRVAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
 
-                Toast.makeText(getActivity(), "onClick " + position, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "onLongClick " + position, Toast.LENGTH_LONG).show();
-            }
-        }));
 
         mSwipeRefrechLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -142,51 +131,4 @@ public class FollowFragment extends Fragment{
         mSwipeRefrechLayout.setRefreshing(false);
     }
 
-    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
-        private ClickListener clickListener;
-        private GestureDetector gestureDetector;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener){
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener(){
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View childView = recyclerView.findChildViewUnder(e.getX(),e.getY());
-                    if(childView != null && clickListener != null){
-                        clickListener.onLongClick(childView, recyclerView.getChildLayoutPosition(childView));
-                    }
-                    super.onLongPress(e);
-                }
-            });
-        }
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-            View childView = rv.findChildViewUnder(e.getX(),e.getY());
-            if(childView != null && clickListener != null && gestureDetector.onTouchEvent(e)){
-                clickListener.onClick(childView, rv.getChildLayoutPosition(childView));
-                return true;
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
-    public static interface ClickListener{
-        public void onClick(View view, int position);
-        public void onLongClick(View view, int position);
-    }
 }

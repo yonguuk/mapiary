@@ -69,12 +69,14 @@
             android:padding="8dp"
             android:orientation="horizontal">
             <Button
+                android:id="@+id/btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="ACTION 1"
                 android:background="@color/white" />
 
             <Button
+                android:id="@+id/btn2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="ACTION 2"
