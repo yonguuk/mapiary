@@ -38,6 +38,10 @@ public class VolleySingleton {
         return sInstance;
     }
 
+    public ImageLoader getImageLoader(){
+        return mImageLoader;
+    }
+
     public RequestQueue getRequestQueue(){
         return mRequestQueue;
     }

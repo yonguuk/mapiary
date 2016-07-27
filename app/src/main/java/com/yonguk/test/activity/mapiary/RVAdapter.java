@@ -3,6 +3,7 @@ package com.yonguk.test.activity.mapiary;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
+import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,21 +28,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     LayoutInflater inflater;
-    ///List<RVData> data = Collections.emptyList();
     List<RVCardData> cardData = Collections.emptyList();
     Context context = null;
-
- /*   public RVAdapter(Context context,List<RVData> data){
-        //여기 이해 안됨
-        inflater = LayoutInflater.from(context);
-        this.data = data;
-        this.context = context;
-    }*/
+    VolleySingleton volleySingleton;
+    ImageLoader imageLoader;
 
     public RVAdapter(Context context, List<RVCardData> cardData){
         inflater = LayoutInflater.from(context);
         this.cardData = cardData;
         this.context = context;
+        volleySingleton = VolleySingleton.getInstance(context);
+        imageLoader = volleySingleton.getImageLoader();
     }
 
     public void setCardList(ArrayList<RVCardData> cardData){
@@ -52,14 +54,28 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RVAdapter.RVViewHolder holder, int position) {
-        RVCardData curData = new RVCardData();
-        curData = cardData.get(position);
-        holder.img.setImageResource(Integer.parseInt(curData.imageUrl));
-        holder.name.setText(curData.getName());
-        holder.date.setText(curData.getDate());
-        holder.textContent.setText(curData.getTextContent());
+    public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
+            RVCardData curData = new RVCardData();
+            curData = cardData.get(position);
+            holder.img.setImageResource(Integer.parseInt(curData.imageProfileUrl));
+            holder.name.setText(curData.getName());
+            holder.date.setText(curData.getDate());
+            holder.textContent.setText(curData.getTextContent());
+            String urlImage = curData.getImageMainUrl();
+            if (urlImage != null) {
+                imageLoader.get(urlImage, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        holder.ivMain.setImageBitmap(response.getBitmap());
+                    }
 
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //default image
+                        holder.ivMain.setImageResource(R.drawable.image3);
+                    }
+                });
+            }
         //여기서 리스너 달아도 됨
     }
 
@@ -77,6 +93,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CircleImageView img;
+        ImageView ivMain;
         TextView name;
         TextView date;
         TextView textContent;
@@ -84,6 +101,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         public RVViewHolder(View itemView) {
             super(itemView);
             img = (CircleImageView) itemView.findViewById(R.id.profile_image);
+            ivMain = (ImageView)itemView.findViewById(R.id.iv_main);
             name = (TextView) itemView.findViewById(R.id.tv_name);
             date = (TextView)itemView.findViewById(R.id.tv_date);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
@@ -95,7 +113,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                     Toast.makeText(context,"button clicked",Toast.LENGTH_LONG).show();
                 }
             });
-            img.setOnClickListener(this);
+            ivMain.setOnClickListener(this);
             btn2.setOnClickListener(this);
 /*            img.setOnClickListener(new View.OnClickListener() {
                 @Override

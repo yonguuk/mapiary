@@ -5,13 +5,17 @@ package com.yonguk.test.activity.mapiary;
  */
 public class RVCardData {
 
-    String imageUrl = null;
+    String imageMainUrl = null;
+    String imageProfileUrl = null;
     String name = null;
     String date = null;
     String textContent = null;
 
-    public void setImageUrl(String imageUrl){
-        this.imageUrl = imageUrl;
+    public void setImageProfileUrl(String imageUrl){
+        this.imageProfileUrl = imageUrl;
+    }
+    public void setImageMainUrl(String imageMainUrl){
+        this.imageMainUrl = imageMainUrl;
     }
 
     public void setName(String name){
@@ -26,8 +30,12 @@ public class RVCardData {
         this.textContent = textContent;
     }
 
-    public String getImageUrl(){
-        return imageUrl;
+    public String getImageProfileUrl(){
+        return imageProfileUrl;
+    }
+
+    public String getImageMainUrl(){
+        return imageMainUrl;
     }
 
     public String getName(){

@@ -3,6 +3,7 @@
     package="com.yonguk.test.activity.mapiary">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -27,7 +28,7 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <service android:name=".BluetoothService">
+        <service android:name=".mindwave.BluetoothService">
             <intent-filter>
                 <action android:name="com.yonguk.test.activity.mapiary.BluetoothService" />
             </intent-filter>
