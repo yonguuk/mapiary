@@ -15,12 +15,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.StringRequest;
+import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private final String LOGIN_URL = "http://kktt0202.dothome.co.kr/login/login.php";
+    private final String KEY_ID = "user_id";
+    private final String KEY_PASSWORD = "password";
 
     LinearLayout rootLayout = null;
     Context mContext = null;
@@ -28,11 +42,18 @@ public class LoginActivity extends AppCompatActivity {
     EditText etPassword = null;
     Button btnLogin = null;
     TextView tvSignUpLink = null;
+
+    private VolleySingleton volleySingleton = null;
+    private RequestQueue requestQueue = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setLayout();
+
+        volleySingleton = VolleySingleton.getInstance(mContext);
+        requestQueue = volleySingleton.getRequestQueue();
     }
 
     private void setLayout(){
@@ -66,17 +87,52 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        btnLogin.setEnabled(false);
+        //btnLogin.setEnabled(false);
         final ProgressDialog progressDialog = new ProgressDialog(mContext,R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String id = etId.getText().toString();
-        String password = etPassword.getText().toString();
+        final String user_id = etId.getText().toString().trim();
+        final String password = etPassword.getText().toString().trim();
 
+        StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        if(response.trim().equals("success")) {
+                            Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                            Log.i("uks",response.toString());
+                            Intent intent = new Intent(mContext, MainActivity.class);
+                            startActivity(intent);
+                            finish();
 
-        //TODO : Implement your own authentication logic here
+                        }else{
+                            Toast.makeText(mContext, response.toString(), Toast.LENGTH_LONG).show();
+                            Log.i("uks",response.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progressDialog.dismiss();
+                        Log.i("uks", error.toString());
+                        Toast.makeText(mContext, error.toString(),Toast.LENGTH_LONG).show();
+                }
+            }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(KEY_ID,user_id);
+                params.put(KEY_PASSWORD,password);
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
+
+   /*     //TODO : Implement your own authentication logic here
         new android.os.Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -85,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 //onLoginFailed();
                 progressDialog.dismiss();
             }
-        }, 1000);
+        }, 1000);*/
     }
 
     @Override

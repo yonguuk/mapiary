@@ -7,6 +7,7 @@
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
     android:orientation="vertical"
+    android:id="@+id/signup_root_view"
     tools:context="com.yonguk.test.activity.mapiary.SignUpActivity">
 
     <ImageView
@@ -16,18 +17,6 @@
         android:layout_gravity="center_horizontal"/>
 
 
-    <!-- Name Label-->
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-        <EditText
-            android:id="@+id/et_name_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name"/>
-    </android.support.design.widget.TextInputLayout>
     <!-- ID Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -54,6 +43,19 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="Password"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+        <EditText
+            android:id="@+id/et_confirm_signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Confirm Password"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.v7.widget.AppCompatButton

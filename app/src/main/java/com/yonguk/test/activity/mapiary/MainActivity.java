@@ -249,9 +249,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         // You can set colors for tabs in three different ways as shown below.
         //mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         //mBottomBar.mapColorForTab(1, 0xFF5D4037);
-        mBottomBar.mapColorForTab(0, "#7B1FA2");
+        mBottomBar.mapColorForTab(0, "#FF5252");
         mBottomBar.mapColorForTab(1, "#FF5252");
-        mBottomBar.mapColorForTab(2, "#FF9800");
+        mBottomBar.mapColorForTab(2, "#FF5252");
+        mBottomBar.mapColorForTab(3, "#FF5252");
+        mBottomBar.mapColorForTab(4, "#FF5252");
     }
     private void setFragment(){
         mMainFragment = MainFragment.newInstance();
