@@ -22,11 +22,32 @@
         android:layout_weight="1"
         android:id="@+id/iv"/>
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a Name"
-        android:id="@+id/et"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:id="@+id/upload_et_title"/>
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Content"
+            android:id="@+id/upload_et_content"
+            android:maxLines="7"
+            android:maxLength="250"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="match_parent"

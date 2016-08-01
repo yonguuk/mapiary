@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="iron">#CCCCCC</color>
+    <color name="icon_color">#A4A4A4</color>
 </resources>

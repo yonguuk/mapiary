@@ -1,5 +1,6 @@
 package com.yonguk.test.activity.mapiary;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,7 +35,7 @@ import java.util.Map;
 public class SignUpActivity extends AppCompatActivity {
 
     private final String TAG = "SignUpActivity";
-    private final String SIGN_UP_URL = "http://kktt0202.dothome.co.kr/login/sign_up.php";
+    private final String SIGN_UP_URL = "http://kktt0202.dothome.co.kr/master/user/sign_up.php";
     private final String KEY_ID = "user_id";
     private final String KEY_PASSWORD = "password";
     Context mContext = null;
@@ -43,7 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
     Button btnSignUp = null;
     TextView tvLoginLink = null;
     LinearLayout rootView = null;
-
 
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
@@ -58,56 +59,20 @@ public class SignUpActivity extends AppCompatActivity {
         requestQueue = volleySingleton.getRequestQueue();
     }
 
-    private void setLayout(){
-        rootView = (LinearLayout) findViewById(R.id.signup_root_view);
-        mContext = this;
-        etConfirm = (EditText) findViewById(R.id.et_confirm_signup);
-        etId = (EditText) findViewById(R.id.et_id_signup);
-        etPassword = (EditText) findViewById(R.id.et_password_signup);
-        btnSignUp = (Button) findViewById(R.id.btn_signup);
-        tvLoginLink = (TextView) findViewById(R.id.tv_login);
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signUp();
-            }
-        });
-
-        tvLoginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-    }
 
     private void signUp(){
         Log.d(TAG, "SignUp");
-
-        if(!validate()){
-            onSignUpFailed();
-            return;
-        }
-
-        //btnSignUp.setEnabled(false);
-
-
-
-
-
 
         //TODO : Implement your own signup logic here
         final String user_id = etId.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
         final String passwordConfirm = etConfirm.getText().toString().trim();
 
-        if(!password.equals(passwordConfirm)){
-            Snackbar.make(rootView,"confirm your password",Snackbar.LENGTH_LONG).show();
+        if(!validate(user_id, password, passwordConfirm)){
             return;
         }
 
-        final ProgressDialog progressDialog = new ProgressDialog(mContext,R.style.AppTheme_Dark_Dialog);
+        final ProgressDialog progressDialog = new ProgressDialog(mContext);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
@@ -117,9 +82,10 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
-                        if(response.trim().equals("Success")){
-                            //Snackbar.make(rootView,"sign up success",Snackbar.LENGTH_LONG).show();
-                            setResult(RESULT_OK);
+                        if(response.trim().equals("success")){
+                            Intent intent = new Intent();
+                            intent.putExtra("USER_ID",user_id);
+                            setResult(RESULT_OK,intent);
                             finish();
                         }else{
                             Snackbar.make(rootView,response.toString(),Snackbar.LENGTH_LONG).show();
@@ -131,7 +97,13 @@ public class SignUpActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
                 Log.i("uks", "error : " + error.toString());
-                Snackbar.make(rootView,"실패하였습니다",Snackbar.LENGTH_LONG).show();
+                if(error.toString().equals("duplication")){
+                    Snackbar.make(rootView,"이미 존재하는 ID 입니다",Snackbar.LENGTH_LONG).show();
+                } else{
+                    Snackbar.make(rootView,error.toString(),Snackbar.LENGTH_LONG).show();
+                    Log.i("uks", error.toString());
+                }
+
             }
         }){
             @Override
@@ -144,43 +116,66 @@ public class SignUpActivity extends AppCompatActivity {
         };
 
         requestQueue.add(request);
+    }
 
+    public boolean validate(String user_id, String password, String passwordConfirm){
 
+        if(!user_id.matches("[A-Za-z0-9]+")){
+            Snackbar.make(rootView, "ID는 영문과 숫자만 사용 할 수 있습니다.",Snackbar.LENGTH_LONG).show();
+            return false;
+        }else if(user_id.length()<4 || user_id.length()>10){
+            Snackbar.make(rootView,"ID는 4자리 이상 10자리 이하 입니다.",Snackbar.LENGTH_LONG).show();
+            return false;
+        }else if(!password.equals(passwordConfirm)){
+            Snackbar.make(rootView,"비밀번호가 일치하지 않습니다",Snackbar.LENGTH_LONG).show();
+            return false;
+        }else if(password.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
+            Snackbar.make(rootView, "비밀번호엔 한글이 포함될 수 없습니다.", Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+        else if(password.length()<4 || password.length()>10){
+            Snackbar.make(rootView, "비밀번호는 4자리 이상 10자리 이하 입니다", Snackbar.LENGTH_LONG).show();
+            return false;
+        }else{
+            return true;
+        }
+    }
 
-        //SignUpRequest s = new SignUpRequest();
-        //s.execute(id,name,password);
+    private void setLayout(){
+        mContext = this;
+        rootView = (LinearLayout) findViewById(R.id.signup_root_view);
+        etConfirm = (EditText) findViewById(R.id.et_confirm_signup);
+        etId = (EditText) findViewById(R.id.et_id_signup);
+        etPassword = (EditText) findViewById(R.id.et_password_signup);
+        btnSignUp = (Button) findViewById(R.id.btn_signup);
+        tvLoginLink = (TextView) findViewById(R.id.tv_login);
 
-
-
-/*        new android.os.Handler().postDelayed(new Runnable() {
+        rootView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                //On complete call either onSignupsuccess or onsignupfailed
-                //depending on success
-                onSignUpSuccess();
-                progressDialog.dismiss();
+            public void onClick(View view) {
+                hideKeyboard();
             }
-        },0);*/
+        });
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyboard();
+                signUp();
+            }
+        });
 
-
+        tvLoginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyboard();
+                finish();
+            }
+        });
     }
 
-    private void onSignUpSuccess(){
-        btnSignUp.setEnabled(true);
-        setResult(RESULT_OK,null);
-        finish();
+    private void hideKeyboard(){
+        ((InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
     }
-
-    private void onSignUpFailed(){
-        Toast.makeText(mContext, "Login failed",Toast.LENGTH_LONG).show();
-        btnSignUp.setEnabled(true);
-    }
-
-    public boolean validate(){
-        boolean isValid = true;
-        return isValid;
-    }
-
 
 
 }

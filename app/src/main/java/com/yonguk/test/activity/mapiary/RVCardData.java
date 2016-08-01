@@ -9,7 +9,12 @@ public class RVCardData {
     String imageProfileUrl = null;
     String name = null;
     String date = null;
+    String textTitle = null;
     String textContent = null;
+
+    String userID = null;
+    int like=0;
+
 
     public void setImageProfileUrl(String imageUrl){
         this.imageProfileUrl = imageUrl;
@@ -26,10 +31,20 @@ public class RVCardData {
         this.date = date;
     }
 
+    public void setTextTitle(String textTitle){
+        this.textTitle = textTitle;
+    }
     public void setTextContent(String textContent){
         this.textContent = textContent;
     }
 
+    public void setUserID(String userID){
+        this.userID = userID;
+    }
+
+    public void setLike(int like){
+        this.like = like;
+    }
     public String getImageProfileUrl(){
         return imageProfileUrl;
     }
@@ -46,7 +61,18 @@ public class RVCardData {
         return date;
     }
 
+    public String getTextTitle(){
+        return textTitle;
+    }
     public String getTextContent(){
         return textContent;
+    }
+
+    public String getUserID(){
+        return userID;
+    }
+
+    public int getLike(){
+        return like;
     }
 }

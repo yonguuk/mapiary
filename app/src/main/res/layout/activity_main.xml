@@ -8,7 +8,23 @@
     android:fitsSystemWindows="true"
     android:id="@+id/root_layout">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_rv"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin">
 
+        </android.support.v7.widget.Toolbar>
+
+</android.support.design.widget.AppBarLayout>
+
+<!--
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
@@ -36,7 +52,7 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
+-->
     <include layout="@layout/content_main" />
 
     <android.support.design.widget.FloatingActionButton

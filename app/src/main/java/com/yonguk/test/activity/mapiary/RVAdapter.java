@@ -50,32 +50,75 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     public RVAdapter.RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_item, parent,false);
         RVViewHolder holder = new RVViewHolder(view);
+        Log.i("uks", "onCreateViewHolder()");
         return holder;
     }
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
+        try {
             RVCardData curData = new RVCardData();
             curData = cardData.get(position);
-            holder.img.setImageResource(Integer.parseInt(curData.imageProfileUrl));
-            holder.name.setText(curData.getName());
+            //holder.ivProfile.setImageResource(Integer.parseInt(curData.imageProfileUrl));
+            holder.userID.setText(curData.getUserID());
             holder.date.setText(curData.getDate());
+            holder.textTitle.setText(curData.getTextTitle());
             holder.textContent.setText(curData.getTextContent());
-            String urlImage = curData.getImageMainUrl();
-            if (urlImage != null) {
-                imageLoader.get(urlImage, new ImageLoader.ImageListener() {
+            holder.like.setText(curData.getLike()+"");
+ /*           String imageProfileUrl = curData.getImageProfileUrl();
+            if(imageProfileUrl != null){
+                imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        holder.ivMain.setImageBitmap(response.getBitmap());
+
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+            }*/
+
+            String imageProfileUrl = curData.getImageProfileUrl();
+            Log.i("uks","profile url : " + imageProfileUrl);
+            if(imageProfileUrl != null){
+                imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        holder.ivProfile.setImageBitmap(response.getBitmap());
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("uks","profile error");
+                        holder.ivProfile.setImageResource(R.drawable.profile);
+                    }
+                });
+            }
+
+            String imageContentUrl = curData.getImageMainUrl();
+            if (imageContentUrl != null) {
+                imageLoader.get(imageContentUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        holder.ivContent.setImageBitmap(response.getBitmap());
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //default image
-                        holder.ivMain.setImageResource(R.drawable.image3);
+
+                        holder.ivContent.setImageResource(R.drawable.image3);
                     }
                 });
             }
+
+
+        }catch(Exception e){
+            Log.i("uks",e.getMessage());
+        }
+        Log.i("uks","onBindViewHolder()");
         //여기서 리스너 달아도 됨
     }
 
@@ -92,28 +135,34 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        CircleImageView img;
-        ImageView ivMain;
-        TextView name;
+        CircleImageView ivProfile;
+        ImageView ivContent;
+        TextView userID;
         TextView date;
         TextView textContent;
-        Button btn1,btn2;
+        TextView textTitle;
+        TextView like;
+        ImageView btn1,btn2,btn3;
         public RVViewHolder(View itemView) {
             super(itemView);
-            img = (CircleImageView) itemView.findViewById(R.id.profile_image);
-            ivMain = (ImageView)itemView.findViewById(R.id.iv_main);
-            name = (TextView) itemView.findViewById(R.id.tv_name);
+            ivProfile = (CircleImageView) itemView.findViewById(R.id.profile_image);
+            ivContent = (ImageView)itemView.findViewById(R.id.iv_content);
+            userID = (TextView) itemView.findViewById(R.id.tv_user_id);
             date = (TextView)itemView.findViewById(R.id.tv_date);
+            textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
-            btn1 = (Button) itemView.findViewById(R.id.btn1);
-            btn2 = (Button)itemView.findViewById(R.id.btn2);
+            like = (TextView) itemView.findViewById(R.id.tv_like);
+            btn1 = (ImageView) itemView.findViewById(R.id.btn1);
+            btn2 = (ImageView)itemView.findViewById(R.id.btn2);
+            btn3 = (ImageView)itemView.findViewById(R.id.btn3);
+
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context,"button clicked",Toast.LENGTH_LONG).show();
                 }
             });
-            ivMain.setOnClickListener(this);
+            ivContent.setOnClickListener(this);
             btn2.setOnClickListener(this);
 /*            img.setOnClickListener(new View.OnClickListener() {
                 @Override

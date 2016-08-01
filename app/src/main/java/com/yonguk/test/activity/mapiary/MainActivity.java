@@ -1,5 +1,6 @@
 package com.yonguk.test.activity.mapiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -38,7 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected Toolbar toolbar = null;
     protected CollapsingToolbarLayout collapsingToolbarLayout = null;
     protected ImageView ivToolbar = null;
+    protected String userID = "";
+    protected Context mContext = null;
+    private final int REQUEST_CODE_UPLOAD_CARD = 1;
 
+    /*Fragments*/
     protected MainFragment mMainFragment = null;
     protected FollowFragment mFollowFragment = null;
     protected NewsFragment mNewsFragment = null;
@@ -54,12 +59,20 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         //ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar_rv);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Main");
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
-        collapsingToolbarLayout.setTitle("Main");
+        //collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        //collapsingToolbarLayout.setTitle("Main");
+        mContext = getApplicationContext();
+
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("USER_ID");
+
 
         setFragment();
+        mBottomBar = BottomBar.attach(this, savedInstanceState);
+        setBottomBar();
 
         //Service
     /*    try {
@@ -73,14 +86,39 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(mContext, SampleChildActivity.class);
+                intent.putExtra("USER_ID", userID);
+                startActivityForResult(intent,REQUEST_CODE_UPLOAD_CARD);
+
             }
         });
 
         /*Fragment*/
-        //MainFragment mainFragment = MainFragment.newInstance();
-        //getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mainFragment).commit();
+
+        /*Bottom Navigation bar*/
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_UPLOAD_CARD){
+            if(resultCode == RESULT_OK){
+                Snackbar.make(rootView,"업로드 완료",Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void setFragment(){
+        Bundle bundle = new Bundle();
+        bundle.putString("USER_ID", userID);
+        mMainFragment = MainFragment.newInstance();
+        mMainFragment.setArguments(bundle);
+        mFollowFragment = FollowFragment.newInstance();
+        mRecordFragment = RecordFragment.newInstance();
+        mNewsFragment = NewsFragment.newInstance();
+        mProfileFragment = ProfileFragment.newInstance();
+        mProfileFragment.setArguments(bundle);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mMainFragment)
@@ -92,16 +130,16 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 .hide(mNewsFragment)
                 .hide(mProfileFragment)
                 .hide(mRecordFragment)
+                .show(mMainFragment)
                 .commit();
-        /*Bottom Navigation bar*/
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
+    }
+
+    private void setBottomBar(){
         //hiding on scroll
-         // Instead of attach(), use attachShy():
-          //mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.root_layout),
-          //findViewById(R.id.rv), savedInstanceState);
-
+        // Instead of attach(), use attachShy():
+        //mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.root_layout),
+        //findViewById(R.id.rv), savedInstanceState);
         mBottomBar.setItems(R.menu.bottombar_menu);
-
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(int menuItemId) {
@@ -115,8 +153,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mMainFragment)
                                 .commit();
-                        appBarLayout.setExpanded(false, true);
-                        collapsingToolbarLayout.setTitle("Main");
+                        getSupportActionBar().setTitle("Main");
+                        //appBarLayout.setExpanded(false, true);
+                        //collapsingToolbarLayout.setTitle("Main");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "Main");
                         break;
@@ -130,8 +169,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mFollowFragment)
                                 .commit();
-                        appBarLayout.setExpanded(false, true);
-                        collapsingToolbarLayout.setTitle("Follow");
+                        getSupportActionBar().setTitle("Follower");
+                        //appBarLayout.setExpanded(false, true);
+                        //collapsingToolbarLayout.setTitle("Follow");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "Follow");
                         break;
@@ -145,8 +185,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mProfileFragment)
                                 .show(mRecordFragment)
                                 .commit();
-                        appBarLayout.setExpanded(false, true);
-                        collapsingToolbarLayout.setTitle("Record");
+                        getSupportActionBar().setTitle("Record");
+                        //appBarLayout.setExpanded(false, true);
+                        //collapsingToolbarLayout.setTitle("Record");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "Record");
                         break;
@@ -160,8 +201,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mNewsFragment)
                                 .commit();
-                        appBarLayout.setExpanded(false, true);
-                        collapsingToolbarLayout.setTitle("News");
+                        getSupportActionBar().setTitle("News");
+                        //appBarLayout.setExpanded(false, true);
+                        //collapsingToolbarLayout.setTitle("News");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "News");
                         break;
@@ -175,8 +217,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mProfileFragment)
                                 .commit();
-                        appBarLayout.setExpanded(false, true);
-                        collapsingToolbarLayout.setTitle("Profile");
+                        getSupportActionBar().setTitle("Profile");
+                        //appBarLayout.setExpanded(false, true);
+                        //collapsingToolbarLayout.setTitle("Profile");
                         //ivToolbar.setVisibility(View.GONE);
                         //lockAppBar(true, "Profile");
                         break;
@@ -188,79 +231,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
             }
         });
-        /*mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(int menuItemId) {
-                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                switch(menuItemId){
-                    case R.id.bottombar_main:
-                        fragment = MainFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Main");
-                        //getSupportActionBar().setTitle("First Fragment");
-                        break;
 
-                    case R.id.bottombar_follow:
-                        fragment = FollowFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        lockAppBar(true, "Follow");
-                        //ivToolbar.setImageResource(R.drawable.image3);
-                        //ivToolbar.setVisibility(View.VISIBLE);
-                        ivToolbar.setVisibility(View.GONE);
-                        //getSupportActionBar().setTitle("Second Fragment");
-                        break;
-
-                    case R.id.bottombar_record:
-                        fragment = RecordFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Record");
-                        //getSupportActionBar().setTitle("Third Fragment");
-                        break;
-
-                    case R.id.bottombar_news:
-                        fragment = NewsFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "News");
-                        //getSupportActionBar().setTitle("Third Fragment");
-                        break;
-
-                    case R.id.bottombar_profile:
-                        fragment = RecordFragment.newInstance();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                        ivToolbar.setVisibility(View.GONE);
-                        lockAppBar(true, "Profile");
-                        //getSupportActionBar().setTitle("Third Fragment");
-                        break;
-                }
-            }
-
-            @Override
-            public void onMenuTabReSelected(int menuItemId) {
-                if (menuItemId == R.id.bottombar_main) {
-                    // The user reselected item number one, scroll your content to top.
-                }
-            }
-        });
-*/
-        // Setting colors for different tabs when there's more than three of them.
-        // You can set colors for tabs in three different ways as shown below.
-        //mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
-        //mBottomBar.mapColorForTab(1, 0xFF5D4037);
         mBottomBar.mapColorForTab(0, "#FF5252");
         mBottomBar.mapColorForTab(1, "#FF5252");
         mBottomBar.mapColorForTab(2, "#FF5252");
         mBottomBar.mapColorForTab(3, "#FF5252");
         mBottomBar.mapColorForTab(4, "#FF5252");
-    }
-    private void setFragment(){
-        mMainFragment = MainFragment.newInstance();
-        mFollowFragment = FollowFragment.newInstance();
-        mRecordFragment = RecordFragment.newInstance();
-        mNewsFragment = NewsFragment.newInstance();
-        mProfileFragment = ProfileFragment.newInstance();
     }
 
     @Override
@@ -324,6 +300,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     protected void onResume() {
         super.onResume();
-        appBarLayout.setExpanded(false, true);
+        //appBarLayout.setExpanded(false, true);
     }
 }

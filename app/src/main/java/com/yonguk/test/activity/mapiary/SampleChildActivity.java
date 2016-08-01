@@ -37,21 +37,30 @@ import java.util.Map;
 
 public class SampleChildActivity extends AppCompatActivity implements View.OnClickListener {
 
+
     Button btnChoose, btnUpload = null;
     ImageView imageView = null;
-    EditText editText = null;
+    EditText etTitle = null;
+    EditText etContent = null;
     Bitmap bitmap = null;
     Context context = null;
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
+    String userID = "";
     final int PICK_IMAGE_REQUEST = 1;
-    final String UPLOAD_URL = "http://kktt0202.dothome.co.kr/image/upload/upload.php";
+    final String UPLOAD_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_card.php";
     final String KEY_IMAGE = "image";
-    final String KEY_NAME = "name";
+    final String KEY_USER_ID ="user_id";
+    final String KEY_TITLE = "title";
+    final String KEY_CONTENT = "content";
+    final String KEY_EMOTION = "emotion";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample_child);
+
+        Intent intent = getIntent();
+        userID = intent.getStringExtra("USER_ID");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Child Activity");
@@ -62,7 +71,8 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
         context = getApplicationContext();
         btnChoose = (Button) findViewById(R.id.btn_choose);
         btnUpload = (Button) findViewById(R.id.btn_upload);
-        editText = (EditText) findViewById(R.id.et);
+        etTitle = (EditText) findViewById(R.id.upload_et_title);
+        etContent = (EditText) findViewById(R.id.upload_et_content);
         imageView = (ImageView) findViewById(R.id.iv);
 
         volleySingleton = VolleySingleton.getInstance(context);
@@ -97,6 +107,9 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.btn_upload:
                 uploadImage();
+                //Intent intent = new Intent();
+                //setResult(RESULT_OK,intent);
+                //finish();
                 break;
         }
     }
@@ -127,14 +140,14 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
                 loading.dismiss();
                 //Showing Toast message of the response
                 Toast.makeText(context, response.toString(),Toast.LENGTH_LONG).show();
-                Log.i("uks",response.toString());
+                Log.i("uks", response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loading.dismiss();
                 Toast.makeText(context, error.toString(),Toast.LENGTH_LONG).show();
-                Log.i("uks",error.toString());
+                Log.i("uks", error.toString());
             }
         }){
             @Override
@@ -143,14 +156,19 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
                 String image = getStringImage(bitmap);
 
                 //Getting Image Name
-                String name = editText.getText().toString().trim();
+                String title = etTitle.getText().toString().trim();
+                String content = etContent.getText().toString().trim();
+                String emotion = "happy";
 
                 //Creating parameters
                 Map<String, String> params = new HashMap<String, String>();
 
                 //Adding parameters
                 params.put(KEY_IMAGE, image);
-                params.put(KEY_NAME, name);
+                params.put(KEY_USER_ID,userID);
+                params.put(KEY_TITLE, title);
+                params.put(KEY_CONTENT, content);
+                params.put(KEY_EMOTION,emotion);
 
                 //returning parameters
                 return params;
