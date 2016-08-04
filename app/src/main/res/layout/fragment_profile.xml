@@ -10,12 +10,14 @@
         android:layout_height="100dp"
         android:src="@drawable/profile"
         app:civ_border_width="0dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
         />
     <TextView
         android:id="@+id/profile_user_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="no"/>
 
 
@@ -23,6 +25,7 @@
         android:id="@+id/profile_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:text="no"/>
 
 

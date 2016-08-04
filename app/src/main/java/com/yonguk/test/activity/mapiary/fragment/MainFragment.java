@@ -75,19 +75,17 @@ public class MainFragment extends Fragment {
         mRecyclerView = (RecyclerView)mLinearLayout.findViewById(R.id.main_rv);
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.main_swipe_layout);
 
-        sendJsonRequest();
-        mRVAdapter = new RVAdapter(getActivity(),cardDatas);
+        mRVAdapter = new RVAdapter(getActivity());
         mRecyclerView.setAdapter(mRVAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mSwipeRefrechLayout.setRefreshing(false);
-
         mSwipeRefrechLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshContent();
             }
         });
-        Log.i("uks", "main : onCreateView()");
+        sendJsonRequest();
         return mLinearLayout;
     }
 
@@ -95,7 +93,8 @@ public class MainFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_SERVER, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                parseJsonResponse(response);
+                cardDatas = parseJsonResponse(response);
+                mRVAdapter.setCardList(cardDatas);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -113,47 +112,48 @@ public class MainFragment extends Fragment {
         requestQueue.add(request);
     }
 
-    private void parseJsonResponse(JSONObject response){
-        if(response==null || response.length() == 0){
-            return;
-        }
-        try{
-            if(response.has("result")){
-                JSONArray arrayResult = response.getJSONArray("result");
-                for(int i=0; i<arrayResult.length(); i++){
-                    JSONObject currentResult = arrayResult.getJSONObject(i);
-                    String user_id = currentResult.getString("user_id");
-                    String date = currentResult.getString("date");
-                    String profileImageUrl = currentResult.getString("profile_url");
-                    String contentImageUrl = currentResult.getString("img_url");
-                    String textContent = currentResult.getString("content");
-                    String textTitle = currentResult.getString("title");
-                    int like = currentResult.getInt("like");
+    private ArrayList<RVCardData> parseJsonResponse(JSONObject response){
+        ArrayList<RVCardData> list = new ArrayList<>();
+        if(response!=null || response.length() > 0) {
 
-                    RVCardData card = new RVCardData();
-                    card.setUserID(user_id);
-                    card.setDate(date);
-                    card.setTextContent(textContent);
-                    card.setTextTitle(textTitle);
-                    card.setImageMainUrl(contentImageUrl);
-                    card.setLike(like);
-                    card.setImageProfileUrl(profileImageUrl);
+            try {
+                if (response.has("result")) {
+                    JSONArray arrayResult = response.getJSONArray("result");
+                    for (int i = 0; i < arrayResult.length(); i++) {
+                        JSONObject currentResult = arrayResult.getJSONObject(i);
+                        String user_id = currentResult.getString("user_id");
+                        String date = currentResult.getString("date");
+                        String profileImageUrl = currentResult.getString("profile_url");
+                        String contentImageUrl = currentResult.getString("img_url");
+                        String textContent = currentResult.getString("content");
+                        String textTitle = currentResult.getString("title");
+                        int like = currentResult.getInt("like");
 
-                    cardDatas.add(card);
+                        RVCardData card = new RVCardData();
+                        card.setUserID(user_id);
+                        card.setDate(date);
+                        card.setTextContent(textContent);
+                        card.setTextTitle(textTitle);
+                        card.setImageMainUrl(contentImageUrl);
+                        card.setLike(like);
+                        card.setImageProfileUrl(profileImageUrl);
+
+                        list.add(card);
+                    }
                 }
+            } catch (JSONException e) {
+                Log.i("uks", e.getMessage());
+            } catch (Exception e) {
+                Log.i("uks", e.getMessage());
             }
-        }catch(JSONException e){
-            Log.i("uks",e.getMessage());
-        }catch(Exception e){
-            Log.i("uks",e.getMessage());
         }
+        return list;
     }
 
     public void refreshContent(){
         cardDatas.clear();
         sendJsonRequest();
-        mRVAdapter = new RVAdapter(getActivity(),cardDatas);
-        mRecyclerView.setAdapter(mRVAdapter);
+        mRVAdapter.setCardList(cardDatas);
         mSwipeRefrechLayout.setRefreshing(false);
     }
 

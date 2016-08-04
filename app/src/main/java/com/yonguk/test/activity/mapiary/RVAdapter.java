@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
 
+    /*animation*/
+
+
     public RVAdapter(Context context, List<RVCardData> cardData){
         inflater = LayoutInflater.from(context);
         this.cardData = cardData;
@@ -41,9 +45,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         imageLoader = volleySingleton.getImageLoader();
     }
 
+    public RVAdapter(Context context){
+        inflater = LayoutInflater.from(context);
+        volleySingleton = VolleySingleton.getInstance(context);
+        imageLoader = volleySingleton.getImageLoader();
+    }
+
     public void setCardList(ArrayList<RVCardData> cardData){
         this.cardData = cardData;
-        notifyItemRangeChanged(0, cardData.size());
+        //notifyItemRangeChanged(0, cardData.size());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,15 +67,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
-        try {
-            RVCardData curData = new RVCardData();
-            curData = cardData.get(position);
-            //holder.ivProfile.setImageResource(Integer.parseInt(curData.imageProfileUrl));
-            holder.userID.setText(curData.getUserID());
-            holder.date.setText(curData.getDate());
-            holder.textTitle.setText(curData.getTextTitle());
-            holder.textContent.setText(curData.getTextContent());
-            holder.like.setText(curData.getLike()+"");
+
+        RVCardData curData = new RVCardData();
+        curData = cardData.get(position);
+        //holder.ivProfile.setImageResource(Integer.parseInt(curData.imageProfileUrl));
+        holder.userID.setText(curData.getUserID());
+        holder.date.setText(curData.getDate());
+        holder.textTitle.setText(curData.getTextTitle());
+        holder.textContent.setText(curData.getTextContent());
+        holder.like.setText(curData.getLike()+"");
  /*           String imageProfileUrl = curData.getImageProfileUrl();
             if(imageProfileUrl != null){
                 imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
@@ -80,44 +91,41 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 });
             }*/
 
-            String imageProfileUrl = curData.getImageProfileUrl();
-            Log.i("uks","profile url : " + imageProfileUrl);
-            if(imageProfileUrl != null){
-                imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        holder.ivProfile.setImageBitmap(response.getBitmap());
-                    }
+        String imageProfileUrl = curData.getImageProfileUrl();
+        Log.i("uks","profile url : " + imageProfileUrl);
+        if(imageProfileUrl != null){
+            imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    holder.ivProfile.setImageBitmap(response.getBitmap());
+                }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("uks","profile error");
-                        holder.ivProfile.setImageResource(R.drawable.profile);
-                    }
-                });
-            }
-
-            String imageContentUrl = curData.getImageMainUrl();
-            if (imageContentUrl != null) {
-                imageLoader.get(imageContentUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        holder.ivContent.setImageBitmap(response.getBitmap());
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //default image
-
-                        holder.ivContent.setImageResource(R.drawable.image3);
-                    }
-                });
-            }
-
-
-        }catch(Exception e){
-            Log.i("uks",e.getMessage());
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("uks","profile error");
+                    holder.ivProfile.setImageResource(R.drawable.profile);
+                }
+            });
         }
+
+        String imageContentUrl = curData.getImageMainUrl();
+        if (imageContentUrl != null) {
+            imageLoader.get(imageContentUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    holder.ivContent.setImageBitmap(response.getBitmap());
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //default image
+
+                    holder.ivContent.setImageResource(R.drawable.image3);
+                }
+            });
+        }
+
+
         Log.i("uks","onBindViewHolder()");
         //여기서 리스너 달아도 됨
     }
