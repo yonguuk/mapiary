@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yonguk.test.activity.mapiary.SampleChildActivity"
-    android:focusable="true"
-    android:clickable="true"
-    android:background="?android:attr/selectableItemBackground">
+    tools:context="com.yonguk.test.activity.mapiary.SampleChildActivity">
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,8 +94,10 @@
                 -->
                 <ImageView
                     android:id="@+id/btn1"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:src="@drawable/ic_favorite_border_black_24dp"
                     android:tint="@color/icon_color"
                     android:layout_gravity="center_horizontal|center_vertical"/>
@@ -122,8 +121,10 @@
                 <ImageView
                     android:id="@+id/btn2"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/ic_comment_black_24dp"
                     android:tint="@color/icon_color"/>
@@ -139,8 +140,10 @@
                 <ImageView
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:id="@+id/btn3"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/ic_share_black_24dp"
                     android:tint="@color/icon_color"/>

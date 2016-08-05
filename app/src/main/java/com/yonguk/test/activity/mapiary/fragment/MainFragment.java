@@ -77,7 +77,15 @@ public class MainFragment extends Fragment {
 
         mRVAdapter = new RVAdapter(getActivity());
         mRecyclerView.setAdapter(mRVAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            protected int getExtraLayoutSpace(RecyclerView.State state) {
+                return 300;
+            }
+        };
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         mSwipeRefrechLayout.setRefreshing(false);
         mSwipeRefrechLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

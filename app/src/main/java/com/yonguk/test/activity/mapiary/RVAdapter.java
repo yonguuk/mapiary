@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -141,7 +142,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
 
-    class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class RVViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView ivProfile;
         ImageView ivContent;
@@ -150,7 +151,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         TextView textContent;
         TextView textTitle;
         TextView like;
-        ImageView btn1,btn2,btn3;
+        ImageView btn1, btn2, btn3;
+
         public RVViewHolder(View itemView) {
             super(itemView);
             ivProfile = (CircleImageView) itemView.findViewById(R.id.profile_image);
@@ -167,29 +169,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context,"button clicked",Toast.LENGTH_LONG).show();
+                    Log.i("uks","btn clicked");
                 }
             });
-            ivContent.setOnClickListener(this);
-            btn2.setOnClickListener(this);
-/*            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(context, "ImageView clicked", Toast.LENGTH_LONG).show();
-                }
-            });*/
+
         }
 
-        @Override
+/*        @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.profile_image:
+                case R.id.btn1:
                     Toast.makeText(context,getLayoutPosition() + "th ImageView Clicked",Toast.LENGTH_LONG).show();
                     break;
                 case R.id.btn2:
                     Toast.makeText(context, "button2 clicked", Toast.LENGTH_LONG).show();
+                    break;
             }
-        }
+        }*/
     }
 
     /*

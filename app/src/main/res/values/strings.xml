@@ -23,4 +23,5 @@
         completions."
     </string>
     <string name="title_activity_collapsing_tollbar_acticity">CollapsingTollbarActicity</string>
+    <string name="title_activity_sample_profile">SampleProfileActivity</string>
 </resources>
