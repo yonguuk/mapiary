@@ -71,26 +71,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
-        //holder.ivProfile.setImageResource(Integer.parseInt(curData.imageProfileUrl));
         holder.userID.setText(curData.getUserID());
         holder.date.setText(curData.getDate());
         holder.textTitle.setText(curData.getTextTitle());
         holder.textContent.setText(curData.getTextContent());
         holder.like.setText(curData.getLike()+"");
- /*           String imageProfileUrl = curData.getImageProfileUrl();
-            if(imageProfileUrl != null){
-                imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-            }*/
 
         String imageProfileUrl = curData.getImageProfileUrl();
         Log.i("uks","profile url : " + imageProfileUrl);
@@ -119,8 +104,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    //default image
-
                     holder.ivContent.setImageResource(R.drawable.image3);
                 }
             });
@@ -142,7 +125,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
 
-    class RVViewHolder extends RecyclerView.ViewHolder{
+    class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CircleImageView ivProfile;
         ImageView ivContent;
@@ -151,7 +134,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         TextView textContent;
         TextView textTitle;
         TextView like;
-        ImageView btn1, btn2, btn3;
+        ImageView btnLike, btnRe;
 
         public RVViewHolder(View itemView) {
             super(itemView);
@@ -162,17 +145,34 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
             like = (TextView) itemView.findViewById(R.id.tv_like);
-            btn1 = (ImageView) itemView.findViewById(R.id.btn1);
-            btn2 = (ImageView)itemView.findViewById(R.id.btn2);
-            btn3 = (ImageView)itemView.findViewById(R.id.btn3);
+            btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
+            btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
 
-            btn1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("uks","btn clicked");
+            ivProfile.setOnClickListener(this);
+            ivContent.setOnClickListener(this);
+            btnLike.setOnClickListener(this);
+            btnRe.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch(view.getId()){
+                case R.id.profile_image:{
+                    break;
                 }
-            });
 
+                case R.id.iv_content:{
+                    break;
+                }
+
+                case R.id.btn_like:{
+                    break;
+                }
+
+                case R.id.btn_re:{
+                    break;
+                }
+            }
         }
 
 /*        @Override

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dosi on 2016-07-18.
@@ -46,8 +48,8 @@ public class FollowFragment extends Fragment{
     private VolleySingleton volleySingleton = null;
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
-
-    public static final String URL_SERVER= "http://kktt0202.dothome.co.kr/test.php";
+    String userID="";
+    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_card.php";
 
 
     public static FollowFragment newInstance(){
@@ -55,16 +57,15 @@ public class FollowFragment extends Fragment{
         return f;
     }
 
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         volleySingleton = VolleySingleton.getInstance(getActivity());
         requestQueue = volleySingleton.getRequestQueue();
+        Bundle bundle = this.getArguments();
+        userID = bundle.getString("USER_ID");
 
-        sendJsonRequest();
         Log.i("uks","follow : onCreate()");
 
     }
@@ -77,7 +78,14 @@ public class FollowFragment extends Fragment{
         mRecyclerView = (RecyclerView) mLinearLayout.findViewById(R.id.rv);
         mRVAdapter = new RVAdapter(getActivity(), cardDatas);
         mRecyclerView.setAdapter(mRVAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
+            @Override
+            protected int getExtraLayoutSpace(RecyclerView.State state) {
+                return 300;
+            }
+        };
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
         mSwipeRefrechLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -86,104 +94,78 @@ public class FollowFragment extends Fragment{
                 refreshContent();
             }
         });
-
+        sendJsonRequest();
         Log.i("uks", "Follow : onCreateView()");
         return mLinearLayout;
 
     }
 
     public void refreshContent(){
-/*        mRVAdapter = new RVAdapter(getActivity(),getCardData());
-        mRecyclerView.setAdapter(mRVAdapter);
-        mSwipeRefrechLayout.setRefreshing(false);*/
-    }
-
-    public static String getRequestUrl(String userID){
-        String requestUrl = URL_SERVER +"?id=" + userID;
-        Log.i("uks",requestUrl);
-        return requestUrl;
+        cardDatas.clear();
+        sendJsonRequest();
+        mRVAdapter.setCardList(cardDatas);
+        mSwipeRefrechLayout.setRefreshing(false);
     }
 
     private void sendJsonRequest(){
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_SERVER, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_SERVER, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(getActivity(), response.toString(),Toast.LENGTH_LONG).show();
-                parseJsonResponse(response);
+                cardDatas = parseJsonResponse(response);
+                mRVAdapter.setCardList(cardDatas);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("uks",error.getMessage());
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return super.getParams();
+            }
+        };
 
         requestQueue.add(request);
     }
 
-    private void parseJsonResponse(JSONObject response){
-        if(response==null || response.length()==0){
-            return;
-        }
-        try {
-            if(response.has("result")){
-                StringBuilder data = new StringBuilder();
-                JSONArray arrayResult = response.getJSONArray("result");
-                //List
-                for(int i=0; i<arrayResult.length(); i++){
-                    JSONObject currentResult = arrayResult.getJSONObject(i);
-                    String id = currentResult.getString("id");
-                    String name= currentResult.getString("name");
-                    String password = currentResult.getString("password");
-                    RVCardData card = new RVCardData();
-                    card.setName(name);
-                    card.setDate(id);
-                    card.setTextContent(password);
-                    card.setImageMainUrl("http://kktt0202.dothome.co.kr/image/sample.jpg");
-                    card.setImageProfileUrl(R.drawable.profile+"");
-                    cardDatas.add(card);
-                    data.append("id = " + id + "\n" + "name = " + name + "\n" + "password = " + password + "\n");
+    private ArrayList<RVCardData> parseJsonResponse(JSONObject response){
+        ArrayList<RVCardData> list = new ArrayList<>();
+        if(response==null || response.length()==0) {
+            try {
+                if (response.has("result")) {
+                    StringBuilder data = new StringBuilder();
+                    JSONArray arrayResult = response.getJSONArray("result");
+                    //List
+                    for (int i = 0; i < arrayResult.length(); i++) {
+                        JSONObject currentResult = arrayResult.getJSONObject(i);
+                        String user_id = currentResult.getString("user_id");
+                        String date = currentResult.getString("date");
+                        String profileImageUrl = currentResult.getString("profile_url");
+                        String contentImageUrl = currentResult.getString("img_url");
+                        String textContent = currentResult.getString("content");
+                        String textTitle = currentResult.getString("title");
+                        int like = currentResult.getInt("like");
+
+                        RVCardData card = new RVCardData();
+                        card.setUserID(user_id);
+                        card.setDate(date);
+                        card.setTextContent(textContent);
+                        card.setTextTitle(textTitle);
+                        card.setImageMainUrl(contentImageUrl);
+                        card.setLike(like);
+                        card.setImageProfileUrl(profileImageUrl);
+                        list.add(card);
+                    }
+                    //Toast.makeText(getActivity(), data,Toast.LENGTH_LONG).show();
                 }
-                //Toast.makeText(getActivity(), data,Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                Log.i("uks", e.getMessage());
+            } catch (Exception e) {
+                Log.i("uks", e.getMessage());
             }
-        }catch(JSONException e){
-            Log.i("uks",e.getMessage());
-        }catch(Exception e){
-            Log.i("uks",e.getMessage());
         }
+        return list;
     }
-
-/*    private void parseJsonResponse(JSONObject response){
-        if(response == null || response.length() == 0){
-            return;
-        }
-
-        try{
-            if(response.has("result")){
-                JSONArray arrayResult = response.getJSONArray("result");
-                for(int i=0; i<arrayResult.length(); i++){
-                    JSONObject currentResult = arrayResult.getJSONObject(i);
-                    String userID = currentResult.getString("user_id");
-                    String imageMainUrl = currentResult.getString("img_url");
-                    String content = currentResult.getString("content");
-                    String date = currentResult.getString("date");
-                    int like = currentResult.getInt("like");
-
-                    RVCardData card = new RVCardData();
-                    card.setUserID(userID);
-                    card.setDate(date);
-                    card.setTextContent(content);
-                    card.setImageMainUrl(imageMainUrl);
-                    card.setLike(like);
-                    card.setImageProfileUrl(R.drawable.profile+"");
-
-                    cardDatas.add(card);
-                }
-            }
-        }catch(JSONException e){
-            Log.i("uks",e.getMessage());
-        }catch(Exception e){
-            Log.i("uks",e.getMessage());
-        }
-    }*/
 }

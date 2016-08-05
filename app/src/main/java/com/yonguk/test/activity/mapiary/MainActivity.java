@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mMainFragment = MainFragment.newInstance();
         mMainFragment.setArguments(bundle);
         mFollowFragment = FollowFragment.newInstance();
+        mFollowFragment.setArguments(bundle);
         mRecordFragment = RecordFragment.newInstance();
         mNewsFragment = NewsFragment.newInstance();
         mProfileFragment = ProfileFragment.newInstance();
@@ -139,11 +140,13 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         // Instead of attach(), use attachShy():
         //mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.root_layout),
         //findViewById(R.id.rv), savedInstanceState);
+        mBottomBar.useFixedMode();
         mBottomBar.setItems(R.menu.bottombar_menu);
+        mBottomBar.setActiveTabColor("#FF4081");
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(int menuItemId) {
-                switch(menuItemId){
+                switch (menuItemId) {
                     case R.id.bottombar_main:
                         getSupportFragmentManager()
                                 .beginTransaction()
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mMainFragment)
                                 .commit();
-                        getSupportActionBar().setTitle("Main");
+                        getSupportActionBar().setTitle("Mapiary");
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("Main");
                         //ivToolbar.setVisibility(View.GONE);
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mNewsFragment)
                                 .commit();
-                        getSupportActionBar().setTitle("News");
+                        getSupportActionBar().setTitle("소식");
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("News");
                         //ivToolbar.setVisibility(View.GONE);
@@ -217,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mRecordFragment)
                                 .show(mProfileFragment)
                                 .commit();
-                        getSupportActionBar().setTitle("Profile");
+                        getSupportActionBar().setTitle("내 프로필");
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("Profile");
                         //ivToolbar.setVisibility(View.GONE);
@@ -231,12 +234,16 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
             }
         });
+/*
 
-        mBottomBar.mapColorForTab(0, "#FF5252");
-        mBottomBar.mapColorForTab(1, "#FF5252");
-        mBottomBar.mapColorForTab(2, "#FF5252");
-        mBottomBar.mapColorForTab(3, "#FF5252");
-        mBottomBar.mapColorForTab(4, "#FF5252");
+        mBottomBar.mapColorForTab(0, R.color.white);
+        mBottomBar.mapColorForTab(1, R.color.white);
+        mBottomBar.mapColorForTab(2, R.color.white);
+        mBottomBar.mapColorForTab(3, R.color.white);
+        mBottomBar.mapColorForTab(4, R.color.white);
+
+*/
+
     }
 
     @Override

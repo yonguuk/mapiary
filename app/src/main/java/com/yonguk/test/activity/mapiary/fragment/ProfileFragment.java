@@ -45,10 +45,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by dosi on 2016-07-18.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    TextView tvUserId, tvStatus, tvCards, tvFollowing, tvFollower = null;
-    LinearLayout background = null;
+    TextView tvUserId, tvStatus, tvCards, tvFollowing, tvFollower, tvLike = null;
     CircleImageView circleProfileImage = null;
     LinearLayout root = null;
     String userID = null;
@@ -94,14 +93,15 @@ public class ProfileFragment extends Fragment {
         tvCards = (TextView) mLinearLayout.findViewById(R.id.profile_card_num);
         tvFollowing = (TextView) mLinearLayout.findViewById(R.id.profile_following_num);
         tvFollower = (TextView) mLinearLayout.findViewById(R.id.profile_follower_num);
+        tvLike = (TextView) mLinearLayout.findViewById(R.id.profile_like_num);
         circleProfileImage = (CircleImageView) mLinearLayout.findViewById(R.id.profile_profile_image);
 
-        circleProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showFileChooser();
-            }
-        });
+        circleProfileImage.setOnClickListener(this);
+        tvCards.setOnClickListener(this);
+        tvFollowing.setOnClickListener(this);
+        tvFollower.setOnClickListener(this);
+        tvLike.setOnClickListener(this);
+
         sendJsonRequest();
         Log.i("uks", "Profile :  onCreateView()");
         return mLinearLayout;
@@ -138,9 +138,6 @@ public class ProfileFragment extends Fragment {
                 JSONArray arrayResult = response.getJSONArray("result");
                 for(int i=0; i<arrayResult.length(); i++){
                     JSONObject currentResult = arrayResult.getJSONObject(i);
-/*                    user_id = currentResult.getString("user_id");
-                    password = currentResult.getString("password");
-                    profileImageUrl = currentResult.getString("profile_url");*/
                     user_id = currentResult.getString(KEY_USER_ID);
                     state_message = currentResult.getString(KEY_STATE);
                     //cards = currentResult.getString(KEY_CARDS);
@@ -149,8 +146,7 @@ public class ProfileFragment extends Fragment {
                     profile_url = currentResult.getString(KEY_PROFILE_URL);
 
                 }
-/*                tvUserId.setText(user_id);
-                tvPassword.setText(password);*/
+
                 tvUserId.setText(user_id);
                 tvStatus.setText(state_message);
                 //tvCards.setText(cards);
@@ -163,7 +159,6 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                             circleProfileImage.setImageBitmap(response.getBitmap());
-                            //circleProfileImage.setImageResource(R.drawable.profile);
                         }
 
                         @Override
@@ -250,4 +245,25 @@ public class ProfileFragment extends Fragment {
         String encodedImage = Base64.encodeToString(imageBytes,Base64.DEFAULT);
         return encodedImage;
     }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.profile_profile_image:{
+                showFileChooser();
+                break;
+            }
+            case R.id.profile_card_num:{
+                break;
+            }
+            case R.id.profile_following_num:{
+                break;
+            }
+            case R.id.profile_follower_num:{
+                break;
+            }
+        }
+    }
+
+
 }
