@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     LinearLayout root = null;
     String userID = null;
     Bitmap bitmap = null;
+    private String cachedImageUrl = "";
     private VolleySingleton volleySingleton = null;
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
@@ -111,7 +113,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestUrl(userID), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("uks","Profile : " + response.toString());
+
                 parseJsonResponse(response);
             }
         }, new Response.ErrorListener() {
@@ -144,7 +146,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     following = currentResult.getString(KEY_FOLLOWING);
                     follower = currentResult.getString(KEY_FOLLOWER);
                     profile_url = currentResult.getString(KEY_PROFILE_URL);
-
+                    cachedImageUrl = profile_url;
                 }
 
                 tvUserId.setText(user_id);
@@ -155,6 +157,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
 
                 if(profile_url != null){
+                    final String finalProfile_url = profile_url;
                     imageLoader.get(profile_url, new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -235,7 +238,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             }
         };
 
+        //requestQueue.getCache().remove(cachedImageUrl);
         requestQueue.add(stringRequest);
+
+
     }
 
     public String getStringImage(Bitmap bitmap){

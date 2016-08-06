@@ -49,7 +49,7 @@ public class FollowFragment extends Fragment{
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
     String userID="";
-    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_card.php";
+    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/follow_card.php";
 
 
     public static FollowFragment newInstance(){
@@ -76,7 +76,7 @@ public class FollowFragment extends Fragment{
         LinearLayout mLinearLayout = (LinearLayout) inflater.inflate(R.layout.fragment_follow, container, false);
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.swipe_layout);
         mRecyclerView = (RecyclerView) mLinearLayout.findViewById(R.id.rv);
-        mRVAdapter = new RVAdapter(getActivity(), cardDatas);
+        mRVAdapter = new RVAdapter(getActivity());
         mRecyclerView.setAdapter(mRVAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
@@ -112,6 +112,7 @@ public class FollowFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(getActivity(), response.toString(),Toast.LENGTH_LONG).show();
+                Log.i("uks","card jsonarray : " + response.toString());
                 cardDatas = parseJsonResponse(response);
                 mRVAdapter.setCardList(cardDatas);
             }
@@ -132,12 +133,11 @@ public class FollowFragment extends Fragment{
 
     private ArrayList<RVCardData> parseJsonResponse(JSONObject response){
         ArrayList<RVCardData> list = new ArrayList<>();
-        if(response==null || response.length()==0) {
+        if(response!=null || response.length() > 0) {
+
             try {
                 if (response.has("result")) {
-                    StringBuilder data = new StringBuilder();
                     JSONArray arrayResult = response.getJSONArray("result");
-                    //List
                     for (int i = 0; i < arrayResult.length(); i++) {
                         JSONObject currentResult = arrayResult.getJSONObject(i);
                         String user_id = currentResult.getString("user_id");
@@ -156,9 +156,9 @@ public class FollowFragment extends Fragment{
                         card.setImageMainUrl(contentImageUrl);
                         card.setLike(like);
                         card.setImageProfileUrl(profileImageUrl);
+
                         list.add(card);
                     }
-                    //Toast.makeText(getActivity(), data,Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 Log.i("uks", e.getMessage());

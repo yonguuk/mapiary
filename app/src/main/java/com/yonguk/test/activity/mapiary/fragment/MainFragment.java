@@ -1,5 +1,6 @@
 package com.yonguk.test.activity.mapiary.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,7 +49,6 @@ public class MainFragment extends Fragment {
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
     String userID=null;
-    final String KEY_USER_ID = "user_id";
 
     final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_card.php";
 
@@ -74,7 +74,6 @@ public class MainFragment extends Fragment {
         LinearLayout mLinearLayout = (LinearLayout)inflater.inflate(R.layout.fragment_main,container,false);
         mRecyclerView = (RecyclerView)mLinearLayout.findViewById(R.id.main_rv);
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.main_swipe_layout);
-
         mRVAdapter = new RVAdapter(getActivity());
         mRecyclerView.setAdapter(mRVAdapter);
 
@@ -101,6 +100,7 @@ public class MainFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_SERVER, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 cardDatas = parseJsonResponse(response);
                 mRVAdapter.setCardList(cardDatas);
             }

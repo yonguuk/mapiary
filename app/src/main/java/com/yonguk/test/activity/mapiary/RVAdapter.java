@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.yonguk.test.activity.mapiary.animation.Utils;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import java.util.ArrayList;
@@ -36,7 +38,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     ImageLoader imageLoader;
 
     /*animation*/
-
+    private static final int ANIMATED_ITEM_COUNT = 2;
+    private int lastAnimatedPosition =-1;
+    private int itemsCount = 0;
 
     public RVAdapter(Context context, List<RVCardData> cardData){
         inflater = LayoutInflater.from(context);
@@ -47,6 +51,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
     public RVAdapter(Context context){
+        this.context = context;
         inflater = LayoutInflater.from(context);
         volleySingleton = VolleySingleton.getInstance(context);
         imageLoader = volleySingleton.getImageLoader();
@@ -68,7 +73,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
-
+        try {
+            runEnterAnimation(holder.itemView, position);
+        }catch (Exception e){
+            Log.i("uks",e.getMessage());
+        }
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
         holder.userID.setText(curData.getUserID());
@@ -112,6 +121,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
         Log.i("uks","onBindViewHolder()");
         //여기서 리스너 달아도 됨
+    }
+
+    public void runEnterAnimation(View view, int position){
+        if(position>= ANIMATED_ITEM_COUNT -1){
+            return;
+        }
+
+        if(position > lastAnimatedPosition){
+            lastAnimatedPosition = position;
+            view.setTranslationY(Utils.getScreenHeight(context));
+            view.animate()
+                    .translationY(0)
+                    .setInterpolator(new DecelerateInterpolator(3.f))
+                    .setDuration(700)
+                    .start();
+        }
     }
 
     @Override
