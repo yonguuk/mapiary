@@ -1,6 +1,7 @@
 package com.yonguk.test.activity.mapiary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.yonguk.test.activity.mapiary.animation.Utils;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +38,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     Context context = null;
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
+
+    private final String USER_ID = "user_id";
+    private final String PROFILE_IMAGE_URL = "profile_url";
+    private final String CONTENT_IMAGE_URL = "content_url";
+    private final String LIKE = "like";
+    private final String TITLE = "title";
+    private final String TEXT_CONTENT = "text_content";
+    private final String Date = "date";
+
 
     /*animation*/
     private static final int ANIMATED_ITEM_COUNT = 2;
@@ -187,6 +198,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 }
 
                 case R.id.iv_content:{
+                    Intent intent = new Intent(context, CardActivity.class);
+                    RVCardData selectedCard = cardData.get(getAdapterPosition());
+                    intent.putExtra(USER_ID,selectedCard.getUserID());
+                    intent.putExtra(Date, selectedCard.getDate());
+                    intent.putExtra(PROFILE_IMAGE_URL,selectedCard.getImageProfileUrl());
+                    intent.putExtra(TITLE,selectedCard.getTextTitle());
+                    intent.putExtra(CONTENT_IMAGE_URL, selectedCard.getImageMainUrl());
+                    intent.putExtra(TEXT_CONTENT,selectedCard.getTextContent());
+                    intent.putExtra(LIKE,selectedCard.getLike());
+                    context.startActivity(intent);
                     break;
                 }
 

@@ -13,7 +13,7 @@
         android:orderInCategory="200"
         android:title="bluetooth"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/nosignal_v1"
+        android:icon="@drawable/connecting3_v1"
         />
 
 </menu>

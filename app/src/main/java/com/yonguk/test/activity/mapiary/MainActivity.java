@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected AppBarLayout appBarLayout = null;
     protected Toolbar toolbar = null;
     protected CollapsingToolbarLayout collapsingToolbarLayout = null;
-    protected ImageView ivToolbar = null;
     protected String userID = "";
     protected Context mContext = null;
     private final int REQUEST_CODE_UPLOAD_CARD = 1;
 
+    private Menu menu =  null;
     /*Fragments*/
     protected MainFragment mMainFragment = null;
     protected FollowFragment mFollowFragment = null;
@@ -92,11 +92,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
             }
         });
-
-        /*Fragment*/
-
-        /*Bottom Navigation bar*/
-
     }
 
     @Override
@@ -173,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .show(mFollowFragment)
                                 .commit();
                         getSupportActionBar().setTitle("Follower");
+                        //menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.connecting3_v1));
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("Follow");
                         //ivToolbar.setVisibility(View.GONE);
@@ -234,22 +230,13 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
             }
         });
-/*
-
-        mBottomBar.mapColorForTab(0, R.color.white);
-        mBottomBar.mapColorForTab(1, R.color.white);
-        mBottomBar.mapColorForTab(2, R.color.white);
-        mBottomBar.mapColorForTab(3, R.color.white);
-        mBottomBar.mapColorForTab(4, R.color.white);
-
-*/
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
         return true;
     }
 
