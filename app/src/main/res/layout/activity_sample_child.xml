@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/sample_child_activity_root"
     tools:context="com.yonguk.test.activity.mapiary.SampleChildActivity">
 
     <include
@@ -18,8 +19,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="320dp"
+        android:scaleType="centerCrop"
         android:id="@+id/iv"/>
 
     <android.support.design.widget.TextInputLayout

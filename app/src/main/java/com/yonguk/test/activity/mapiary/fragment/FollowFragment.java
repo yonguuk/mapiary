@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,7 @@ public class FollowFragment extends Fragment{
     private VolleySingleton volleySingleton = null;
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
+    private final String KEY_USER_ID = "user_id";
     String userID="";
     final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/follow_card.php";
 
@@ -106,6 +108,7 @@ public class FollowFragment extends Fragment{
         mRVAdapter.setCardList(cardDatas);
         mSwipeRefrechLayout.setRefreshing(false);
     }
+/*
 
     private void sendJsonRequest(){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_SERVER, null, new Response.Listener<JSONObject>() {
@@ -124,12 +127,36 @@ public class FollowFragment extends Fragment{
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return super.getParams();
+                Map<String, String> params = new HashMap<>();
+                params.put(KEY_USER_ID,userID);
+                return params;
             }
         };
 
         requestQueue.add(request);
     }
+*/
+
+
+    private void sendJsonRequest(){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, URL_SERVER+"?user_id=" + userID, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //Toast.makeText(getActivity(), response.toString(),Toast.LENGTH_LONG).show();
+                Log.i("uks","card jsonarray : " + response.toString());
+                cardDatas = parseJsonResponse(response);
+                mRVAdapter.setCardList(cardDatas);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("uks",error.getMessage());
+            }
+        });
+
+        requestQueue.add(request);
+    }
+
 
     private ArrayList<RVCardData> parseJsonResponse(JSONObject response){
         ArrayList<RVCardData> list = new ArrayList<>();

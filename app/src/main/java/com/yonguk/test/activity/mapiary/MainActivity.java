@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             Log.d("uks",e.getMessage());
         }
 */
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,13 +93,15 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 startActivityForResult(intent,REQUEST_CODE_UPLOAD_CARD);
 
             }
-        });
+        });*/
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_UPLOAD_CARD){
+            mBottomBar.selectTabAtPosition(0,false);
             if(resultCode == RESULT_OK){
                 Snackbar.make(rootView,"업로드 완료",Snackbar.LENGTH_LONG).show();
             }
@@ -168,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .show(mFollowFragment)
                                 .commit();
                         getSupportActionBar().setTitle("Follower");
+
                         //menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.connecting3_v1));
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("Follow");
@@ -176,7 +181,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                         break;
 
                     case R.id.bottombar_record:
-                        getSupportFragmentManager()
+                        Intent intent = new Intent(mContext, SampleChildActivity.class);
+                        intent.putExtra("USER_ID", userID);
+                        startActivityForResult(intent, REQUEST_CODE_UPLOAD_CARD);
+/*                        getSupportFragmentManager()
                                 .beginTransaction()
                                 .hide(mMainFragment)
                                 .hide(mFollowFragment)
@@ -184,7 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                                 .hide(mProfileFragment)
                                 .show(mRecordFragment)
                                 .commit();
-                        getSupportActionBar().setTitle("Record");
+                        getSupportActionBar().setTitle("Record");*/
+
                         //appBarLayout.setExpanded(false, true);
                         //collapsingToolbarLayout.setTitle("Record");
                         //ivToolbar.setVisibility(View.GONE);
@@ -237,6 +246,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         this.menu = menu;
+        hideAllOption();
+        showOption(R.id.action_bluetooth_nosignal);
         return true;
     }
 
@@ -253,6 +264,35 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideOption(int id){
+        MenuItem item = menu.findItem(id);
+        item.setVisible(false);
+    }
+
+    private void hideAllOption(){
+        MenuItem item1 = menu.findItem(R.id.action_bluetooth_nosignal);
+        MenuItem item2 = menu.findItem(R.id.action_bluetooth_connecting);
+        MenuItem item3 = menu.findItem(R.id.action_bluetooth_connected);
+        item1.setVisible(false);
+        item2.setVisible(false);
+        item3.setVisible(false);
+    }
+
+    private void showOption(int id){
+        MenuItem item = menu.findItem(id);
+        item.setVisible(true);
+    }
+
+    private void setOptionTitle(int id, String title){
+        MenuItem item = menu.findItem(id);
+        item.setTitle(title);
+    }
+
+    private void setOptionIcon(int id, int iconRes){
+        MenuItem item = menu.findItem(id);
+        item.setIcon(iconRes);
     }
 /*
     public void lockAppBar(boolean locked,String title) {

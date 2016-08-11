@@ -30,6 +30,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.subactivity.MapiaryActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
-    TextView tvUserId, tvStatus, tvCards, tvFollowing, tvFollower, tvLike = null;
+    TextView tvUserId, tvStatus, tvCards, tvFollowing, tvFollower, tvMapiary = null;
     CircleImageView circleProfileImage = null;
     LinearLayout root = null;
     String userID = null;
@@ -95,14 +96,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tvCards = (TextView) mLinearLayout.findViewById(R.id.profile_card_num);
         tvFollowing = (TextView) mLinearLayout.findViewById(R.id.profile_following_num);
         tvFollower = (TextView) mLinearLayout.findViewById(R.id.profile_follower_num);
-        tvLike = (TextView) mLinearLayout.findViewById(R.id.profile_like_num);
+        tvMapiary = (TextView) mLinearLayout.findViewById(R.id.profile_mapiary);
         circleProfileImage = (CircleImageView) mLinearLayout.findViewById(R.id.profile_profile_image);
 
         circleProfileImage.setOnClickListener(this);
         tvCards.setOnClickListener(this);
         tvFollowing.setOnClickListener(this);
         tvFollower.setOnClickListener(this);
-        tvLike.setOnClickListener(this);
+        tvMapiary.setOnClickListener(this);
 
         sendJsonRequest();
         Log.i("uks", "Profile :  onCreateView()");
@@ -266,6 +267,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.profile_follower_num:{
+                break;
+            }
+            case R.id.profile_mapiary:{
+                Intent intent = new Intent(getActivity(), MapiaryActivity.class);
+                startActivity(intent);
                 break;
             }
         }

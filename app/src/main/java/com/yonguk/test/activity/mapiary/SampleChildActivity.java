@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -54,6 +57,10 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
     final String KEY_TITLE = "title";
     final String KEY_CONTENT = "content";
     final String KEY_EMOTION = "emotion";
+
+    View root = null;
+
+    private final int RESULT_FAILED = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +72,11 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Child Activity");
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         context = getApplicationContext();
+        root = findViewById(R.id.sample_child_activity_root);
         btnChoose = (Button) findViewById(R.id.btn_choose);
         btnUpload = (Button) findViewById(R.id.btn_upload);
         etTitle = (EditText) findViewById(R.id.upload_et_title);
@@ -88,7 +96,8 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
         int id = item.getItemId();
 
         if(id == R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
+            //setResult(RESULT_CANCELED);
+            //finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -109,7 +118,6 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
                 uploadImage();
                 //Intent intent = new Intent();
                 //setResult(RESULT_OK,intent);
-                //finish();
                 break;
         }
     }
@@ -132,21 +140,24 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadImage(){
         //Showing the progress dialog
-        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...", "Please wait...", false,false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //Dismissing the progress dialog
                 loading.dismiss();
                 //Showing Toast message of the response
-                Toast.makeText(context, response.toString(),Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK);
+                //Toast.makeText(context, response.toString(),Toast.LENGTH_LONG).show();
                 Log.i("uks", response.toString());
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 loading.dismiss();
-                Toast.makeText(context, error.toString(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, error.toString(),Toast.LENGTH_LONG).show();
+                Snackbar.make(root,"업로드 실패",Snackbar.LENGTH_LONG).show();
                 Log.i("uks", error.toString());
             }
         }){
