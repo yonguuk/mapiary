@@ -23,7 +23,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.RVAdapter;
 import com.yonguk.test.activity.mapiary.RVCardData;
-import com.yonguk.test.activity.mapiary.network.UrlEndpoint;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import org.json.JSONArray;

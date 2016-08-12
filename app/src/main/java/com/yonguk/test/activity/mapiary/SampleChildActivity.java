@@ -32,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.utils.ExifUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -197,7 +198,8 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
                 Uri filePath = data.getData();
                 try{
                     //Getting bitmap from gallery
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
+                    Bitmap tempBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
+                    bitmap = ExifUtil.rotateBitmap(filePath.toString(),tempBitmap);
                     //Setting the Bitmaq to ImageView
                     imageView.setImageBitmap(bitmap);
                 }catch(IOException e){
