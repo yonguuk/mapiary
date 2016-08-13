@@ -8,10 +8,11 @@
     tools:context="com.yonguk.test.activity.mapiary.SampleMapboxActivity">
 
 
-<FrameLayout
-    android:id="@+id/mapbox_container"
-    android:layout_width="match_parent"
-    android:layout_height="300dp"></FrameLayout>
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"></com.mapbox.mapboxsdk.maps.MapView>
 
     <TextView
         android:id="@+id/lat"
@@ -32,29 +33,9 @@
         android:text="주소 : "/>
 
     <Button
-        android:id="@+id/btn_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GET LOCATION DATA"
-        />
-    <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SEND DATA TO SERVER"
+        android:text="Create Json"
         />
-
-    <Button
-        android:id="@+id/mark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mark Current Location"
-        />
-    <TextView
-        android:id="@+id/state"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:layout_gravity="center_horizontal"
-        android:text=""/>
 </LinearLayout>

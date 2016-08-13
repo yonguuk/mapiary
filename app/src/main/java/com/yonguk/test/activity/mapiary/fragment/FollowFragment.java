@@ -142,7 +142,7 @@ public class FollowFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(getActivity(), response.toString(),Toast.LENGTH_LONG).show();
-                Log.i("uks","card jsonarray : " + response.toString());
+                Log.i("uks","card json array : " + response.toString());
                 cardDatas = parseJsonResponse(response);
                 mRVAdapter.setCardList(cardDatas);
             }
