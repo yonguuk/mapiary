@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.mapbox.mapboxsdk.MapboxAccountManager;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.annotations.PolylineOptions;
@@ -58,7 +59,7 @@ public class SampleMapboxActivity extends AppCompatActivity implements LocationL
     List<LatLng> locationData = null;
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
-    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/location/location2.json";
+    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/location/location.json";
     final String URL_UPLOAD= "http://kktt0202.dothome.co.kr/master/location/location.php";
     double lat=0;
     double lon=0;
@@ -124,11 +125,11 @@ public class SampleMapboxActivity extends AppCompatActivity implements LocationL
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject obj = createJsonObject(locationData);
-                Log.i("uks","created json : " + obj.toString());
-                resultJson = obj;
+                //JSONObject obj = createJsonObject(locationData);
+                Log.i("uks","created json : " + resultJson.toString());
+
                 tvState.setText("업로드");
-                sendJsonRequest(obj);
+                sendJsonRequest(resultJson);
             }
         });
 
@@ -166,12 +167,12 @@ public class SampleMapboxActivity extends AppCompatActivity implements LocationL
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        new DrawGeoJSON(resultJson).execute();
+        new DrawGeoJSON().execute();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("uks", "onLocationChanaged() called");
+        //Log.i("uks", "onLocationChanaged() called");
         //Toast.makeText(getApplicationContext(),"위치정보가 갱신되었습니다", Toast.LENGTH_SHORT).show();
         lat = location.getLatitude();
         lon = location.getLongitude();
@@ -204,8 +205,10 @@ public class SampleMapboxActivity extends AppCompatActivity implements LocationL
 
     }
 
-    private void sendJsonRequest(JSONObject json) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_UPLOAD, json, new Response.Listener<JSONObject>() {
+
+/*
+   private void sendJsonRequest(final JSONObject obj) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_UPLOAD,obj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.i("uks","uploadjson : " + response.toString());
@@ -218,24 +221,49 @@ public class SampleMapboxActivity extends AppCompatActivity implements LocationL
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+               Map<String,String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=utf-8");
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
+    }
+*/
+
+
+
+    private void sendJsonRequest(final JSONObject obj){
+        StringRequest request = new StringRequest(Request.Method.POST, URL_UPLOAD, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("uks","uploadjson : " + response.toString());
+                Log.i("uks","업로드성공");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("uks","uploadjson : " + error.getMessage());
+                Log.i("uks","업로드실패");
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset-utf-8");
+                params.put("location", obj.toString());
                 return params;
             }
         };
         requestQueue.add(request);
     }
     private class DrawGeoJSON extends AsyncTask<Void, Void, List<LatLng>>{
-        JSONObject obj = null;
-        public DrawGeoJSON(JSONObject obj){
-            this.obj=obj;
-        }
+
         @Override
         protected List<LatLng> doInBackground(Void... voids) {
             ArrayList<LatLng> points = new ArrayList<>();
 
             try{
-                JSONObject json = obj;
+                JSONObject json = resultJson;
                 //JSONArray features = json.getJSONArray("features");
                 //JSONObject feature = features.getJSONObject(0);
                 JSONObject geometry = json.getJSONObject("geometry");

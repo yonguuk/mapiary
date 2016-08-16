@@ -38,7 +38,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -51,14 +51,14 @@
         <activity android:name=".VideoActivity" />
         <activity android:name=".subactivity.ProfileActivity" />
         <activity android:name=".subactivity.MapiaryActivity" />
-        <activity android:name=".SampleMapboxActivity">
+        <activity android:name=".SampleMapboxActivity"></activity>
+        <activity android:name=".sample.SampleTestActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sample.SampleMapboxActivity2"></activity>
     </application>
 
 </manifest>
