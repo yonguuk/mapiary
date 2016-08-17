@@ -29,4 +29,45 @@
         android:id="@+id/test_btn_current"
         android:text="current location"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_btn_geoline"
+        android:text="Draw Geoline"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/test_btn_data"
+        android:text="Start get location"/>
+
+    <TextView
+        android:id="@+id/test_tv_lat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="위도 : "
+        />
+
+    <TextView
+        android:id="@+id/test_tv_lon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="경도 : "
+        />
+
+
+    <TextView
+        android:id="@+id/test_tv_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="주소 : "
+        />
+
+    <TextView
+        android:id="@+id/test_tv_datasize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="data size : "/>
+
+
 </LinearLayout>
