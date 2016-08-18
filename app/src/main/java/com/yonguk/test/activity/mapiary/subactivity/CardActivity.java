@@ -8,23 +8,35 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CardActivity extends AppCompatActivity implements View.OnClickListener{
+public class CardActivity extends AppCompatActivity implements View.OnClickListener,OnMapReadyCallback{
 
     protected Toolbar toolbar = null;
     CircleImageView ivProfile;
     ImageView ivContent, ivLike, ivRe;
     TextView tvUserID,tvDate,tvTextContent,tvTextTitle,tvlike = null;
-
+    ScrollView scroll = null;
+    private MapView mapView;
+    private MapboxMap mapboxMap;
+    private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
     private final String USER_ID = "user_id";
     private final String PROFILE_IMAGE_URL = "profile_url";
     private final String CONTENT_IMAGE_URL = "content_url";
@@ -42,6 +54,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapboxAccountManager.start(this, ACCESS_TOKEN);
         setContentView(R.layout.activity_card);
 
         volleySingleton = VolleySingleton.getInstance(getApplicationContext());
@@ -59,6 +72,10 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         date = intent.getStringExtra(Date);
 
         setView();
+
+        mapView=(MapView)findViewById(R.id.cardactivity_mapview);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
     }
 
     private void setView(){
@@ -77,12 +94,21 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         tvTextContent = (TextView) findViewById(R.id.cardactivitv_text_content);
         tvTextTitle = (TextView)findViewById(R.id.cardactivity_text_title);
         tvlike = (TextView)findViewById(R.id.cardactivity_tv_like);
+        scroll = (ScrollView) findViewById(R.id.cardactivitv_scroll);
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
 
         tvUserID.setText(userID);
         tvDate.setText(date);
         tvTextContent.setText(textContent);
         tvTextTitle.setText(title);
         tvlike.setText(like);
+
+
 
         if(profileImageUrl != null){
             imageLoader.get(profileImageUrl, new ImageLoader.ImageListener() {
@@ -128,5 +154,55 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onMapReady(MapboxMap mapboxMap) {
+        this.mapboxMap = mapboxMap;
+        mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                        .target(new LatLng(37.5806, 126.8882))
+                        .zoom(15)
+                        .tilt(20)
+                        .build()
+
+        ));
+        mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(37.5806, 126.8882))
+                        .title("I am here")
+                        .snippet("welcome to my marker")
+
+
+        );
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 }

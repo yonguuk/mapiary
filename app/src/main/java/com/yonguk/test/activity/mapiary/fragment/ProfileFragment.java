@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.tv.TvContentRating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.yonguk.test.activity.mapiary.R;
-import com.yonguk.test.activity.mapiary.SampleMapboxActivity;
+import com.yonguk.test.activity.mapiary.RVAdapter;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.MapiaryActivity;
 
@@ -39,7 +38,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +51,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     TextView tvUserId, tvStatus, tvCards, tvFollowing, tvFollower, tvMapiary = null;
     LinearLayout mapiary;
     CircleImageView circleProfileImage = null;
+    RecyclerView mRecyclerView = null;
+    RVAdapter mRVAdapter = null;
     LinearLayout root = null;
     String userID = null;
     Bitmap bitmap = null;
@@ -101,6 +101,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mapiary = (LinearLayout) mLinearLayout.findViewById(R.id.profile_mapiary);
         //tvMapiary = (TextView) mLinearLayout.findViewById(R.id.profile_mapiary);
         circleProfileImage = (CircleImageView) mLinearLayout.findViewById(R.id.profile_profile_image);
+        mRVAdapter = new RVAdapter(getActivity());
+        mRecyclerView.setAdapter(mRVAdapter);
 
         circleProfileImage.setOnClickListener(this);
         tvCards.setOnClickListener(this);
@@ -129,6 +131,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         });
         requestQueue.add(request);
     }
+
+
 
     private void parseJsonResponse(JSONObject response){
         String user_id="";
@@ -274,9 +278,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.profile_mapiary:{
-                Log.i("uks","mapiary clicked");
-                Intent intent = new Intent(getActivity(), SampleMapboxActivity.class);
-                startActivity(intent);
+                try {
+                    Log.i("uks", "mapiary clicked");
+                    Intent intent = new Intent(getActivity(),MapiaryActivity.class);
+                    startActivity(intent);
+                }catch(Exception e){
+                    Log.d("uks",e.getMessage());
+                }
                 break;
             }
         }

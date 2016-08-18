@@ -7,6 +7,5 @@ public class RVMapiaryData {
     String date = null;
     String textTitle = null;
     String textContent = null;
-
     String userID = null;
 }

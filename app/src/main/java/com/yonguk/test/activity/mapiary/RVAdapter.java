@@ -75,6 +75,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if(position == 0){
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    @Override
     public RVAdapter.RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_item, parent,false);
         RVViewHolder holder = new RVViewHolder(view);
@@ -84,11 +93,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
-        try {
+/*        try {
             runEnterAnimation(holder.itemView, position);
         }catch (Exception e){
             Log.i("uks",e.getMessage());
-        }
+        }*/
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
         holder.userID.setText(curData.getUserID());
@@ -134,6 +143,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         //여기서 리스너 달아도 됨
     }
 
+/*
     public void runEnterAnimation(View view, int position){
         if(position>= ANIMATED_ITEM_COUNT -1){
             return;
@@ -149,6 +159,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                     .start();
         }
     }
+*/
 
     @Override
     public int getItemCount() {
@@ -198,16 +209,20 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 }
 
                 case R.id.iv_content:{
-                    Intent intent = new Intent(context, CardActivity.class);
-                    RVCardData selectedCard = cardData.get(getAdapterPosition());
-                    intent.putExtra(USER_ID,selectedCard.getUserID());
-                    intent.putExtra(Date, selectedCard.getDate());
-                    intent.putExtra(PROFILE_IMAGE_URL,selectedCard.getImageProfileUrl());
-                    intent.putExtra(TITLE,selectedCard.getTextTitle());
-                    intent.putExtra(CONTENT_IMAGE_URL, selectedCard.getImageMainUrl());
-                    intent.putExtra(TEXT_CONTENT,selectedCard.getTextContent());
-                    intent.putExtra(LIKE,selectedCard.getLike());
-                    context.startActivity(intent);
+                    try {
+                        Intent intent = new Intent(context, CardActivity.class);
+                        RVCardData selectedCard = cardData.get(getAdapterPosition());
+                        intent.putExtra(USER_ID, selectedCard.getUserID());
+                        intent.putExtra(Date, selectedCard.getDate());
+                        intent.putExtra(PROFILE_IMAGE_URL, selectedCard.getImageProfileUrl());
+                        intent.putExtra(TITLE, selectedCard.getTextTitle());
+                        intent.putExtra(CONTENT_IMAGE_URL, selectedCard.getImageMainUrl());
+                        intent.putExtra(TEXT_CONTENT, selectedCard.getTextContent());
+                        intent.putExtra(LIKE, selectedCard.getLike());
+                        context.startActivity(intent);
+                    }catch(Exception e){
+                        Log.d("uks",e.getMessage());
+                    }
                     break;
                 }
 

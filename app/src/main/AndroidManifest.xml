@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -38,7 +39,14 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".sample.SampleVideoActivity" />
         <activity
             android:name=".SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -50,15 +58,12 @@
         <activity android:name=".MindwaveActivity" />
         <activity android:name=".VideoActivity" />
         <activity android:name=".subactivity.ProfileActivity" />
-        <activity android:name=".subactivity.MapiaryActivity" />
-        <activity android:name=".SampleMapboxActivity"></activity>
-        <activity android:name=".sample.SampleTestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".SampleMapboxActivity" />
+        <activity android:name=".sample.SampleTestActivity" />
+        <activity
+            android:name=".subactivity.MapiaryActivity"
+            android:label="@string/title_activity_mapiary"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
