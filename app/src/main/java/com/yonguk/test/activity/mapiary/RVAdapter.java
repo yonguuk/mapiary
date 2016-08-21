@@ -48,10 +48,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     private final String Date = "date";
 
 
-    /*animation*/
+/*    *//*animation*//*
     private static final int ANIMATED_ITEM_COUNT = 2;
     private int lastAnimatedPosition =-1;
-    private int itemsCount = 0;
+    private int itemsCount = 0;*/
 
     public RVAdapter(Context context, List<RVCardData> cardData){
         inflater = LayoutInflater.from(context);
@@ -85,6 +85,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public RVAdapter.RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+/*        View itemView;
+        if(viewType == 1){
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item,parent,false);
+        } else{
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.)
+        }
+        */
         View view = inflater.inflate(R.layout.recyclerview_item, parent,false);
         RVViewHolder holder = new RVViewHolder(view);
         Log.i("uks", "onCreateViewHolder()");

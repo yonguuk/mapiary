@@ -67,7 +67,7 @@ public class FollowFragment extends Fragment{
         Bundle bundle = this.getArguments();
         userID = bundle.getString("USER_ID");
 
-        Log.i("uks","follow : onCreate()");
+        //Log.i("uks","follow : onCreate()");
 
     }
 
@@ -96,7 +96,7 @@ public class FollowFragment extends Fragment{
             }
         });
         sendJsonRequest();
-        Log.i("uks", "Follow : onCreateView()");
+        //Log.i("uks", "Follow : onCreateView()");
         return mLinearLayout;
 
     }
@@ -142,7 +142,7 @@ public class FollowFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 //Toast.makeText(getActivity(), response.toString(),Toast.LENGTH_LONG).show();
-                Log.i("uks","card json array : " + response.toString());
+                //Log.i("uks","card json array : " + response.toString());
                 cardDatas = parseJsonResponse(response);
                 mRVAdapter.setCardList(cardDatas);
             }

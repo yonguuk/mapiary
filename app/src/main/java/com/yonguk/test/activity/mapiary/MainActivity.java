@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected String userID = "";
     protected Context mContext = null;
     private final int REQUEST_CODE_UPLOAD_CARD = 1;
+    private final int PICK_IMAGE_REQUEST = 2;
 
     private Menu menu =  null;
     /*Fragments*/
@@ -105,7 +106,10 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             if(resultCode == RESULT_OK){
                 Snackbar.make(rootView,"업로드 완료",Snackbar.LENGTH_LONG).show();
             }
+        }else if(requestCode == PICK_IMAGE_REQUEST){
+            mProfileFragment.handleActivityResult(requestCode,resultCode,data);
         }
+
     }
 
     private void setFragment(){

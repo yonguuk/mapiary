@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -33,7 +34,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     CircleImageView ivProfile;
     ImageView ivContent, ivLike, ivRe;
     TextView tvUserID,tvDate,tvTextContent,tvTextTitle,tvlike = null;
-    ScrollView scroll = null;
+
     private MapView mapView;
     private MapboxMap mapboxMap;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
@@ -70,12 +71,34 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         title = intent.getStringExtra(TITLE);
         textContent = intent.getStringExtra(TEXT_CONTENT);
         date = intent.getStringExtra(Date);
-
+        final ScrollView scroll = (ScrollView) findViewById(R.id.cardactivitv_scroll);
+        scroll.post(new Runnable() {
+            @Override
+            public void run() {
+                scroll.fullScroll(ScrollView.FOCUS_UP);
+            }
+        });
         setView();
 
         mapView=(MapView)findViewById(R.id.cardactivity_mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        mapView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                        scroll.requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        scroll.requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return mapView.onTouchEvent(motionEvent);
+            }
+        });
     }
 
     private void setView(){
@@ -94,13 +117,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         tvTextContent = (TextView) findViewById(R.id.cardactivitv_text_content);
         tvTextTitle = (TextView)findViewById(R.id.cardactivity_text_title);
         tvlike = (TextView)findViewById(R.id.cardactivity_tv_like);
-        scroll = (ScrollView) findViewById(R.id.cardactivitv_scroll);
-        scroll.post(new Runnable() {
-            @Override
-            public void run() {
-                scroll.fullScroll(ScrollView.FOCUS_UP);
-            }
-        });
+        //scroll = (ScrollView) findViewById(R.id.cardactivitv_scroll);
+
 
         tvUserID.setText(userID);
         tvDate.setText(date);

@@ -60,9 +60,12 @@
         <activity android:name=".subactivity.ProfileActivity" />
         <activity android:name=".SampleMapboxActivity" />
         <activity android:name=".sample.SampleTestActivity" />
+        <activity android:name=".subactivity.list.CardListActivity" />
+        <activity android:name=".subactivity.list.FollowingListActivity" />
+        <activity android:name=".subactivity.list.FollowerListActivity" />
         <activity
-            android:name=".subactivity.MapiaryActivity"
-            android:label="@string/title_activity_mapiary"
+            android:name=".subactivity.list.MapiaryListActivity"
+            android:label="@string/title_activity_mapiary_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
