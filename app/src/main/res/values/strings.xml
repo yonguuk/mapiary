@@ -26,4 +26,5 @@
     <string name="title_activity_sample_profile">SampleProfileActivity</string>
     <string name="title_activity_mapiary">MapiaryActivity</string>
     <string name="title_activity_mapiary_list">MapiaryListActivity</string>
+    <string name="title_activity_mapiary_card">MapiaryCardActivity</string>
 </resources>
