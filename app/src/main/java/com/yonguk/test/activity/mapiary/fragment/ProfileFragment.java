@@ -66,9 +66,10 @@ public class ProfileFragment extends Fragment{
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
 
+    private final String TAG = "ProfileFragment";
     private final int PICK_IMAGE_REQUEST = 2;
     private final String REQUEST_HEADER_URL = "http://kktt0202.dothome.co.kr/master/user/profile.php";
-    private final String REQUEST_URL = "http://kktt0202.dothome.co.kr/master/contents/random_card.php";
+    private final String REQUEST_URL = "http://kktt0202.dothome.co.kr/master/contents/my_contents.php";
     private final String UPLOAD_PROFILE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_profile.php";
     private final String KEY_USER_ID = "user_id";
     private final String KEY_STATE = "state_message";
@@ -91,6 +92,7 @@ public class ProfileFragment extends Fragment{
         imageLoader = volleySingleton.getImageLoader();
         Bundle bundle = this.getArguments();
         userID = bundle.getString("USER_ID");
+        cachedImageUrl = "http://kktt0202.dothome.co.kr/master/upload/image_profile" + "/" + userID + ".png";
         Log.i("uks", "Profile : onCreate()");
     }
 
@@ -102,7 +104,8 @@ public class ProfileFragment extends Fragment{
         root = mLinearLayout;
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.profile_swipe_layout);
         mRecyclerView = (RecyclerView) mLinearLayout.findViewById(R.id.rv_profile);
-        mRVProfileAdapter = new RVProfileAdapter(getActivity());
+        mRVProfileAdapter = new RVProfileAdapter(getActivity(),userID);
+        Log.d(TAG,userID);
 
         mRecyclerView.setAdapter(mRVProfileAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
@@ -297,7 +300,6 @@ public class ProfileFragment extends Fragment{
             }
         };
 
-        //requestQueue.getCache().remove(cachedImageUrl);
         requestQueue.add(stringRequest);
 
 
@@ -313,8 +315,11 @@ public class ProfileFragment extends Fragment{
 
     public void refreshContent(){
         cardDatas.clear();
+        //requestQueue.getCache().remove(cachedImageUrl);
+
         sendJsonRequest();
         mRVProfileAdapter.setCardList(cardDatas);
         mSwipeRefrechLayout.setRefreshing(false);
     }
+
 }

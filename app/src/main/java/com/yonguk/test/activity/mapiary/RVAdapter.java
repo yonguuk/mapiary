@@ -111,7 +111,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         holder.date.setText(curData.getDate());
         holder.textTitle.setText(curData.getTextTitle());
         holder.textContent.setText(curData.getTextContent());
-        holder.like.setText(curData.getLike()+"");
+        //holder.like.setText(curData.getLike()+"");
 
         String imageProfileUrl = curData.getImageProfileUrl();
         Log.i("uks","profile url : " + imageProfileUrl);
@@ -187,8 +187,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         TextView date;
         TextView textContent;
         TextView textTitle;
-        TextView like;
-        ImageView btnLike, btnRe;
+        //TextView like;
+        //ImageView btnLike, btnRe;
 
         public RVViewHolder(View itemView) {
             super(itemView);
@@ -198,14 +198,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             date = (TextView)itemView.findViewById(R.id.tv_date);
             textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
-            like = (TextView) itemView.findViewById(R.id.tv_like);
-            btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
-            btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
+            //like = (TextView) itemView.findViewById(R.id.tv_like);
+            //btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
+            //btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
 
             ivProfile.setOnClickListener(this);
             ivContent.setOnClickListener(this);
-            btnLike.setOnClickListener(this);
-            btnRe.setOnClickListener(this);
+            //btnLike.setOnClickListener(this);
+            //btnRe.setOnClickListener(this);
         }
 
         @Override
@@ -233,13 +233,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                     break;
                 }
 
-                case R.id.btn_like:{
-                    break;
-                }
-
-                case R.id.btn_re:{
-                    break;
-                }
             }
         }
 

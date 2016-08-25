@@ -71,7 +71,7 @@ public class SampleChildActivity extends AppCompatActivity implements View.OnCli
         userID = intent.getStringExtra("USER_ID");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Child Activity");
+        getSupportActionBar().setTitle("촬영");
 
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

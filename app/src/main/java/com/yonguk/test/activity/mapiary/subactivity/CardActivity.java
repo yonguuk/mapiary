@@ -110,23 +110,20 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         ivProfile = (CircleImageView) findViewById(R.id.cardactivity_profile_image);
         ivContent = (ImageView) findViewById(R.id.cardactivity_iv_content);
-        ivLike = (ImageView) findViewById(R.id.cardactivity_iv_like);
-        ivRe = (ImageView) findViewById(R.id.cardactivity_iv_re);
+        //ivLike = (ImageView) findViewById(R.id.cardactivity_iv_like);
+        //ivRe = (ImageView) findViewById(R.id.cardactivity_iv_re);
         tvUserID = (TextView) findViewById(R.id.cardactivity_tv_user_id);
         tvDate = (TextView) findViewById(R.id.cardactivity_tv_date);
         tvTextContent = (TextView) findViewById(R.id.cardactivitv_text_content);
         tvTextTitle = (TextView)findViewById(R.id.cardactivity_text_title);
-        tvlike = (TextView)findViewById(R.id.cardactivity_tv_like);
+        //tvlike = (TextView)findViewById(R.id.cardactivity_tv_like);
         //scroll = (ScrollView) findViewById(R.id.cardactivitv_scroll);
-
 
         tvUserID.setText(userID);
         tvDate.setText(date);
         tvTextContent.setText(textContent);
         tvTextTitle.setText(title);
-        tvlike.setText(like);
-
-
+        //tvlike.setText(like);
 
         if(profileImageUrl != null){
             imageLoader.get(profileImageUrl, new ImageLoader.ImageListener() {

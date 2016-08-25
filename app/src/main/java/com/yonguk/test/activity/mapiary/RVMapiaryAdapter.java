@@ -10,6 +10,10 @@ import android.widget.TextView;
 
 import com.mapbox.mapboxsdk.maps.MapView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -17,23 +21,36 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class RVMapiaryAdapter extends RecyclerView.Adapter<RVMapiaryAdapter.MapiaryViewHolder> {
     private LayoutInflater inflater;
+    List<RVMapiaryData> mapiaryDatas = Collections.emptyList();
+    Context context = null;
+
     public RVMapiaryAdapter(Context context){
         inflater = LayoutInflater.from(context);
+        this.context = context;
     }
     @Override
     public MapiaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.rv_mapiary_item,parent,false);
-        return null;
+        MapiaryViewHolder holder = new MapiaryViewHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(MapiaryViewHolder holder, int position) {
-
+        RVMapiaryData curData = mapiaryDatas.get(position);
+        holder.userID.setText(curData.getUserID());
+        holder.textContent.setText(curData.getTextContent());
+        holder.textTitle.setText(curData.getTextTitle());
     }
 
     @Override
     public int getItemCount() {
         return 0;
+    }
+
+    public void setList(ArrayList<RVMapiaryData> datas){
+        this.mapiaryDatas = datas;
+        notifyDataSetChanged();
     }
 
     class MapiaryViewHolder extends RecyclerView.ViewHolder{

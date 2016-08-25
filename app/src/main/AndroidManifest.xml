@@ -56,7 +56,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".subactivity.CardActivity" />
         <activity android:name=".MindwaveActivity" />
-        <activity android:name=".VideoActivity" />
         <activity android:name=".subactivity.ProfileActivity" />
         <activity android:name=".SampleMapboxActivity" />
         <activity android:name=".sample.SampleTestActivity" />
@@ -66,7 +65,9 @@
         <activity
             android:name=".subactivity.list.MapiaryListActivity"
             android:label="@string/title_activity_mapiary_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".subactivity.MapiaryUploadActivity" />
+        <activity android:name=".subactivity.RecordActivity"></activity>
     </application>
 
 </manifest>

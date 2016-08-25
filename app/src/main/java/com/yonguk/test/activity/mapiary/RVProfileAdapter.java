@@ -41,6 +41,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     VolleySingleton volleySingleton;
     ImageLoader imageLoader;
     ProfileFragment profileFragment = null;
+    String userID = "";
 
     private final int PICK_IMAGE_REQUEST = 2;
 
@@ -56,12 +57,13 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int OTHER = 1;
 
 
-    public RVProfileAdapter(Context context){
+    public RVProfileAdapter(Context context, String userID){
         this.context = context;
         inflater = LayoutInflater.from(context);
         volleySingleton = VolleySingleton.getInstance(context);
         imageLoader = volleySingleton.getImageLoader();
         profileFragment = ProfileFragment.newInstance();
+        this.userID = userID;
     }
 
     public void setCardList(ArrayList<RVCardData> cardData){
@@ -130,7 +132,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holderRV.date.setText(curData.getDate());
             holderRV.textTitle.setText(curData.getTextTitle());
             holderRV.textContent.setText(curData.getTextContent());
-            holderRV.like.setText(curData.getLike()+"");
+            //holderRV.like.setText(curData.getLike()+"");
 
             String imageProfileUrl = curData.getImageProfileUrl();
             Log.i("uks","profile url : " + imageProfileUrl);
@@ -203,6 +205,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case R.id.profile_mapiary:{
                     Log.i("uks", "mapiary clicked");
                     Intent intent = new Intent(context, MapiaryListActivity.class);
+                    intent.putExtra(USER_ID,userID);
                     context.startActivity(intent);
                     break;
                 }
@@ -247,8 +250,8 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView date;
         TextView textContent;
         TextView textTitle;
-        TextView like;
-        ImageView btnLike, btnRe;
+        //TextView like;
+        //ImageView btnLike, btnRe;
 
         public ViewHolderRV(View itemView) {
             super(itemView);
@@ -258,14 +261,14 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             date = (TextView)itemView.findViewById(R.id.tv_date);
             textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
-            like = (TextView) itemView.findViewById(R.id.tv_like);
-            btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
-            btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
+            //like = (TextView) itemView.findViewById(R.id.tv_like);
+           // btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
+            //btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
 
             ivProfile.setOnClickListener(this);
             ivContent.setOnClickListener(this);
-            btnLike.setOnClickListener(this);
-            btnRe.setOnClickListener(this);
+            //btnLike.setOnClickListener(this);
+            //btnRe.setOnClickListener(this);
         }
 
         @Override
@@ -278,7 +281,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 case R.id.iv_content:{
                     try {
                         Intent intent = new Intent(context, CardActivity.class);
-                        RVCardData selectedCard = cardData.get(getAdapterPosition()+1);
+                        RVCardData selectedCard = cardData.get(getLayoutPosition()-1);
                         intent.putExtra(USER_ID, selectedCard.getUserID());
                         intent.putExtra(Date, selectedCard.getDate());
                         intent.putExtra(PROFILE_IMAGE_URL, selectedCard.getImageProfileUrl());
@@ -293,13 +296,6 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
                 }
 
-                case R.id.btn_like:{
-                    break;
-                }
-
-                case R.id.btn_re:{
-                    break;
-                }
             }
         }
     }

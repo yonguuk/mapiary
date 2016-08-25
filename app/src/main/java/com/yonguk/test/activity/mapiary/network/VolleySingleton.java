@@ -15,6 +15,7 @@ public class VolleySingleton {
     private static VolleySingleton sInstance = null;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+
     private VolleySingleton(Context mContext){
         mRequestQueue = Volley.newRequestQueue(mContext);
         mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
