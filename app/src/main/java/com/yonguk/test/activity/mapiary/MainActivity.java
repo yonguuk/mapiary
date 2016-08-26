@@ -30,6 +30,7 @@ import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
+import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
@@ -185,9 +186,14 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                         break;
 
                     case R.id.bottombar_record:
-                        Intent intent = new Intent(mContext, SampleChildActivity.class);
-                        intent.putExtra("USER_ID", userID);
-                        startActivityForResult(intent, REQUEST_CODE_UPLOAD_CARD);
+                        //Intent intent = new Intent(mContext, SampleChildActivity.class);
+                        //intent.putExtra("USER_ID", userID);
+                        //startActivityForResult(intent, REQUEST_CODE_UPLOAD_CARD);
+
+                        Intent intent = new Intent(mContext, RecordActivity.class);
+                        startActivity(intent);
+
+
 /*                        getSupportFragmentManager()
                                 .beginTransaction()
                                 .hide(mMainFragment)
