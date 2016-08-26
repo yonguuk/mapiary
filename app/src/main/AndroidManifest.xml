@@ -40,11 +40,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".sample.SampleVideoActivity" />
         <activity
@@ -58,7 +54,13 @@
         <activity android:name=".MindwaveActivity" />
         <activity android:name=".subactivity.ProfileActivity" />
         <activity android:name=".SampleMapboxActivity" />
-        <activity android:name=".sample.SampleTestActivity" />
+        <activity android:name=".sample.SampleTestActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".subactivity.list.CardListActivity" />
         <activity android:name=".subactivity.list.FollowingListActivity" />
         <activity android:name=".subactivity.list.FollowerListActivity" />
