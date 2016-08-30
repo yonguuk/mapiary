@@ -336,7 +336,7 @@ public class SampleTestActivity extends AppCompatActivity implements OnMapReadyC
                 LatLng[] pointArray = points.toArray(new LatLng[points.size()]);
                 mapboxMap.addPolyline(new PolylineOptions()
                                 .add(pointArray)
-                                .color(Color.parseColor("#3bb2d0"))
+                                .color(Color.parseColor("#cc0000"))
                                 .width(4)
                 );
                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()

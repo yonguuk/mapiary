@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.yonguk.test.activity.mapiary.R;
+import com.yonguk.test.activity.mapiary.utils.CurDateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +36,6 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-        Log.i("dd", TAG);
-        Log.i(TAG, "Video Starting");
-
         startRecording = (Button) findViewById(R.id.btn_start);
         stopRecording = (Button)findViewById(R.id.btn_stop);
         mCamera = Camera.open();
@@ -77,14 +75,16 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         mCamera.unlock();
 
         mrec.setCamera(mCamera);
+        mrec.setOrientationHint(90);
         mrec.setPreviewDisplay(surfaceHolder.getSurface());
         mrec.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mrec.setAudioSource(MediaRecorder.AudioSource.MIC);
 
         mrec.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_480P));
         mrec.setPreviewDisplay(surfaceHolder.getSurface());
-        mrec.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/sample.mp4");
-
+        mrec.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath()
+                //+ "/sample.mp4");
+                + "/" + CurDateTime.getCurDateTime() + ".mp4");
         mrec.prepare();
         mrec.start();
     }
