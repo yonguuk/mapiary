@@ -58,9 +58,7 @@
         <activity android:name=".MindwaveActivity" />
         <activity android:name=".subactivity.ProfileActivity" />
         <activity android:name=".SampleMapboxActivity" />
-        <activity android:name=".sample.SampleTestActivity" >
-
-        </activity>
+        <activity android:name=".sample.SampleTestActivity"></activity>
         <activity android:name=".subactivity.list.CardListActivity" />
         <activity android:name=".subactivity.list.FollowingListActivity" />
         <activity android:name=".subactivity.list.FollowerListActivity" />
@@ -73,7 +71,8 @@
         <activity
             android:name=".subactivity.MapiaryCardActivity"
             android:label="@string/title_activity_mapiary_card"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".sample.FusedLocationActivity"></activity>
     </application>
 
 </manifest>
