@@ -5,9 +5,12 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -32,15 +35,16 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
     protected Toolbar toolbar = null;
     CircleImageView ivProfile;
-    ImageView ivContent, ivLike, ivRe;
+   // ImageView ivContent, ivLike, ivRe;
     TextView tvUserID,tvDate,tvTextContent,tvTextTitle,tvlike = null;
-
+    WebView webView;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
     private final String USER_ID = "user_id";
     private final String PROFILE_IMAGE_URL = "profile_url";
-    private final String CONTENT_IMAGE_URL = "content_url";
+    //private final String CONTENT_IMAGE_URL = "content_url";
+    private final String VIDEO_URL = "video_url";
     private final String LIKE = "like";
     private final String TITLE = "title";
     private final String TEXT_CONTENT = "text_content";
@@ -50,7 +54,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
 
-    String userID, profileImageUrl, contentImageUrl, like, title, textContent, date = null;
+    String userID, profileImageUrl, videoUrl, like, title, textContent, date = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,9 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         userID = intent.getStringExtra(USER_ID);
         profileImageUrl = intent.getStringExtra(PROFILE_IMAGE_URL);
-        contentImageUrl = intent.getStringExtra(CONTENT_IMAGE_URL);
+        //contentImageUrl = intent.getStringExtra(CONTENT_IMAGE_URL);
+        videoUrl = intent.getStringExtra("video_url");
+        Log.i("Video Url : ", videoUrl);
         like = intent.getStringExtra(LIKE);
         title = intent.getStringExtra(TITLE);
         textContent = intent.getStringExtra(TEXT_CONTENT);
@@ -109,7 +115,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ivProfile = (CircleImageView) findViewById(R.id.cardactivity_profile_image);
-        ivContent = (ImageView) findViewById(R.id.cardactivity_iv_content);
+        //ivContent = (ImageView) findViewById(R.id.cardactivity_iv_content);
+        webView = (WebView) findViewById(R.id.webview);
         //ivLike = (ImageView) findViewById(R.id.cardactivity_iv_like);
         //ivRe = (ImageView) findViewById(R.id.cardactivity_iv_re);
         tvUserID = (TextView) findViewById(R.id.cardactivity_tv_user_id);
@@ -124,6 +131,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         tvTextContent.setText(textContent);
         tvTextTitle.setText(title);
         //tvlike.setText(like);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(videoUrl);
 
         if(profileImageUrl != null){
             imageLoader.get(profileImageUrl, new ImageLoader.ImageListener() {
@@ -139,7 +148,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
             });
         }
 
-        if(contentImageUrl != null){
+   /*     if(contentImageUrl != null){
             imageLoader.get(contentImageUrl, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -152,9 +161,10 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
         }
-
+*/
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

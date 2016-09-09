@@ -133,6 +133,7 @@ public class MainFragment extends Fragment {
                         String date = currentResult.getString("date");
                         String profileImageUrl = currentResult.getString("profile_url");
                         String contentImageUrl = currentResult.getString("img_url");
+                        String videoUrl = currentResult.getString("video_url");
                         String textContent = currentResult.getString("content");
                         String textTitle = currentResult.getString("title");
                         int like = currentResult.getInt("like");
@@ -145,7 +146,7 @@ public class MainFragment extends Fragment {
                         card.setImageMainUrl(contentImageUrl);
                         card.setLike(like);
                         card.setImageProfileUrl(profileImageUrl);
-
+                        card.setVideoUrl(videoUrl);
                         list.add(card);
                     }
                 }

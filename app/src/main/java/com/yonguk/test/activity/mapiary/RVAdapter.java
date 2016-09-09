@@ -226,6 +226,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                         intent.putExtra(CONTENT_IMAGE_URL, selectedCard.getImageMainUrl());
                         intent.putExtra(TEXT_CONTENT, selectedCard.getTextContent());
                         intent.putExtra(LIKE, selectedCard.getLike());
+                        intent.putExtra("video_url", selectedCard.getVideoUrl());
                         context.startActivity(intent);
                     }catch(Exception e){
                         Log.d("uks",e.getMessage());

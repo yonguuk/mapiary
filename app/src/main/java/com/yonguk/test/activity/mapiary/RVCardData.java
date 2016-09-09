@@ -7,6 +7,9 @@ public class RVCardData {
 
     String imageMainUrl = null;
     String imageProfileUrl = null;
+
+
+    String videoUrl = null;
     String name = null;
     String date = null;
     String textTitle = null;
@@ -15,7 +18,13 @@ public class RVCardData {
     String userID = null;
     int like=0;
 
+    public String getVideoUrl() {
+        return videoUrl;
+    }
 
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
     public void setImageProfileUrl(String imageUrl){
         this.imageProfileUrl = imageUrl;
     }

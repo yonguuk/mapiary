@@ -59,14 +59,18 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
+                <!--
                 <ImageView
                     android:id="@+id/cardactivity_iv_content"
                     android:layout_width="match_parent"
                     android:layout_height="320dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/image3"/>
-
+-->
+                <WebView
+                    android:id="@+id/webview"
+                    android:layout_width="match_parent"
+                    android:layout_height="320dp"></WebView>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
