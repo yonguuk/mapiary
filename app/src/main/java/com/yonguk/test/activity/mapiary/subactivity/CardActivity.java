@@ -12,8 +12,10 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
@@ -37,7 +39,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
     CircleImageView ivProfile;
    // ImageView ivContent, ivLike, ivRe;
     TextView tvUserID,tvDate,tvTextContent,tvTextTitle,tvlike = null;
-    WebView webView;
+    //WebView webView;
+    VideoView videoView;
     private MapView mapView;
     private MapboxMap mapboxMap;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
@@ -116,7 +119,8 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
 
         ivProfile = (CircleImageView) findViewById(R.id.cardactivity_profile_image);
         //ivContent = (ImageView) findViewById(R.id.cardactivity_iv_content);
-        webView = (WebView) findViewById(R.id.webview);
+        //webView = (WebView) findViewById(R.id.webview);
+        videoView = (VideoView) findViewById(R.id.video_view);
         //ivLike = (ImageView) findViewById(R.id.cardactivity_iv_like);
         //ivRe = (ImageView) findViewById(R.id.cardactivity_iv_re);
         tvUserID = (TextView) findViewById(R.id.cardactivity_tv_user_id);
@@ -131,9 +135,13 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         tvTextContent.setText(textContent);
         tvTextTitle.setText(title);
         //tvlike.setText(like);
-        webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(videoUrl);
+        //webView.setWebViewClient(new WebViewClient());
+        //webView.loadUrl(videoUrl);
 
+        videoView.setVideoPath(videoUrl);
+        final MediaController mediaController = new MediaController(this);
+        videoView.setMediaController(mediaController);
+        //videoView.seekTo(500);
         if(profileImageUrl != null){
             imageLoader.get(profileImageUrl, new ImageLoader.ImageListener() {
                 @Override

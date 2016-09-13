@@ -162,7 +162,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
         mMediaRecorder.setProfile(profile);
-
+        //mMediaRecorder.setVideoSize(420,420);
         // Step 4: Set output file
         mOutputFile = CameraHelper.getOutputMediaFile(CameraHelper.MEDIA_TYPE_VIDEO);
         if (mOutputFile == null) {

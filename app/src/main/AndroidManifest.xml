@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -73,7 +74,7 @@
             android:label="@string/title_activity_mapiary_card"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".sample.FusedLocationActivity" />
-        <activity android:name=".subactivity.UploadActivity"></activity>
+        <activity android:name=".subactivity.UploadActivity" />
     </application>
 
 </manifest>

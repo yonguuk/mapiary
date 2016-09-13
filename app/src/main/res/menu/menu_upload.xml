@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.yonguk.test.activity.mapiary.subactivity.UploadActivity">
+    <item
+        android:id="@+id/action_upload"
+        android:orderInCategory="200"
+        android:title="upload"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_done_black_48dp"/>
+</menu>

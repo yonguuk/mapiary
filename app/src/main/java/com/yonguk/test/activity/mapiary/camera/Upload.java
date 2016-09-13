@@ -18,7 +18,7 @@ import java.net.URL;
 public class Upload {
 
     //your url here
-    private static final String UPLOAD_VIDEO_URL="http://kktt0202.dothome.co.kr/master/contents/random_backup.php";
+    private static final String UPLOAD_VIDEO_URL="http://kktt0202.dothome.co.kr/master/upload/upload_video.php";
 
     private static final String TAG = "Upload";
     private int serverResponseCode;

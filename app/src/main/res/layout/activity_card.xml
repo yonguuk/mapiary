@@ -67,10 +67,10 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/image3"/>
 -->
-                <WebView
-                    android:id="@+id/webview"
+                <VideoView
+                    android:id="@+id/video_view"
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"></WebView>
+                    android:layout_height="300dp" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
