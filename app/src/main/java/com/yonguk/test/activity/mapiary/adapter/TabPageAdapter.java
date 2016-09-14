@@ -4,11 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
-import com.yonguk.test.activity.mapiary.fragment.MainFragment;
-import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
-import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,40 +11,30 @@ import java.util.List;
  * Created by yonguk on 2016-09-14.
  */
 public class TabPageAdapter extends FragmentStatePagerAdapter {
-    int numOftabs;
+    private final List<Fragment> mFragments = new ArrayList();
+    private final List<String> mFragmentTitles = new ArrayList();
 
-    public TabPageAdapter(FragmentManager fm, int numOfTabs){
+    public TabPageAdapter(FragmentManager fm){
         super(fm);
-        this.numOftabs = numOfTabs;
+    }
+
+    public void addFragment(Fragment fragment, String title) {
+        mFragments.add(fragment);
+        mFragmentTitles.add(title);
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position){
-            case 0:
-                MainFragment mainFragment = MainFragment.newInstance();
-                return mainFragment;
-            case 1:
-                FollowFragment followFragment = FollowFragment.newInstance();
-                return followFragment;
-            case 2:
-                NewsFragment newsFragment = NewsFragment.newInstance();
-                return newsFragment;
-            case 3:
-                ProfileFragment profileFragment = ProfileFragment.newInstance();
-                return profileFragment;
-            default:
-                return null;
-        }
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return numOftabs;
+        return mFragments.size();
     }
 
-/*    @Override
+    @Override
     public CharSequence getPageTitle(int position) {
-        return fragmentTitles.get(position);
-    }*/
+        return mFragmentTitles.get(position);
+    }
 }

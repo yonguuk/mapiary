@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
     String userID=null;
 
     final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_backup.php";
-
+    final String TAG = "MainFragment";
     public static MainFragment newInstance(){
         MainFragment f = new MainFragment();
         return f;
@@ -57,11 +57,10 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         volleySingleton = VolleySingleton.getInstance(getActivity());
         requestQueue = volleySingleton.getRequestQueue();
-       // Bundle bundle = this.getArguments();
-        //userID = bundle.getString("USER_ID");
-        userID = "yong";
+        Bundle bundle = this.getArguments();
+        userID = bundle.getString("USER_ID");
 
-        Log.i("uks", "main : onCreate()");
+        Log.i(TAG, "main : onCreate()");
     }
 
     @Nullable
@@ -96,14 +95,14 @@ public class MainFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL_SERVER, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
                 cardDatas = parseJsonResponse(response);
                 mRVAdapter.setCardList(cardDatas);
+                Log.d(TAG, "main : " + response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("uks",error.getMessage());
+                Log.i(TAG,error.getMessage());
             }
         }){
             @Override
@@ -147,9 +146,9 @@ public class MainFragment extends Fragment {
                     }
                 }
             } catch (JSONException e) {
-                Log.i("uks", e.getMessage());
+                Log.i(TAG, e.getMessage());
             } catch (Exception e) {
-                Log.i("uks", e.getMessage());
+                Log.i(TAG, e.getMessage());
             }
         }
         return list;

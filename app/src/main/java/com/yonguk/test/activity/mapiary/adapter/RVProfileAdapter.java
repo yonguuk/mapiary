@@ -45,6 +45,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     ProfileFragment profileFragment = null;
     String userID = "";
 
+    private final String TAG = "RVProfileAdapter";
     private final int PICK_IMAGE_REQUEST = 2;
 
     private final String USER_ID = "user_id";
@@ -105,26 +106,31 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHolderHeader){
-            final ViewHolderHeader holderHeader = (ViewHolderHeader)holder;
-            holderHeader.tvUserId.setText(profileData.getUserID());
-            holderHeader.tvStatus.setText(profileData.getStateMessage());
-            holderHeader.tvFollower.setText(profileData.getFollower());
-            holderHeader.tvFollowing.setText(profileData.getFollowing());
-            String profileUrl = profileData.getProfile_url();
+            try {
+                final ViewHolderHeader holderHeader = (ViewHolderHeader) holder;
+                holderHeader.tvUserId.setText(profileData.getUserID());
+                holderHeader.tvStatus.setText(profileData.getStateMessage());
+                holderHeader.tvFollower.setText(profileData.getFollower());
+                holderHeader.tvFollowing.setText(profileData.getFollowing());
+                String profileUrl = profileData.getProfile_url();
 
-            if(profileUrl != null){
-                final String finalProfile_url = profileUrl;
-                imageLoader.get(profileUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        holderHeader.circleProfileImage.setImageBitmap(response.getBitmap());
-                    }
+                if (profileUrl != null) {
+                    final String finalProfile_url = profileUrl;
+                    imageLoader.get(profileUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            holderHeader.circleProfileImage.setImageBitmap(response.getBitmap());
+                        }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        holderHeader.circleProfileImage.setImageResource(R.drawable.profile);
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            holderHeader.circleProfileImage.setImageResource(R.drawable.profile);
+                        }
+                    });
+                }
+
+            }catch(Exception e){
+                Log.i(TAG,"error");
             }
         }else if(holder instanceof ViewHolderRV){
             final ViewHolderRV holderRV = (ViewHolderRV)holder;

@@ -11,8 +11,10 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
+import com.yonguk.test.activity.mapiary.adapter.TabPageAdapter;
 import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
 import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
     protected long mExitModeTime = 0L;
     protected CoordinatorLayout rootView = null;
-    protected BottomBar mBottomBar;
+    //protected BottomBar mBottomBar;
     protected AppBarLayout appBarLayout = null;
     protected Toolbar toolbar = null;
     protected CollapsingToolbarLayout collapsingToolbarLayout = null;
@@ -63,8 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected FollowFragment mFollowFragment = null;
     protected NewsFragment mNewsFragment = null;
     protected ProfileFragment mProfileFragment = null;
-    protected RecordFragment mRecordFragment = null;
 
+
+    ViewPager viewPager;
+    TabLayout tabLayout;
+    TabPageAdapter tabPageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         getSupportActionBar().setTitle("Main");
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
         //collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
         //collapsingToolbarLayout.setTitle("Main");
         mContext = getApplicationContext();
@@ -88,8 +96,20 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
 
         setFragment();
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        setBottomBar();
+
+        tabPageAdapter = new TabPageAdapter(getSupportFragmentManager());
+        tabPageAdapter.addFragment(mMainFragment,"Main");
+        tabPageAdapter.addFragment(mFollowFragment,"Followers");
+        tabPageAdapter.addFragment(mNewsFragment,"News");
+        tabPageAdapter.addFragment(mProfileFragment,"Profile");
+
+
+        viewPager.setAdapter(tabPageAdapter);
+        tabLayout.setTabsFromPagerAdapter(tabPageAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        //mBottomBar = BottomBar.attach(this, savedInstanceState);
+        //setBottomBar();
 
         //Service
     /*    try {
@@ -99,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             Log.d("uks",e.getMessage());
         }
 */
-        /*
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 startActivityForResult(intent,REQUEST_CODE_UPLOAD_CARD);
 
             }
-        });*/
+        });
 
     }
 
@@ -117,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_UPLOAD_CARD){
-            mBottomBar.selectTabAtPosition(0,false);
+            //mBottomBar.selectTabAtPosition(0,false);
             if(resultCode == RESULT_OK){
                 Snackbar.make(rootView,"업로드 완료",Snackbar.LENGTH_LONG).show();
             }
@@ -134,11 +154,11 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mMainFragment.setArguments(bundle);
         mFollowFragment = FollowFragment.newInstance();
         mFollowFragment.setArguments(bundle);
-        mRecordFragment = RecordFragment.newInstance();
         mNewsFragment = NewsFragment.newInstance();
+        mNewsFragment.setArguments(bundle);
         mProfileFragment = ProfileFragment.newInstance();
         mProfileFragment.setArguments(bundle);
-        getSupportFragmentManager()
+/*        getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mMainFragment)
                 .add(R.id.fragment_container, mFollowFragment)
@@ -150,8 +170,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                 .hide(mProfileFragment)
                 .hide(mRecordFragment)
                 .show(mMainFragment)
-                .commit();
+                .commit();*/
     }
+/*
 
     private void setBottomBar(){
         //hiding on scroll
@@ -207,21 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
                         Intent intent = new Intent(mContext, RecordActivity.class);
                         startActivity(intent);
 
-
-/*                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(mMainFragment)
-                                .hide(mFollowFragment)
-                                .hide(mNewsFragment)
-                                .hide(mProfileFragment)
-                                .show(mRecordFragment)
-                                .commit();
-                        getSupportActionBar().setTitle("Record");*/
-
-                        //appBarLayout.setExpanded(false, true);
-                        //collapsingToolbarLayout.setTitle("Record");
-                        //ivToolbar.setVisibility(View.GONE);
-                        //lockAppBar(true, "Record");
                         break;
 
                     case R.id.bottombar_news:
@@ -264,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             }
         });
     }
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

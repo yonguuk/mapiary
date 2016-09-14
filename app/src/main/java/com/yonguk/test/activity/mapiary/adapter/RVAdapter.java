@@ -41,6 +41,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     private final String TEXT_CONTENT = "text_content";
     private final String Date = "date";
 
+    private final String TAG = "RVAdapter";
+
 
 /*    *//*animation*//*
     private static final int ANIMATED_ITEM_COUNT = 2;
@@ -88,7 +90,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         */
         View view = inflater.inflate(R.layout.recyclerview_item, parent,false);
         RVViewHolder holder = new RVViewHolder(view);
-        Log.i("uks", "onCreateViewHolder()");
+        Log.i(TAG, "onCreateViewHolder()");
         return holder;
     }
 
@@ -108,7 +110,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         //holder.like.setText(curData.getLike()+"");
 
         String imageProfileUrl = curData.getImageProfileUrl();
-        Log.i("uks","profile url : " + imageProfileUrl);
+        Log.i(TAG,"profile url : " + imageProfileUrl);
         if(imageProfileUrl != null){
             imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
                 @Override
@@ -118,7 +120,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.i("uks","profile error");
+                    Log.i(TAG,"profile error");
                     holder.ivProfile.setImageResource(R.drawable.profile);
                 }
             });

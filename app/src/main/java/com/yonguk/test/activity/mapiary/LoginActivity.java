@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.i("uks",response.toString());
                         progressDialog.dismiss();
                         if(response.trim().equals("success")) {
-                            Intent intent = new Intent(mContext, MainTabActivity.class);
+                            Intent intent = new Intent(mContext, MainActivity.class);
                             intent.putExtra("USER_ID", user_id);
                             startActivity(intent);
                             finish();

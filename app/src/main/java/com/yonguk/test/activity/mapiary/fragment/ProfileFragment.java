@@ -90,7 +90,8 @@ public class ProfileFragment extends Fragment{
         Bundle bundle = this.getArguments();
         userID = bundle.getString("USER_ID");
         cachedImageUrl = "http://kktt0202.dothome.co.kr/master/upload/image_profile" + "/" + userID + ".png";
-        Log.i("uks", "Profile : onCreate()");
+
+        Log.i(TAG, "Profile : onCreate()");
     }
 
 
@@ -126,36 +127,62 @@ public class ProfileFragment extends Fragment{
 
 
     private void sendJsonRequest(){
+        Log.d(TAG,"sendJsonRequest()");
+
         JsonObjectRequest headerRequest = new JsonObjectRequest(Request.Method.GET, getHeaderRequestUrl(userID), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 profileDatas = parseHeaderJsonResponse(response);
                 mRVProfileAdapter.setProfileData(profileDatas);
-                Log.d("uks", "profile info : " + response.toString());
+                Log.d(TAG, "profile info : " + response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("uks","Profile: " + error.getMessage());
+                Log.i(TAG,"Profile: " + error.getMessage());
             }
         });
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestUrl(userID), null, new Response.Listener<JSONObject>() {
+ /*       JsonObjectRequest headerRequest = new JsonObjectRequest(Request.Method.POST, REQUEST_HEADER_URL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                cardDatas = parseJsonResponse(response);
-                mRVProfileAdapter.setCardList(cardDatas);
-                Log.d("uks","profile card : " + response.toString());
+
+                profileDatas = parseHeaderJsonResponse(response);
+                mRVProfileAdapter.setProfileData(profileDatas);
+                Log.d(TAG, "profile info : " + response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("uks","profile card error : " + error.toString());
+                Log.i(TAG,"Profile: " + error.getMessage());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("user_id", userID);
+                return params;
+            }
+        };
+*/
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getRequestUrl(userID), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG,"profile card : " + response.toString());
+                cardDatas = parseJsonResponse(response);
+                mRVProfileAdapter.setCardList(cardDatas);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG,"profile card error : " + error.toString());
             }
         });
         requestQueue.add(headerRequest);
         requestQueue.add(request);
+        Log.d(TAG,"sendJsonRequest() end");
     }
 
     private ArrayList<RVCardData> parseJsonResponse(JSONObject response){
@@ -188,9 +215,9 @@ public class ProfileFragment extends Fragment{
                     }
                 }
             } catch (JSONException e) {
-                Log.i("uks", e.getMessage());
+                Log.i(TAG, e.getMessage());
             } catch (Exception e) {
-                Log.i("uks", e.getMessage());
+                Log.i(TAG, e.getMessage());
             }
         }
         return list;
@@ -246,9 +273,9 @@ public class ProfileFragment extends Fragment{
                     //profileDatas.setProfile_bitmap(bitmap);
                     uploadImage();
                 }catch(IOException e){
-                    Log.i("uks", e.getMessage());
+                    Log.i(TAG, e.getMessage());
                 }catch(Exception e){
-                    Log.i("uks", e.getMessage());
+                    Log.i(TAG, e.getMessage());
                 }
             }
         }

@@ -8,9 +8,10 @@
     tools:context="com.yonguk.test.activity.mapiary.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <FrameLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container">
-    </FrameLayout>
+        >
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>
