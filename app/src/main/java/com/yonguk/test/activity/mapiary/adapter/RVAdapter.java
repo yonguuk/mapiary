@@ -1,25 +1,19 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
-import com.yonguk.test.activity.mapiary.animation.Utils;
+import com.yonguk.test.activity.mapiary.R;
+import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
 

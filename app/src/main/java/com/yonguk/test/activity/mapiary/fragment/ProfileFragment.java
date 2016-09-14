@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,9 +29,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.yonguk.test.activity.mapiary.R;
-import com.yonguk.test.activity.mapiary.RVCardData;
-import com.yonguk.test.activity.mapiary.RVProfileAdapter;
-import com.yonguk.test.activity.mapiary.RVProfileData;
+import com.yonguk.test.activity.mapiary.data.RVCardData;
+import com.yonguk.test.activity.mapiary.adapter.RVProfileAdapter;
+import com.yonguk.test.activity.mapiary.data.RVProfileData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import org.json.JSONArray;
@@ -44,8 +43,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dosi on 2016-07-18.

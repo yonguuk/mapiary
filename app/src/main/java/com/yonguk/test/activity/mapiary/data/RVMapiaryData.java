@@ -1,4 +1,4 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.data;
 
 /**
  * Created by dosi on 2016-08-11.

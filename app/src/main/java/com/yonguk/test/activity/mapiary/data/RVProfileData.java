@@ -1,4 +1,4 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.data;
 
 import android.graphics.Bitmap;
 

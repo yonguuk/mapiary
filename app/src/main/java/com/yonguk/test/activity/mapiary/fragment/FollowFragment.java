@@ -11,9 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -21,20 +19,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yonguk.test.activity.mapiary.R;
-import com.yonguk.test.activity.mapiary.RVAdapter;
-import com.yonguk.test.activity.mapiary.RVCardData;
+import com.yonguk.test.activity.mapiary.adapter.RVAdapter;
+import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by dosi on 2016-07-18.

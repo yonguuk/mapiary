@@ -75,6 +75,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".sample.FusedLocationActivity" />
         <activity android:name=".subactivity.UploadActivity" />
+        <activity
+            android:name=".MainTabActivity"
+            android:label="@string/title_activity_main_tab"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

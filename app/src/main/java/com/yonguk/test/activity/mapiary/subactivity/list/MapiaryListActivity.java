@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.AuthFailureError;
@@ -21,8 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yonguk.test.activity.mapiary.R;
-import com.yonguk.test.activity.mapiary.RVMapiaryAdapter;
-import com.yonguk.test.activity.mapiary.RVMapiaryData;
+import com.yonguk.test.activity.mapiary.adapter.RVMapiaryAdapter;
+import com.yonguk.test.activity.mapiary.data.RVMapiaryData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.MapiaryUploadActivity;
 
@@ -32,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MapiaryListActivity extends AppCompatActivity {

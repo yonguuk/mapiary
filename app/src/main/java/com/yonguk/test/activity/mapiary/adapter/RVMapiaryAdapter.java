@@ -1,4 +1,4 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mapbox.mapboxsdk.maps.MapView;
+import com.yonguk.test.activity.mapiary.R;
+import com.yonguk.test.activity.mapiary.data.RVMapiaryData;
 
 import java.util.ArrayList;
 import java.util.Collections;
