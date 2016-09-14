@@ -115,9 +115,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 uploading.dismiss();
-               // uploadImage(s);
+                // uploadImage(s);
                 //tvUrl.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
-               // tvUrl.setText(Html.fromHtml(s));
+                // tvUrl.setText(Html.fromHtml(s));
                 uploadImage(s);
             }
 
@@ -160,6 +160,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                 params.put(KEY_IMAGE, image);
                 params.put("card_id", cardId);
+                Log.i(TAG, cardId);
                 return params;
             }
         };

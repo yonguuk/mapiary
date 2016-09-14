@@ -9,31 +9,10 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_bluetooth_nosignal"
+        android:id="@+id/action_upload"
         android:orderInCategory="200"
-        android:title="nosignal"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/nosignal_v1"
-        />
-
-    <item
-        android:id="@+id/action_bluetooth_connecting"
-        android:orderInCategory="200"
-        android:title="connecting"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/connecting3_v1"
-        />
-
-
-    <item
-        android:id="@+id/action_bluetooth_connected"
-        android:orderInCategory="200"
-        android:title="connected"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/connected_v1"
-        />
-
-
-
+        android:title="upload"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_done_black_48dp"/>
 
 </menu>

@@ -1,5 +1,6 @@
 package com.yonguk.test.activity.mapiary;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
@@ -30,6 +36,7 @@ import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
+import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
@@ -45,7 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     private final int REQUEST_CODE_UPLOAD_CARD = 1;
     private final int PICK_IMAGE_REQUEST = 2;
 
+    private VolleySingleton volleySingleton = null;
+    private RequestQueue requestQueue = null;
+
     private Menu menu =  null;
+    private static final String CLEAR_DB_URL = "http://kktt0202.dothome.co.kr/master/upload/delete/reset.php";
+    private static final String TAG = "MainActivity";
     /*Fragments*/
     protected MainFragment mMainFragment = null;
     protected FollowFragment mFollowFragment = null;
@@ -57,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        volleySingleton = VolleySingleton.getInstance(this);
+        requestQueue = volleySingleton.getRequestQueue();
         rootView = (CoordinatorLayout)findViewById(R.id.root_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         //ivToolbar = (ImageView) findViewById(R.id.iv_toolbar);
@@ -256,8 +270,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         this.menu = menu;
-        hideAllOption();
-        showOption(R.id.action_bluetooth_nosignal);
+        //hideAllOption();
+        //showOption(R.id.action_bluetooth_nosignal);
         return true;
     }
 
@@ -273,13 +287,35 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             return true;
         }
 
+        if(id == R.id.action_upload){
+            final ProgressDialog loading = ProgressDialog.show(this, "Uploading...", "Please wait...", false, false);
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, CLEAR_DB_URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    loading.dismiss();
+                    Toast.makeText(getApplicationContext(),"삭제완료" , Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loading.dismiss();
+                    Log.i(TAG, error.toString());
+                }
+            });
+
+            requestQueue.add(stringRequest);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+/*
     private void hideOption(int id){
         MenuItem item = menu.findItem(id);
         item.setVisible(false);
     }
+*/
+/*
 
     private void hideAllOption(){
         MenuItem item1 = menu.findItem(R.id.action_bluetooth_nosignal);
@@ -289,8 +325,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         item2.setVisible(false);
         item3.setVisible(false);
     }
+*/
 
-    private void showOption(int id){
+/*    private void showOption(int id){
         MenuItem item = menu.findItem(id);
         item.setVisible(true);
     }
@@ -303,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     private void setOptionIcon(int id, int iconRes){
         MenuItem item = menu.findItem(id);
         item.setIcon(iconRes);
-    }
+    }*/
 /*
     public void lockAppBar(boolean locked,String title) {
         if(locked){
