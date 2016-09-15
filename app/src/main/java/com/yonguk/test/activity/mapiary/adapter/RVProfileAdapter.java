@@ -138,7 +138,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             curData = cardData.get(position-1);
             holderRV.userID.setText(curData.getUserID());
             holderRV.date.setText(curData.getDate());
-            holderRV.textTitle.setText(curData.getTextTitle());
+            //holderRV.textTitle.setText(curData.getTextTitle());
             holderRV.textContent.setText(curData.getTextContent());
             //holderRV.like.setText(curData.getLike()+"");
 
@@ -257,7 +257,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView userID;
         TextView date;
         TextView textContent;
-        TextView textTitle;
+        //TextView textTitle;
         //TextView like;
         //ImageView btnLike, btnRe;
 
@@ -267,7 +267,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ivContent = (ImageView)itemView.findViewById(R.id.iv_content);
             userID = (TextView) itemView.findViewById(R.id.tv_user_id);
             date = (TextView)itemView.findViewById(R.id.tv_date);
-            textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
+            //textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
             //like = (TextView) itemView.findViewById(R.id.tv_like);
            // btnLike = (ImageView) itemView.findViewById(R.id.btn_like);

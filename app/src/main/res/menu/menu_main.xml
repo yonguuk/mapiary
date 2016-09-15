@@ -13,6 +13,6 @@
         android:orderInCategory="200"
         android:title="upload"
         app:showAsAction="always"
-        android:icon="@drawable/ic_done_black_48dp"/>
+        android:icon="@drawable/ic_search_black_24dp"/>
 
 </menu>

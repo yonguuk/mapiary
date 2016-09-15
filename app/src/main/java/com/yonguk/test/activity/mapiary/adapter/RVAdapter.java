@@ -105,7 +105,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         curData = cardData.get(position);
         holder.userID.setText(curData.getUserID());
         holder.date.setText(curData.getDate());
-        holder.textTitle.setText(curData.getTextTitle());
+        //holder.textTitle.setText(curData.getTextTitle());
         holder.textContent.setText(curData.getTextContent());
         //holder.like.setText(curData.getLike()+"");
 
@@ -182,7 +182,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         TextView userID;
         TextView date;
         TextView textContent;
-        TextView textTitle;
+        //TextView textTitle;
         //TextView like;
         //ImageView btnLike, btnRe;
 
@@ -192,7 +192,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             ivContent = (ImageView)itemView.findViewById(R.id.iv_content);
             userID = (TextView) itemView.findViewById(R.id.tv_user_id);
             date = (TextView)itemView.findViewById(R.id.tv_date);
-            textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
+           // textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
             //like = (TextView) itemView.findViewById(R.id.tv_like);
             //btnLike = (ImageView) itemView.findViewById(R.id.btn_like);

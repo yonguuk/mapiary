@@ -28,7 +28,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -125,7 +130,7 @@ public class MainFragment extends Fragment {
                     for (int i = 0; i < arrayResult.length(); i++) {
                         JSONObject currentResult = arrayResult.getJSONObject(i);
                         String user_id = currentResult.getString("user_id");
-                        String date = currentResult.getString("date");
+                        String date = parseDate(currentResult.getString("date"));
                         String profileImageUrl = currentResult.getString("profile_url");
                         String contentImageUrl = currentResult.getString("img_url");
                         String videoUrl = currentResult.getString("video_url");
@@ -159,6 +164,21 @@ public class MainFragment extends Fragment {
         sendJsonRequest();
         mRVAdapter.setCardList(cardDatas);
         mSwipeRefrechLayout.setRefreshing(false);
+    }
+
+    private String parseDate(String date){
+        String dateString="";
+        try {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            calendar.setTime(simpleDateFormat.parse(date));
+            Date datet = calendar.getTime();
+
+            dateString = (calendar.get(Calendar.MONTH)+1)+"월" + calendar.get(Calendar.DATE)+"일";
+        }catch (ParseException e) {
+
+        }
+        return dateString;
     }
 
 }
