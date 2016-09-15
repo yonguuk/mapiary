@@ -116,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
-            android:textColor="@color/bb_inActiveBottomBarItemColor"
+            android:textColor="@color/black"
             android:text="인천광역시 동구 화수동"/>
 
     </LinearLayout>

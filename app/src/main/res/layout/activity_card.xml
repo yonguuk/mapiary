@@ -47,14 +47,14 @@
                             android:layout_height="wrap_content"
                             android:text="조유섭"
                             android:textSize="14sp"
-                            android:textColor="@color/bb_darkBackgroundColor"/>
+                            android:textColor="@color/black"/>
 
                         <TextView
                             android:id="@+id/cardactivity_tv_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:textColor="@color/bb_inActiveBottomBarItemColor"
+                            android:textColor="@color/black"
                             android:text="Subhead"/>
                     </LinearLayout>
 

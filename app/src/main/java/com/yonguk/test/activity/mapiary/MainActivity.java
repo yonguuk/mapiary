@@ -5,25 +5,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
+
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,16 +27,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnMenuTabClickListener;
 import com.yonguk.test.activity.mapiary.adapter.TabPageAdapter;
 import com.yonguk.test.activity.mapiary.fragment.FollowFragment;
 import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
-import com.yonguk.test.activity.mapiary.fragment.RecordFragment;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
-import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
@@ -158,119 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mNewsFragment.setArguments(bundle);
         mProfileFragment = ProfileFragment.newInstance();
         mProfileFragment.setArguments(bundle);
-/*        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, mMainFragment)
-                .add(R.id.fragment_container, mFollowFragment)
-                .add(R.id.fragment_container, mNewsFragment)
-                .add(R.id.fragment_container, mProfileFragment)
-                .add(R.id.fragment_container, mRecordFragment)
-                .hide(mFollowFragment)
-                .hide(mNewsFragment)
-                .hide(mProfileFragment)
-                .hide(mRecordFragment)
-                .show(mMainFragment)
-                .commit();*/
     }
-/*
-
-    private void setBottomBar(){
-        //hiding on scroll
-        // Instead of attach(), use attachShy():
-        //mBottomBar = BottomBar.attachShy((CoordinatorLayout) findViewById(R.id.root_layout),
-        //findViewById(R.id.rv), savedInstanceState);
-        mBottomBar.useFixedMode();
-        mBottomBar.setItems(R.menu.bottombar_menu);
-        mBottomBar.setActiveTabColor("#FF4081");
-        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(int menuItemId) {
-                switch (menuItemId) {
-                    case R.id.bottombar_main:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(mFollowFragment)
-                                .hide(mNewsFragment)
-                                .hide(mProfileFragment)
-                                .hide(mRecordFragment)
-                                .show(mMainFragment)
-                                .commit();
-                        getSupportActionBar().setTitle("Mapiary");
-                        //appBarLayout.setExpanded(false, true);
-                        //collapsingToolbarLayout.setTitle("Main");
-                        //ivToolbar.setVisibility(View.GONE);
-                        //lockAppBar(true, "Main");
-                        break;
-
-                    case R.id.bottombar_follow:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(mMainFragment)
-                                .hide(mNewsFragment)
-                                .hide(mProfileFragment)
-                                .hide(mRecordFragment)
-                                .show(mFollowFragment)
-                                .commit();
-                        getSupportActionBar().setTitle("Follower");
-
-                        //menu.getItem(1).setIcon(getResources().getDrawable(R.drawable.connecting3_v1));
-                        //appBarLayout.setExpanded(false, true);
-                        //collapsingToolbarLayout.setTitle("Follow");
-                        //ivToolbar.setVisibility(View.GONE);
-                        //lockAppBar(true, "Follow");
-                        break;
-
-                    case R.id.bottombar_record:
-                        //Intent intent = new Intent(mContext, SampleChildActivity.class);
-                        //intent.putExtra("USER_ID", userID);
-                        //startActivityForResult(intent, REQUEST_CODE_UPLOAD_CARD);
-
-                        Intent intent = new Intent(mContext, RecordActivity.class);
-                        startActivity(intent);
-
-                        break;
-
-                    case R.id.bottombar_news:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(mMainFragment)
-                                .hide(mFollowFragment)
-                                .hide(mProfileFragment)
-                                .hide(mRecordFragment)
-                                .show(mNewsFragment)
-                                .commit();
-                        getSupportActionBar().setTitle("소식");
-                        //appBarLayout.setExpanded(false, true);
-                        //collapsingToolbarLayout.setTitle("News");
-                        //ivToolbar.setVisibility(View.GONE);
-                        //lockAppBar(true, "News");
-                        break;
-
-                    case R.id.bottombar_profile:
-                        getSupportFragmentManager()
-                                .beginTransaction()
-                                .hide(mMainFragment)
-                                .hide(mFollowFragment)
-                                .hide(mNewsFragment)
-                                .hide(mRecordFragment)
-                                .show(mProfileFragment)
-                                .commit();
-                        getSupportActionBar().setTitle("내 프로필");
-                        //appBarLayout.setExpanded(false, true);
-                        //collapsingToolbarLayout.setTitle("Profile");
-                        //ivToolbar.setVisibility(View.GONE);
-                        //lockAppBar(true, "Profile");
-                        break;
-                }
-            }
-
-            @Override
-            public void onMenuTabReSelected(int menuItemId) {
-
-            }
-        });
-    }
-*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -348,26 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         MenuItem item = menu.findItem(id);
         item.setIcon(iconRes);
     }*/
-/*
-    public void lockAppBar(boolean locked,String title) {
-        if(locked){
-            appBarLayout.setExpanded(false, true);
-            int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
-            lp.height = px;
-            appBarLayout.setLayoutParams(lp);
-            collapsingToolbarLayout.setTitleEnabled(false);
-            collapsingToolbarLayout.setContentScrimColor(ContextCompat.getColor(getApplicationContext(),R.color.colorPrimary));
-            toolbar.setTitle(title);
-        }else{
-            appBarLayout.setExpanded(true, false);
-            appBarLayout.setActivated(true);
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            lp.height = (int) getResources().getDimension(R.dimen.toolbarExpandHeight);
-            collapsingToolbarLayout.setTitleEnabled(true);
-            collapsingToolbarLayout.setTitle(title);
-        }
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -388,6 +248,5 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     protected void onResume() {
         super.onResume();
-        //appBarLayout.setExpanded(false, true);
     }
 }
