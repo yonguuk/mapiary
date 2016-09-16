@@ -39,6 +39,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
     private boolean isRecording = false;
     private static final String TAG = "Recorder";
+    private final int REQUEST_CODE_RECORD = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

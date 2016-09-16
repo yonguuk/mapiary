@@ -34,6 +34,7 @@ import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     protected CollapsingToolbarLayout collapsingToolbarLayout = null;
     protected String userID = "";
     protected Context mContext = null;
-    private final int REQUEST_CODE_UPLOAD_CARD = 1;
+    private final int REQUEST_CODE_RECORD = 1;
     private final int PICK_IMAGE_REQUEST = 2;
 
     private VolleySingleton volleySingleton = null;
@@ -133,9 +134,9 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, SampleChildActivity.class);
+                Intent intent = new Intent(mContext, RecordActivity.class);
                 intent.putExtra("USER_ID", userID);
-                startActivityForResult(intent,REQUEST_CODE_UPLOAD_CARD);
+                startActivityForResult(intent,REQUEST_CODE_RECORD);
 
             }
         });
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_UPLOAD_CARD){
+        if(requestCode == REQUEST_CODE_RECORD){
             //mBottomBar.selectTabAtPosition(0,false);
             if(resultCode == RESULT_OK){
                 Snackbar.make(rootView,"업로드 완료",Snackbar.LENGTH_LONG).show();
