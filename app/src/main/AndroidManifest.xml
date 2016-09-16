@@ -73,8 +73,12 @@
             android:name=".subactivity.MapiaryCardActivity"
             android:label="@string/title_activity_mapiary_card"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".sample.FusedLocationActivity" />
         <activity android:name=".subactivity.UploadActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"
+            ></meta-data>
     </application>
 
 </manifest>
