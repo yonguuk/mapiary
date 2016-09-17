@@ -65,7 +65,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private MapView mapView;
     private MapboxMap mapboxMap;
     Bitmap thumbnail;
-    //JSONObject resultJson=null;
+    JSONObject resultJson=null;
     JSONObject json;
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
@@ -73,7 +73,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
     final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/test.json";
 
-    ArrayList<Position> points;
+    ArrayList<LatLng> points;
 
     private static final String KEY_IMAGE = "image";
     private static final String TAG = "UploadActivity";
@@ -86,18 +86,19 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         requestQueue = volleySingleton.getRequestQueue();
 
         setView();
-        //getJSONFromUrl(URL_LOCATION);
+        getJSONFromUrl(URL_LOCATION);
         Intent intent = getIntent();
         path = intent.getStringExtra("path");
         String location = intent.getStringExtra("location");
+
         Log.i(TAG, location);
         try {
             json = new JSONObject(location);
         }catch (JSONException e){
 
         }
-        points = parseJson(json);
-        Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());
+/*        points = parseJson(json);
+        Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());*/
         thumbnail = ThumbnailUtils.createVideoThumbnail(path,
                 MediaStore.Images.Thumbnails.MINI_KIND);
         iv.setImageBitmap(thumbnail);
@@ -220,19 +221,22 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**Draw GeoJson Line**/
-    private class DrawGeoJSON extends AsyncTask<Void, Void, List<Position>> {
+    private class DrawGeoJSON extends AsyncTask<Void, Void, List<LatLng>> {
 
         @Override
-        protected List<Position> doInBackground(Void... voids) {
-            ArrayList<Position> points = parseJson(json);
+        protected List<LatLng> doInBackground(Void... voids) {
+            ArrayList<LatLng> points = parseJson(json);
+            for(int i=0; i<points.size(); i++){
+                Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
+            }
             return points;
         }
 
         @Override
-        protected void onPostExecute(List<Position> points) {
+        protected void onPostExecute(List<LatLng> points) {
             super.onPostExecute(points);
-            Log.i(TAG,"onPostExecute()");
-/*            if(points.size()>0){
+
+            if(points.size()>0){
                 LatLng[] pointArray = points.toArray(new LatLng[points.size()]);
                 mapboxMap.addPolyline(new PolylineOptions()
                         .add(pointArray)
@@ -241,17 +245,16 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 );
 
                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                        .target(points.get(0))
-                        .zoom(13)
+                        .target(pointArray[0])
+                        .zoom(14)
                         .tilt(20)
                         .build()
 
                 ));
+            }
 
 
-
-            }*/
-            drawSimplify(points);
+            Log.i(TAG, "onPostExecute()");
         }
     }
 
@@ -271,6 +274,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 .color(Color.parseColor("#3bb2d0"))
                 .width(4));
 
+/*
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(result[0])
                 .zoom(14)
@@ -278,35 +282,37 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 .build()
 
         ));
+*/
 
 
     }
-/*
+
 
     public void getJSONFromUrl(String url){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                Log.i("uks","성공");
-                Log.i("uks",response.toString());
+                Log.i(TAG,"성공");
+                Log.i(TAG,response.toString());
                 resultJson = response;
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("uks","실패");
-                Log.i("uks",error.toString());
+                Log.i(TAG,"실패");
+                Log.i(TAG,error.toString());
                 resultJson = null;
             }
         });
         requestQueue.add(request);
     }
-*/
 
 
-    private ArrayList<Position> parseJson(JSONObject jsonLocation){
-        ArrayList<Position> points = new ArrayList<>();
+
+
+    private ArrayList<LatLng> parseJson(JSONObject jsonLocation){
+        ArrayList<LatLng> points = new ArrayList<>();
 
         try{
             JSONObject json = jsonLocation;
@@ -320,13 +326,14 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     JSONArray coords = geometry.getJSONArray("coordinates");
                     for(int i=0; i<coords.length(); i++){
                         JSONArray coord = coords.getJSONArray(i);
-                        Position position = Position.fromCoordinates(coord.getDouble(1),coord.getDouble(0));
-                        points.add(position);
+                        LatLng latLng = new LatLng(coord.getDouble(0),coord.getDouble(1));
+                        points.add(latLng);
+                        Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
                     }
                 }
             }
         }catch(Exception e){
-            Log.e("uks","Excepting Loading GeoJson: " + e.toString());
+            Log.e(TAG,"Excepting Loading GeoJson: " + e.toString());
         }
         return points;
     }
