@@ -52,6 +52,7 @@ public class MainFragment extends Fragment {
 
     final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_backup.php";
     final String TAG = "MainFragment";
+    private final String KEY_ID = "user_id";
     public static MainFragment newInstance(){
         MainFragment f = new MainFragment();
         return f;
@@ -63,7 +64,7 @@ public class MainFragment extends Fragment {
         volleySingleton = VolleySingleton.getInstance(getActivity());
         requestQueue = volleySingleton.getRequestQueue();
         Bundle bundle = this.getArguments();
-        userID = bundle.getString("USER_ID");
+        userID = bundle.getString(KEY_ID);
 
         Log.i(TAG, "main : onCreate()");
     }
@@ -135,18 +136,19 @@ public class MainFragment extends Fragment {
                         String contentImageUrl = currentResult.getString("img_url");
                         String videoUrl = currentResult.getString("video_url");
                         String textContent = currentResult.getString("content");
-                        String textTitle = currentResult.getString("title");
+                        //String locationUrl = currentResult.getString("location_url");
+                        //String textTitle = currentResult.getString("title");
                         int like = currentResult.getInt("like");
 
                         RVCardData card = new RVCardData();
                         card.setUserID(user_id);
                         card.setDate(date);
                         card.setTextContent(textContent);
-                        card.setTextTitle(textTitle);
                         card.setImageMainUrl(contentImageUrl);
                         card.setLike(like);
                         card.setImageProfileUrl(profileImageUrl);
                         card.setVideoUrl(videoUrl);
+                        //card.setLocationUrl(locationUrl);
                         list.add(card);
                     }
                 }

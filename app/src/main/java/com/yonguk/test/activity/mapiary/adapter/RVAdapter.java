@@ -2,7 +2,10 @@ package com.yonguk.test.activity.mapiary.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +13,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,7 +43,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     List<RVCardData> cardData = Collections.emptyList();
     Context context = null;
     VolleySingleton volleySingleton;
+    RequestQueue requestQueue;
     ImageLoader imageLoader;
+    JSONObject resultJson = null;
+    ArrayList<LatLng> points = null;
 
     private final String USER_ID = "user_id";
     private final String PROFILE_IMAGE_URL = "profile_url";
@@ -54,6 +69,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         this.cardData = cardData;
         this.context = context;
         volleySingleton = VolleySingleton.getInstance(context);
+        requestQueue = volleySingleton.getRequestQueue();
         imageLoader = volleySingleton.getImageLoader();
     }
 
@@ -96,19 +112,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
-/*        try {
-            runEnterAnimation(holder.itemView, position);
-        }catch (Exception e){
-            Log.i("uks",e.getMessage());
-        }*/
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
         holder.userID.setText(curData.getUserID());
         holder.date.setText(curData.getDate());
-        //holder.textTitle.setText(curData.getTextTitle());
-        holder.textContent.setText(curData.getTextContent());
-        //holder.like.setText(curData.getLike()+"");
 
+        holder.textContent.setText(curData.getTextContent());
+        //getJSONFromUrl(curData.getLocationUrl());
+        //points = parseJson(resultJson);
+        //holder.location.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
         String imageProfileUrl = curData.getImageProfileUrl();
         Log.i(TAG,"profile url : " + imageProfileUrl);
         if(imageProfileUrl != null){
@@ -146,23 +158,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         //여기서 리스너 달아도 됨
     }
 
-/*
-    public void runEnterAnimation(View view, int position){
-        if(position>= ANIMATED_ITEM_COUNT -1){
-            return;
-        }
-
-        if(position > lastAnimatedPosition){
-            lastAnimatedPosition = position;
-            view.setTranslationY(Utils.getScreenHeight(context));
-            view.animate()
-                    .translationY(0)
-                    .setInterpolator(new DecelerateInterpolator(3.f))
-                    .setDuration(700)
-                    .start();
-        }
-    }
-*/
 
     @Override
     public int getItemCount() {
@@ -175,6 +170,92 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     }
 
 
+    public void getJSONFromUrl(String url){
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.i(TAG,"성공");
+                Log.i(TAG,response.toString());
+                resultJson = response;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i(TAG,"실패");
+                Log.i(TAG,error.toString());
+                resultJson = null;
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    private ArrayList<LatLng> parseJson(JSONObject jsonLocation){
+        ArrayList<LatLng> points = new ArrayList<>();
+
+        try{
+            JSONObject json = jsonLocation;
+            //JSONArray features = json.getJSONArray("features");
+            //JSONObject feature = features.getJSONObject(0);
+            JSONObject geometry = json.getJSONObject("geometry");
+
+            if(geometry != null){
+                String type = geometry.getString("type");
+                if(!TextUtils.isEmpty(type) && type.equalsIgnoreCase("LineString")){
+                    JSONArray coords = geometry.getJSONArray("coordinates");
+                    for(int i=0; i<coords.length(); i++){
+                        JSONArray coord = coords.getJSONArray(i);
+                        LatLng latLng = new LatLng(coord.getDouble(0),coord.getDouble(1));
+                        points.add(latLng);
+                        Log.i(TAG, "아" + points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
+                    }
+                }
+            }
+        }catch(Exception e){
+            Log.e(TAG,"Excepting Loading GeoJson: " + e.toString());
+        }
+        return points;
+    }
+
+
+    /** 위도와 경도 기반으로 주소를 리턴하는 메서드*/
+    public String getAddress(double lat, double lng){
+        String address = null;
+        //위치정보를 활용하기 위한 구글 API 객체
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+
+        //주소 목록을 담기 위한 HashMap
+        List<Address> list = null;
+
+        try{
+            list = geocoder.getFromLocation(lat, lng, 1);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        if(list == null){
+            Log.e("getAddress", "주소 데이터 얻기 실패");
+            return null;
+        }
+
+        if(list.size() > 0){
+            Address addr = list.get(0);
+            address = addr.getCountryName() + " "
+                    //+ addr.getPostalCode() + " "
+                    + addr.getAdminArea() + " "
+                    + addr.getLocality() + " "
+                    + addr.getThoroughfare() + " "
+                    + addr.getFeatureName();
+        }
+
+        return address;
+
+
+
+    }
+
+
+
     class RVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CircleImageView ivProfile;
@@ -182,6 +263,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         TextView userID;
         TextView date;
         TextView textContent;
+        TextView location;
         //TextView textTitle;
         //TextView like;
         //ImageView btnLike, btnRe;
@@ -194,6 +276,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             date = (TextView)itemView.findViewById(R.id.tv_date);
            // textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
+            location = (TextView)itemView.findViewById(R.id.tv_location);
             //like = (TextView) itemView.findViewById(R.id.tv_like);
             //btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
             //btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
@@ -223,47 +306,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                         intent.putExtra(TEXT_CONTENT, selectedCard.getTextContent());
                         intent.putExtra(LIKE, selectedCard.getLike());
                         intent.putExtra("video_url", selectedCard.getVideoUrl());
+                        //intent.putExtra("location_url", selectedCard.getLocationUrl());
                         context.startActivity(intent);
                     }catch(Exception e){
-                        Log.d("uks",e.getMessage());
+                        Log.d(TAG,e.getMessage());
                     }
                     break;
                 }
 
             }
         }
-
-/*        @Override
-        public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.btn1:
-                    Toast.makeText(context,getLayoutPosition() + "th ImageView Clicked",Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.btn2:
-                    Toast.makeText(context, "button2 clicked", Toast.LENGTH_LONG).show();
-                    break;
-            }
-        }*/
     }
-
-    /*
-    Steps to handle the recycler click
-    1. Create a class that extends RecyclerView.OnItemTouchListener
-
-    2. Create an interface inside that class that supports click and long click and indicates the View
-    that was clicked and the position where it was clicked
-
-    3. Create a GestureDetector to detect ACTION_UP single tap and long press events
-
-    4. Return true from the singleTap to indicate your GestureDetector has consumed the event.
-
-    5. Find the childView containing the coordinates specified by the MotionEvent and
-       if the childView is not null and the listener is not null either, fire a long click event
-
-    6. Use the onInterceptTouchEvnent of your RecccyclerView to check if the childView is not null,
-       the listener is not null and the gesture detector consumed the touch event
-
-    7. If above condition holds true, fire the click event
-     */
 
 }

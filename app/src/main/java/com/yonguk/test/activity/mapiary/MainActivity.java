@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
     private void setFragment(){
         Bundle bundle = new Bundle();
-        bundle.putString("USER_ID", userID);
+        bundle.putString(KEY_ID, userID);
         mMainFragment = MainFragment.newInstance();
         mMainFragment.setArguments(bundle);
         mFollowFragment = FollowFragment.newInstance();

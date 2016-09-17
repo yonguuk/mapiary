@@ -8,6 +8,7 @@ import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +43,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.services.commons.models.Position;
 import com.mapbox.services.commons.utils.PolylineUtils;
+import com.yonguk.test.activity.mapiary.MainActivity;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.camera.Upload;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
@@ -371,6 +373,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         if(id == R.id.action_upload){
             uploadVideo();
+        }
+
+        if(id == R.id.home){
+            NavUtils.navigateUpFromSameTask(this);
         }
         return super.onOptionsItemSelected(item);
     }

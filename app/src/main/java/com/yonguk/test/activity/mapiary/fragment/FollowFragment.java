@@ -41,7 +41,7 @@ public class FollowFragment extends Fragment{
     private VolleySingleton volleySingleton = null;
     private ImageLoader imageLoader = null;
     private RequestQueue requestQueue = null;
-    private final String KEY_USER_ID = "user_id";
+    private final String KEY_ID = "user_id";
     String userID="";
     final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/follow_card.php";
 
@@ -58,7 +58,7 @@ public class FollowFragment extends Fragment{
         volleySingleton = VolleySingleton.getInstance(getActivity());
         requestQueue = volleySingleton.getRequestQueue();
         Bundle bundle = this.getArguments();
-        userID = bundle.getString("USER_ID");
+        userID = bundle.getString(KEY_ID);
 
         //Log.i("uks","follow : onCreate()");
 
