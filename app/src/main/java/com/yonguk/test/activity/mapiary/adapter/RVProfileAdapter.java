@@ -130,7 +130,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
 
             }catch(Exception e){
-                Log.i(TAG,"error");
+                Log.i(TAG,"Exception : " + e.toString());
             }
         }else if(holder instanceof ViewHolderRV){
             final ViewHolderRV holderRV = (ViewHolderRV)holder;
@@ -143,7 +143,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             //holderRV.like.setText(curData.getLike()+"");
 
             String imageProfileUrl = curData.getImageProfileUrl();
-            Log.i("uks","profile url : " + imageProfileUrl);
+            Log.i(TAG,"profile url : " + imageProfileUrl);
             if(imageProfileUrl != null){
                 imageLoader.get(imageProfileUrl, new ImageLoader.ImageListener() {
                     @Override
@@ -153,7 +153,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.i("uks","profile error");
+                        Log.i(TAG,"onErrorResponse()" + error.toString());
                         holderRV.ivProfile.setImageResource(R.drawable.profile);
                     }
                 });
@@ -211,7 +211,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void onClick(View view) {
             switch(view.getId()) {
                 case R.id.profile_mapiary:{
-                    Log.i("uks", "mapiary clicked");
+                    Log.i(TAG, "mapiary clicked");
                     Intent intent = new Intent(context, MapiaryListActivity.class);
                     intent.putExtra(USER_ID,userID);
                     context.startActivity(intent);
@@ -299,7 +299,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         intent.putExtra(LIKE, selectedCard.getLike());
                         context.startActivity(intent);
                     }catch(Exception e){
-                        Log.d("uks",e.getMessage());
+                        Log.d(TAG,e.getMessage());
                     }
                     break;
                 }
