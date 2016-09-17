@@ -14,6 +14,7 @@ import com.yonguk.test.activity.mapiary.R;
  */
 public class NewsFragment extends Fragment {
 
+    private final String KEY_ID = "user_id";
     public static NewsFragment newInstance(){
         NewsFragment f = new NewsFragment();
         return f;

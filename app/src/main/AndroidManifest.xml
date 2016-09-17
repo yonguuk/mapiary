@@ -73,7 +73,9 @@
             android:name=".subactivity.MapiaryCardActivity"
             android:label="@string/title_activity_mapiary_card"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".subactivity.UploadActivity" />
+        <activity android:name=".subactivity.UploadActivity" >
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".MainActivity"></meta-data>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

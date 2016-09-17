@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment{
     private final String REQUEST_HEADER_URL = "http://kktt0202.dothome.co.kr/master/user/profile.php";
     private final String REQUEST_URL = "http://kktt0202.dothome.co.kr/master/contents/my_contents.php";
     private final String UPLOAD_PROFILE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_profile.php";
-    private final String KEY_USER_ID = "user_id";
+    private final String KEY_ID = "user_id";
     private final String KEY_STATE = "state_message";
     private final String KEY_CARDS = "cards";
     private final String KEY_FOLLOWING = "following";
@@ -88,8 +88,8 @@ public class ProfileFragment extends Fragment{
         requestQueue = volleySingleton.getRequestQueue();
         imageLoader = volleySingleton.getImageLoader();
         Bundle bundle = this.getArguments();
-        userID = bundle.getString("USER_ID");
-        cachedImageUrl = "http://kktt0202.dothome.co.kr/master/upload/image_profile" + "/" + userID + ".png";
+        userID = bundle.getString(KEY_ID);
+        //cachedImageUrl = "http://kktt0202.dothome.co.kr/master/upload/image_profile" + "/" + userID + ".png";
 
         Log.i(TAG, "Profile : onCreate()");
     }
@@ -100,6 +100,7 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout mLinearLayout = (LinearLayout)inflater.inflate(R.layout.fragment_profile,container,false);
         root = mLinearLayout;
+
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.profile_swipe_layout);
         mRecyclerView = (RecyclerView) mLinearLayout.findViewById(R.id.rv_profile);
         mRVProfileAdapter = new RVProfileAdapter(getActivity(),userID);
@@ -238,7 +239,7 @@ public class ProfileFragment extends Fragment{
                     JSONArray arrayResult = response.getJSONArray("result");
                     for(int i=0; i<arrayResult.length(); i++){
                         JSONObject currentResult = arrayResult.getJSONObject(i);
-                        user_id = currentResult.getString(KEY_USER_ID);
+                        user_id = currentResult.getString(KEY_ID);
                         state_message = currentResult.getString(KEY_STATE);
                         //cards = currentResult.getString(KEY_CARDS);
                         following = currentResult.getString(KEY_FOLLOWING);
@@ -319,7 +320,7 @@ public class ProfileFragment extends Fragment{
                 String image = getStringImage(bitmap);
                 Map<String, String> params = new HashMap<String,String>();
                 params.put(KEY_UPLOAD_PROFILE_IMAGE,image);
-                params.put(KEY_USER_ID,userID);
+                params.put(KEY_ID,userID);
                 return params;
             }
         };

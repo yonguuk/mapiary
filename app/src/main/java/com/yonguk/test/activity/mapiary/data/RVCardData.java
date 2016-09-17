@@ -14,6 +14,15 @@ public class RVCardData {
     String date = null;
     String textTitle = null;
     String textContent = null;
+    String locationUrl = null;
+
+    public String getLocationUrl() {
+        return locationUrl;
+    }
+
+    public void setLocationUrl(String locationUrl) {
+        this.locationUrl = locationUrl;
+    }
 
     String userID = null;
     int like=0;

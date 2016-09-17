@@ -130,7 +130,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
 
             }catch(Exception e){
-                Log.i(TAG,"error");
+                Log.i(TAG,e.toString());
             }
         }else if(holder instanceof ViewHolderRV){
             final ViewHolderRV holderRV = (ViewHolderRV)holder;
