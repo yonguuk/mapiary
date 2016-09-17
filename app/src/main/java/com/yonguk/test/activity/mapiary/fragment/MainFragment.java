@@ -50,7 +50,7 @@ public class MainFragment extends Fragment {
     private RequestQueue requestQueue = null;
     String userID=null;
 
-    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_back.php";
+    final String URL_SERVER= "http://kktt0202.dothome.co.kr/master/contents/random_backup.php";
     final String TAG = "MainFragment";
     private final String KEY_ID = "user_id";
     public static MainFragment newInstance(){
