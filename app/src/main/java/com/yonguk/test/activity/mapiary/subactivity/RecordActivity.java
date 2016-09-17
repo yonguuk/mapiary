@@ -57,9 +57,17 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     private MediaRecorder mMediaRecorder;
     private File mOutputFile;
 
+    private String userID = "";
+
+    private final String KEY_ID = "user_id";
+    private final String KEY_PATH = "path";
+    private final String KEY_LOCATION = "location";
+    private final String KEY_EMOTION = "emotion";
+
     private boolean isRecording = false;
     private static final String TAG = "RecordActivity";
     private final int REQUEST_CODE_RECORD = 1;
+
 
     private static final long INTERVAL = 1000*1;
     private static final long FASTEST_INTERVAL = 1000*1;
@@ -80,6 +88,9 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         if(!isGooglePlayServicesAvailable()){
             finish();
         }
+
+        Intent intent = getIntent();
+        userID = intent.getStringExtra(KEY_ID);
 
         mPreview = (TextureView) findViewById(R.id.texture_view);
         btnCapture = (Button) findViewById(R.id.btn_capture);
@@ -173,8 +184,10 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     , Uri.parse("file://" + mOutputFile.getPath())));
             String location = createJsonObject(locationInfos).toString();
             Intent intent  = new Intent(RecordActivity.this, UploadActivity.class);
-            intent.putExtra("path", mOutputFile.getPath());
-            intent.putExtra("location", location);
+            intent.putExtra(KEY_ID,userID);
+            intent.putExtra(KEY_PATH, mOutputFile.getPath());
+            intent.putExtra(KEY_LOCATION, location);
+            intent.putExtra(KEY_EMOTION,"stress");
             startActivity(intent);
             finish();
         } else {

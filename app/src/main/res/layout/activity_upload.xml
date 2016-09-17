@@ -73,6 +73,7 @@
                 />
 
             <EditText
+                android:id="@+id/et_text"
                 android:layout_width="0dp"
                 android:layout_height="128dp"
                 android:layout_weight="12.56"

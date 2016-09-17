@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,8 +58,8 @@ import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
     ImageView iv;
-    String path;
     LinearLayout root;
+    EditText etText;
     private Toolbar toolbar;
     //private Button btnUpload;
     //private TextView tvPath, tvUrl;
@@ -66,7 +67,21 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private MapboxMap mapboxMap;
     Bitmap thumbnail;
     JSONObject resultJson=null;
+    String locationJsonString="";
     JSONObject json;
+
+    private String userID;
+    private String path;
+    private String location;
+    private String emotion;
+    private final String KEY_ID = "user_id";
+    private final String KEY_PATH = "path";
+    private final String KEY_LOCATION = "location";
+    private final String KEY_CARD_ID = "card_id";
+    private final String KEY_TEXT ="content";
+    private final String KEY_EMOTION = "emotion";
+    String textContent;
+
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
@@ -86,19 +101,21 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         requestQueue = volleySingleton.getRequestQueue();
 
         setView();
-        getJSONFromUrl(URL_LOCATION);
+        //getJSONFromUrl(URL_LOCATION);
         Intent intent = getIntent();
-        path = intent.getStringExtra("path");
-        String location = intent.getStringExtra("location");
+        userID = intent.getStringExtra(KEY_ID);
+        path = intent.getStringExtra(KEY_PATH);
+        locationJsonString= intent.getStringExtra(KEY_LOCATION);
+        emotion = intent.getStringExtra(KEY_EMOTION);
 
-        Log.i(TAG, location);
+        Log.i(TAG, locationJsonString);
         try {
-            json = new JSONObject(location);
+            json = new JSONObject(locationJsonString);
         }catch (JSONException e){
 
         }
-/*        points = parseJson(json);
-        Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());*/
+        //points = parseJson(json);
+        //Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());
         thumbnail = ThumbnailUtils.createVideoThumbnail(path,
                 MediaStore.Images.Thumbnails.MINI_KIND);
         iv.setImageBitmap(thumbnail);
@@ -175,10 +192,14 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 String content = etContent.getText().toString().trim();
                 String emotion = "happy";*/
                 Map<String, String> params = new HashMap<>();
-
+                textContent = etText.getText().toString();
+                params.put(KEY_ID,userID);
                 params.put(KEY_IMAGE, image);
-                params.put("card_id", cardId);
-                Log.i(TAG, cardId);
+                params.put(KEY_CARD_ID, cardId);
+                params.put(KEY_LOCATION, json.toString());
+                params.put(KEY_TEXT,textContent);
+                params.put(KEY_EMOTION,emotion);
+                Log.i(TAG, userID + "," + cardId + "," + textContent + "," + emotion);
                 return params;
             }
         };
@@ -202,22 +223,23 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-
         // Load and Draw the GeoJSON
         new DrawGeoJSON().execute();
+/*
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(points.get(0))
+                        .title("Hello World!")
+                        .snippet("Welcome to my marker."));
 
-/*        mapboxMap.addMarker(new MarkerOptions()
-                .position(points.get(0))
-                .title("Hello World!")
-                .snippet("Welcome to my marker."));
+
 
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(points.get(0))
                 .zoom(13)
                 .tilt(20)
                 .build()
-
-        ));*/
+        ));
+            */
     }
 
     /**Draw GeoJson Line**/
@@ -227,7 +249,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         protected List<LatLng> doInBackground(Void... voids) {
             ArrayList<LatLng> points = parseJson(json);
             for(int i=0; i<points.size(); i++){
-                Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
+                //Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
             }
             return points;
         }
@@ -243,6 +265,11 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                         .color(Color.parseColor("#cc0000"))
                         .width(4)
                 );
+
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(points.get(0))
+                        .title("Hello World!")
+                        .snippet("Welcome to my marker."));
 
                 mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                         .target(pointArray[0])
@@ -328,7 +355,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                         JSONArray coord = coords.getJSONArray(i);
                         LatLng latLng = new LatLng(coord.getDouble(0),coord.getDouble(1));
                         points.add(latLng);
-                        Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
+                        Log.i(TAG, "아" + points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
                     }
                 }
             }
@@ -361,6 +388,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         root = (LinearLayout) findViewById(R.id.root);
+        etText = (EditText) findViewById(R.id.et_text);
         mapView = (MapView) findViewById(R.id.mapview);
         //btnUpload = (Button) findViewById(R.id.btn_upload);
         //tvPath = (TextView) findViewById(R.id.tv_path);

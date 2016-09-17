@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     private Menu menu =  null;
     private static final String CLEAR_DB_URL = "http://kktt0202.dothome.co.kr/master/upload/delete/reset.php";
     private static final String TAG = "MainActivity";
+    private final String KEY_ID = "user_id";
     /*Fragments*/
     protected MainFragment mMainFragment = null;
     protected FollowFragment mFollowFragment = null;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         mContext = getApplicationContext();
 
         Intent intent = getIntent();
-        userID = intent.getStringExtra("USER_ID");
+        userID = intent.getStringExtra(KEY_ID);
 
 
         setFragment();
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, RecordActivity.class);
-                intent.putExtra("USER_ID", userID);
+                intent.putExtra(KEY_ID, userID);
                 startActivityForResult(intent,REQUEST_CODE_RECORD);
 
             }
