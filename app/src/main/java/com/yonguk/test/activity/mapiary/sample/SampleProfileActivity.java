@@ -1,4 +1,4 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.sample;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
+
+import com.yonguk.test.activity.mapiary.R;
 
 public class SampleProfileActivity extends AppCompatActivity {
 

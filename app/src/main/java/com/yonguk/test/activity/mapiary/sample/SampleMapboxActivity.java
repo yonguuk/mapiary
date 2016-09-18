@@ -1,4 +1,4 @@
-package com.yonguk.test.activity.mapiary;
+package com.yonguk.test.activity.mapiary.sample;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -37,6 +37,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.SupportMapFragment;
+import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 
 import org.json.JSONArray;

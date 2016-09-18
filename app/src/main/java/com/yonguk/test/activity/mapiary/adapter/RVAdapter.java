@@ -24,6 +24,7 @@ import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
+import com.yonguk.test.activity.mapiary.subactivity.MapboxActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,6 +56,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
     private final String TITLE = "title";
     private final String TEXT_CONTENT = "text_content";
     private final String Date = "date";
+    private final String LOCATION ="location";
+    private final String EMOTiON = "emotion";
 
     private final String TAG = "RVAdapter";
 
@@ -116,16 +119,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
-        getJSONFromUrl(curData.getLocationUrl());
+        //getJSONFromUrl(curData.getLocationUrl());
         holder.userID.setText(curData.getUserID());
         holder.date.setText(curData.getDate());
         holder.textContent.setText(curData.getTextContent());
-        try {
+        holder.location.setText(curData.getAddress());
+/*        try {
             points = parseJsonLocation(resultJson);
             holder.location.setText(getAddress(points.get(0).getLatitude(), points.get(0).getLongitude()));
         }catch (Exception e){
             Log.i(TAG, e.toString());
-        }
+        }*/
         String imageProfileUrl = curData.getImageProfileUrl();
         Log.i(TAG,"profile url : " + imageProfileUrl);
         if(imageProfileUrl != null){
@@ -264,6 +268,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
         CircleImageView ivProfile;
         ImageView ivContent;
+        ImageView ivShare;
         TextView userID;
         TextView date;
         TextView textContent;
@@ -281,12 +286,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
            // textTitle = (TextView) itemView.findViewById(R.id.tv_text_title);
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
             location = (TextView)itemView.findViewById(R.id.tv_location);
+            ivShare = (ImageView) itemView.findViewById(R.id.share);
             //like = (TextView) itemView.findViewById(R.id.tv_like);
             //btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
             //btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
 
             ivProfile.setOnClickListener(this);
             ivContent.setOnClickListener(this);
+            ivShare.setOnClickListener(this);
             //btnLike.setOnClickListener(this);
             //btnRe.setOnClickListener(this);
         }
@@ -317,7 +324,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                     }
                     break;
                 }
-
+                case R.id.share:{
+                    Intent intent = new Intent(context, MapboxActivity.class);
+                    RVCardData selectedCard = cardData.get(getAdapterPosition());
+                    intent.putExtra(LOCATION,selectedCard.getLocationUrl());
+                    intent.putExtra(EMOTiON,selectedCard.getEmotion());
+                    context.startActivity(intent);
+                    break;
+                }
             }
         }
     }

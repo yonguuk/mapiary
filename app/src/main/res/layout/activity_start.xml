@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
-    tools:context="com.yonguk.test.activity.mapiary.subactivity.MapboxActivity">
+    tools:context="com.yonguk.test.activity.mapiary.StartActivity">
 
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/test_mapview"
+    <ImageView
+        android:id="@+id/iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        mapbox:style_url="mapbox://styles/mapbox/streets-v9"
-        mapbox:zoom="11"
-        ></com.mapbox.mapboxsdk.maps.MapView>
+        android:src="@drawable/start"
+        android:scaleType="centerCrop"/>
 </RelativeLayout>

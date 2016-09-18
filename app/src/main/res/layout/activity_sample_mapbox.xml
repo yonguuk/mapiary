@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yonguk.test.activity.mapiary.SampleMapboxActivity">
+    tools:context=".sample.SampleMapboxActivity">
 
 
 <FrameLayout

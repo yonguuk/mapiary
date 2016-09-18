@@ -7,7 +7,25 @@ public class RVCardData {
 
     String imageMainUrl = null;
     String imageProfileUrl = null;
+    String emotion = null;
 
+    public String getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(String emotion) {
+        this.emotion = emotion;
+    }
+
+    String address= null;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     String videoUrl = null;
     String name = null;

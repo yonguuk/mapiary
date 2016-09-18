@@ -137,6 +137,8 @@ public class MainFragment extends Fragment {
                         String videoUrl = currentResult.getString("video_url");
                         String textContent = currentResult.getString("content");
                         String locationUrl = currentResult.getString("location_url");
+                        String address = currentResult.getString("address");
+                        String emotion = currentResult.getString("emotion");
                         //String textTitle = currentResult.getString("title");
                         int like = currentResult.getInt("like");
 
@@ -149,6 +151,8 @@ public class MainFragment extends Fragment {
                         card.setImageProfileUrl(profileImageUrl);
                         card.setVideoUrl(videoUrl);
                         card.setLocationUrl(locationUrl);
+                        card.setAddress(address);
+                        card.setEmotion(emotion);
                         list.add(card);
                     }
                 }

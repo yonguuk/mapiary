@@ -79,7 +79,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private String userID;
     private String path;
-    private String location;
+    private String address;
     private int emotion;
     private String emotionColor;
     private final String KEY_ID = "user_id";
@@ -88,6 +88,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private final String KEY_CARD_ID = "card_id";
     private final String KEY_TEXT ="content";
     private final String KEY_EMOTION = "emotion";
+    private final String KEY_ADDRESS = "address";
     private final int EMOTION_NUTRAL = 0;
     private final int EMOTION_RELAX = 1;
     private final int EMOTION_ACTIVE = 2;
@@ -98,7 +99,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
-    final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
+    //final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
+    final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_address.php";
     final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/location3.json";
 
     //ArrayList<LatLng> points;
@@ -145,7 +147,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_upload:
-                uploadVideo();
+                //uploadVideo();
+                uploadImage("1");
                 break;
         }
     }
@@ -210,10 +213,11 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 textContent = etText.getText().toString();
                 params.put(KEY_ID,userID);
                 params.put(KEY_IMAGE, image);
-                params.put(KEY_CARD_ID, cardId);
+                //params.put(KEY_CARD_ID, cardId);
                 params.put(KEY_LOCATION, json.toString());
                 params.put(KEY_TEXT,textContent);
                 params.put(KEY_EMOTION,emotion+"");
+                params.put(KEY_ADDRESS,address);
                 Log.i(TAG, userID + "," + cardId + "," + textContent + "," + emotion);
                 return params;
             }
@@ -263,9 +267,6 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected List<Position> doInBackground(Void... voids) {
             ArrayList<Position> points = parseJson(json);
-            for(int i=0; i<points.size(); i++){
-                //Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
-            }
             //tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
             return points;
         }
@@ -314,8 +315,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         LatLng[] result = new LatLng[after.length];
         for (int i = 0; i < after.length; i++)
             result[i] = new LatLng(after[i].getLatitude(), after[i].getLongitude());
-
-        tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
+        address = getAddress(points.get(0).getLatitude(),points.get(0).getLongitude());
+        tvLocation.setText(address);
         mapboxMap.addPolyline(new PolylineOptions()
                 .add(result)
                 .color(Color.parseColor(emotionColor))
@@ -427,12 +428,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         if(list.size() > 0){
             Address addr = list.get(0);
-            address = addr.getCountryName() + " "
+            address = //addr.getCountryName() + " "
                     //+ addr.getPostalCode() + " "
-                    + addr.getAdminArea() + " "
+                     addr.getAdminArea() + " "
                     + addr.getLocality() + " "
-                    + addr.getThoroughfare() + " "
-                    + addr.getFeatureName();
+                    + addr.getThoroughfare();
+                    //+ addr.getFeatureName();
         }
 
         return address;
@@ -443,7 +444,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         int id = item.getItemId();
 
         if(id == R.id.action_upload){
-            uploadVideo();
+            //uploadVideo();
         }
 
         if(id == R.id.home){

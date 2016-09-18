@@ -88,6 +88,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
    // LocationInfo latlon = new LocationInfo();
     List<LocationInfo> locationInfos=null;
 
+
     /** mindwave **/
     private TgStreamReader tgStreamReader;
     private BluetoothAdapter mBluetoothAdapter;
@@ -112,6 +113,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         mPreview = (TextureView) findViewById(R.id.texture_view);
         btnCapture = (Button) findViewById(R.id.btn_capture);
         btnCapture.setOnClickListener(this);
+
 
         buildGoogleApiClient();
 
