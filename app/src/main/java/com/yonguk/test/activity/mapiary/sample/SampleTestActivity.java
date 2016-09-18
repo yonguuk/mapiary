@@ -311,9 +311,6 @@ public class SampleTestActivity extends AppCompatActivity implements OnMapReadyC
         }
 
         return address;
-
-
-
     }
 
     /**End My Location**/

@@ -128,11 +128,12 @@
             android:tint="@color/iron_dark"/>
 
         <TextView
+            android:id="@+id/tv_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14dp"
             android:textColor="@color/black"
-            android:text="인천광역시 동구 화수동"/>
+            android:text=""/>
 
     </LinearLayout>
 

@@ -69,8 +69,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     private final int REQUEST_CODE_RECORD = 1;
 
 
-    private static final long INTERVAL = 1000*1;
-    private static final long FASTEST_INTERVAL = 1000*1;
+    private static final long INTERVAL = 1000*3;
+    private static final long FASTEST_INTERVAL = 1000*2;
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -235,12 +235,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         List<Camera.Size> mSupportedPreviewSizes = parameters.getSupportedPreviewSizes();
         List<Camera.Size> mSupportedVideoSizes = parameters.getSupportedVideoSizes();
         Camera.Size optimalSize = CameraHelper.getOptimalVideoSize(mSupportedVideoSizes,
-                mSupportedPreviewSizes, mPreview.getWidth(), mPreview.getHeight());
+                mSupportedPreviewSizes, 640, 480);
 
         // Use the same size for recording profile.
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
-        profile.videoFrameWidth = optimalSize.width;
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
+        profile.videoFrameWidth = optimalSize.width ;
         profile.videoFrameHeight = optimalSize.height;
+        //profile.video
 
         // likewise for the camera object itself.
         parameters.setPreviewSize(profile.videoFrameWidth, profile.videoFrameHeight);
@@ -266,10 +267,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         // Step 2: Set sources
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT );
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-
+        //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        //mMediaRecorder.setVideoSize(420,420);
+        // mMediaRecorder.setVideoFrameRate(30);
         // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
         mMediaRecorder.setProfile(profile);
-        //mMediaRecorder.setVideoSize(420,420);
+
+
         // Step 4: Set output file
         mOutputFile = CameraHelper.getOutputMediaFile(CameraHelper.MEDIA_TYPE_VIDEO);
         if (mOutputFile == null) {

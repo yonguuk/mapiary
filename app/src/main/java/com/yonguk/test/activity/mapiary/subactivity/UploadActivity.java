@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.PersistableBundle;
@@ -41,6 +43,7 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.services.commons.geojson.Point;
 import com.mapbox.services.commons.models.Position;
 import com.mapbox.services.commons.utils.PolylineUtils;
 import com.yonguk.test.activity.mapiary.MainActivity;
@@ -56,6 +59,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
@@ -63,6 +67,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     LinearLayout root;
     EditText etText;
     private Toolbar toolbar;
+    TextView tvLocation;
     //private Button btnUpload;
     //private TextView tvPath, tvUrl;
     private MapView mapView;
@@ -88,9 +93,10 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private RequestQueue requestQueue = null;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
     final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
-    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/test.json";
+    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/location3.json";
 
-    ArrayList<LatLng> points;
+    //ArrayList<LatLng> points;
+    ArrayList<Position> points;
 
     private static final String KEY_IMAGE = "image";
     private static final String TAG = "UploadActivity";
@@ -114,7 +120,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         try {
             json = new JSONObject(locationJsonString);
         }catch (JSONException e){
-
+            Log.d(TAG,e.toString());
         }
         //points = parseJson(json);
         //Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());
@@ -177,6 +183,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             public void onResponse(String response) {
                 loading.dismiss();
                 Log.i(TAG, response.toString());
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -245,21 +252,23 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     /**Draw GeoJson Line**/
-    private class DrawGeoJSON extends AsyncTask<Void, Void, List<LatLng>> {
+    private class DrawGeoJSON extends AsyncTask<Void, Void, List<Position>> {
 
         @Override
-        protected List<LatLng> doInBackground(Void... voids) {
-            ArrayList<LatLng> points = parseJson(json);
+        protected List<Position> doInBackground(Void... voids) {
+            ArrayList<Position> points = parseJson(json);
             for(int i=0; i<points.size(); i++){
                 //Log.i(TAG, points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
             }
+            //tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
             return points;
         }
 
         @Override
-        protected void onPostExecute(List<LatLng> points) {
+        protected void onPostExecute(List<Position> points) {
             super.onPostExecute(points);
 
+/*
             if(points.size()>0){
                 LatLng[] pointArray = points.toArray(new LatLng[points.size()]);
                 mapboxMap.addPolyline(new PolylineOptions()
@@ -283,6 +292,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             }
 
 
+*/
+            drawSimplify(points);
             Log.i(TAG, "onPostExecute()");
         }
     }
@@ -298,10 +309,24 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < after.length; i++)
             result[i] = new LatLng(after[i].getLatitude(), after[i].getLongitude());
 
+        tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
         mapboxMap.addPolyline(new PolylineOptions()
                 .add(result)
                 .color(Color.parseColor("#3bb2d0"))
                 .width(4));
+
+        mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                .target(result[0])
+                .zoom(18)
+                .tilt(20)
+                .build()
+
+        ));
+        mapboxMap.addMarker(new MarkerOptions()
+                .position(result[0])
+                .title("Hello World!")
+                .snippet("Welcome to my marker."));
+
 
 /*
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
@@ -316,6 +341,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
+
+/*
 
     public void getJSONFromUrl(String url){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -338,10 +366,13 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+*/
 
 
-    private ArrayList<LatLng> parseJson(JSONObject jsonLocation){
-        ArrayList<LatLng> points = new ArrayList<>();
+
+
+    private ArrayList<Position> parseJson(JSONObject jsonLocation){
+        ArrayList<Position> points = new ArrayList<>();
 
         try{
             JSONObject json = jsonLocation;
@@ -355,7 +386,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     JSONArray coords = geometry.getJSONArray("coordinates");
                     for(int i=0; i<coords.length(); i++){
                         JSONArray coord = coords.getJSONArray(i);
-                        LatLng latLng = new LatLng(coord.getDouble(0),coord.getDouble(1));
+                        Position latLng = Position.fromCoordinates(coord.getDouble(1),coord.getDouble(0));
                         points.add(latLng);
                         Log.i(TAG, "아" + points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
                     }
@@ -365,6 +396,40 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             Log.e(TAG,"Excepting Loading GeoJson: " + e.toString());
         }
         return points;
+    }
+
+    /** 위도와 경도 기반으로 주소를 리턴하는 메서드*/
+    public String getAddress(double lat, double lng){
+        String address = null;
+
+        //위치정보를 활용하기 위한 구글 API 객체
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        //주소 목록을 담기 위한 HashMap
+        List<Address> list = null;
+
+        try{
+            list = geocoder.getFromLocation(lat, lng, 1);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        if(list == null){
+            Log.e("getAddress", "주소 데이터 얻기 실패");
+            return null;
+        }
+
+        if(list.size() > 0){
+            Address addr = list.get(0);
+            address = addr.getCountryName() + " "
+                    //+ addr.getPostalCode() + " "
+                    + addr.getAdminArea() + " "
+                    + addr.getLocality() + " "
+                    + addr.getThoroughfare() + " "
+                    + addr.getFeatureName();
+        }
+
+        return address;
     }
 
     @Override
@@ -396,6 +461,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         root = (LinearLayout) findViewById(R.id.root);
         etText = (EditText) findViewById(R.id.et_text);
         mapView = (MapView) findViewById(R.id.mapview);
+        tvLocation = (TextView)findViewById(R.id.tv_location);
         //btnUpload = (Button) findViewById(R.id.btn_upload);
         //tvPath = (TextView) findViewById(R.id.tv_path);
         //tvUrl = (TextView) findViewById(R.id.tv_url);
