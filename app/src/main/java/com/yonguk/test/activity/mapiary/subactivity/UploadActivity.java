@@ -80,14 +80,20 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private String userID;
     private String path;
     private String location;
-    private String emotion;
+    private int emotion;
+    private String emotionColor;
     private final String KEY_ID = "user_id";
     private final String KEY_PATH = "path";
     private final String KEY_LOCATION = "location";
     private final String KEY_CARD_ID = "card_id";
     private final String KEY_TEXT ="content";
     private final String KEY_EMOTION = "emotion";
+    private final int EMOTION_NUTRAL = 0;
+    private final int EMOTION_RELAX = 1;
+    private final int EMOTION_ACTIVE = 2;
+    private final int EMOTION_STRESS = 3;
     String textContent;
+
 
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
@@ -114,8 +120,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         userID = intent.getStringExtra(KEY_ID);
         path = intent.getStringExtra(KEY_PATH);
         locationJsonString= intent.getStringExtra(KEY_LOCATION);
-        emotion = intent.getStringExtra(KEY_EMOTION);
-
+        emotion = intent.getIntExtra(KEY_EMOTION,1);
+        emotionColor = getEmotionColor(emotion);
         Log.i(TAG, locationJsonString);
         try {
             json = new JSONObject(locationJsonString);
@@ -207,7 +213,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 params.put(KEY_CARD_ID, cardId);
                 params.put(KEY_LOCATION, json.toString());
                 params.put(KEY_TEXT,textContent);
-                params.put(KEY_EMOTION,emotion);
+                params.put(KEY_EMOTION,emotion+"");
                 Log.i(TAG, userID + "," + cardId + "," + textContent + "," + emotion);
                 return params;
             }
@@ -312,12 +318,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
         mapboxMap.addPolyline(new PolylineOptions()
                 .add(result)
-                .color(Color.parseColor("#3bb2d0"))
-                .width(4));
+                .color(Color.parseColor(emotionColor))
+                .width(6));
 
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(result[0])
-                .zoom(18)
+                .zoom(19)
                 .tilt(20)
                 .build()
 
@@ -468,6 +474,19 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         iv = (ImageView) findViewById(R.id.iv);
     }
 
+    private String getEmotionColor(int emotion){
+        String color;
+        if(emotion == EMOTION_RELAX){
+            color = "#4CAF50";
+        }else if(emotion == EMOTION_ACTIVE){
+            color = "#9C27B0";
+        }else if(emotion == EMOTION_STRESS){
+            color = "#F44336";
+        }else{
+            color = "#9E9E9E";
+        }
+        return color;
+    }
     @Override
     protected void onResume() {
         super.onResume();

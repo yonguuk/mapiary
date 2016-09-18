@@ -87,8 +87,7 @@ public class ProfileFragment extends Fragment{
         volleySingleton = VolleySingleton.getInstance(getActivity());
         requestQueue = volleySingleton.getRequestQueue();
         imageLoader = volleySingleton.getImageLoader();
-        Bundle bundle = this.getArguments();
-        userID = bundle.getString(KEY_ID);
+
         //cachedImageUrl = "http://kktt0202.dothome.co.kr/master/upload/image_profile" + "/" + userID + ".png";
 
         Log.i(TAG, "Profile : onCreate()");
@@ -100,11 +99,12 @@ public class ProfileFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LinearLayout mLinearLayout = (LinearLayout)inflater.inflate(R.layout.fragment_profile,container,false);
         root = mLinearLayout;
-
+        Bundle bundle = this.getArguments();
+        userID = bundle.getString(KEY_ID);
         mSwipeRefrechLayout = (SwipeRefreshLayout) mLinearLayout.findViewById(R.id.profile_swipe_layout);
         mRecyclerView = (RecyclerView) mLinearLayout.findViewById(R.id.rv_profile);
         mRVProfileAdapter = new RVProfileAdapter(getActivity(),userID);
-        Log.d(TAG,userID);
+        //Log.d(TAG,userID);
 
         mRecyclerView.setAdapter(mRVProfileAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity()){
@@ -254,7 +254,7 @@ public class ProfileFragment extends Fragment{
                     }
                 }
             }catch (Exception e){
-
+                Log.i(TAG,e.toString());
             }
         }
         return profile;

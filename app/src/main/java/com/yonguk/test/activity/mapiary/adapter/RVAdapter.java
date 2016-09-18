@@ -77,6 +77,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         this.context = context;
         inflater = LayoutInflater.from(context);
         volleySingleton = VolleySingleton.getInstance(context);
+        requestQueue = volleySingleton.getRequestQueue();
         imageLoader = volleySingleton.getImageLoader();
     }
 
@@ -112,15 +113,19 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
     @Override
     public void onBindViewHolder(final RVAdapter.RVViewHolder holder, int position) {
+
         RVCardData curData = new RVCardData();
         curData = cardData.get(position);
+        getJSONFromUrl(curData.getLocationUrl());
         holder.userID.setText(curData.getUserID());
         holder.date.setText(curData.getDate());
-
         holder.textContent.setText(curData.getTextContent());
-        //getJSONFromUrl(curData.getLocationUrl());
-        //points = parseJson(resultJson);
-        //holder.location.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
+        try {
+            points = parseJsonLocation(resultJson);
+            holder.location.setText(getAddress(points.get(0).getLatitude(), points.get(0).getLongitude()));
+        }catch (Exception e){
+            Log.i(TAG, e.toString());
+        }
         String imageProfileUrl = curData.getImageProfileUrl();
         Log.i(TAG,"profile url : " + imageProfileUrl);
         if(imageProfileUrl != null){
@@ -190,7 +195,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         requestQueue.add(request);
     }
 
-    private ArrayList<LatLng> parseJson(JSONObject jsonLocation){
+    private ArrayList<LatLng> parseJsonLocation(JSONObject jsonLocation){
         ArrayList<LatLng> points = new ArrayList<>();
 
         try{
@@ -212,7 +217,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 }
             }
         }catch(Exception e){
-            Log.e(TAG,"Excepting Loading GeoJson: " + e.toString());
+            Log.e(TAG,"Excepting Parsing GeoJson: " + e.toString());
         }
         return points;
     }
@@ -240,12 +245,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
         if(list.size() > 0){
             Address addr = list.get(0);
-            address = addr.getCountryName() + " "
+            address =
                     //+ addr.getPostalCode() + " "
-                    + addr.getAdminArea() + " "
+                     addr.getAdminArea() + " "
                     + addr.getLocality() + " "
-                    + addr.getThoroughfare() + " "
-                    + addr.getFeatureName();
+                    + addr.getThoroughfare();
         }
 
         return address;
