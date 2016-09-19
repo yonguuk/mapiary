@@ -40,9 +40,7 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".sample.SampleVideoActivity" />
         <activity
             android:name=".SignUpActivity"
@@ -86,6 +84,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".subactivity.TrackingActivity"
+            android:label="@string/title_activity_tracking"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

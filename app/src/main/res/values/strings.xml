@@ -29,4 +29,5 @@
     <string name="title_activity_mapiary_card">MapiaryCardActivity</string>
     <string name="title_activity_sample_card">SampleCard</string>
     <string name="title_activity_main_tab">MainTabActivity</string>
+    <string name="title_activity_tracking">TrackingActivity</string>
 </resources>

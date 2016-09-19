@@ -60,15 +60,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="인천광역시 동구 화수동"
-                            android:textColor="@color/iron"
+                            android:textColor="@color/text_second"
                             android:gravity="center"
                             android:textSize="12sp"/>
                         <ImageView
                             android:layout_width="12dp"
-                            android:layout_height="12dp"
+                            android:layout_height="match_parent"
                             android:src="@drawable/ic_place_black_24dp"
-                            android:tint="@color/iron"
+                            android:tint="@color/text_second"
                             android:baselineAlignBottom="true"
+                            android:layout_gravity="bottom"
                             />
                     </LinearLayout>
 
@@ -79,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="@color/iron"
+                    android:textColor="@color/text_second"
                     android:text="9월 10일"
                     android:layout_gravity="right"
                     android:layout_centerVertical="true"
@@ -116,31 +117,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:orientation="horizontal"
-                android:background="@color/icon"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 >
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:tint="@color/iron_dark"
                         android:layout_marginRight="8dp"
-                        android:layout_marginLeft="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_favorite_border_black_24dp" />
+                        android:src="@drawable/ic_favorite_border_white_48dp" />
 
                     <ImageView
                         android:layout_gravity="center"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="8dp"
-                        android:src="@drawable/ic_comment_black_24dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/ic_chat_bubble_outline_white_48dp"
                         android:tint="@color/iron_dark"/>
 
                     <ImageView
                         android:id="@+id/share"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="8dp"
-                        android:src="@drawable/ic_share_black_24dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_attach_file_white_48dp"
                         android:tint="@color/iron_dark"
                         android:layout_gravity="center"
                         />

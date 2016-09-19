@@ -62,7 +62,7 @@ public class MapboxActivity extends AppCompatActivity implements OnMapReadyCallb
         requestQueue = volleySingleton.getRequestQueue();
         Intent intent = getIntent();
         getJSONFromUrl(intent.getStringExtra(KEY_LOCATION));
-        emotion = intent.getIntExtra(KEY_EMOTION,1);
+        emotion = Integer.parseInt(intent.getStringExtra(KEY_EMOTION));
         emotionColor = getEmotionColor(emotion);
         mapView=(MapView)findViewById(R.id.test_mapview);
         mapView.onCreate(savedInstanceState);

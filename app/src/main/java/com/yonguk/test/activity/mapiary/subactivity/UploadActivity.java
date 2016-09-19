@@ -170,7 +170,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 // uploadImage(s);
                 //tvUrl.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
                 // tvUrl.setText(Html.fromHtml(s));
-                uploadImage(s);
+                //uploadImage(s);
             }
 
             @Override
@@ -444,7 +444,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         int id = item.getItemId();
 
         if(id == R.id.action_upload){
-            //uploadVideo();
+            uploadImage("1");
         }
 
         if(id == R.id.home){
