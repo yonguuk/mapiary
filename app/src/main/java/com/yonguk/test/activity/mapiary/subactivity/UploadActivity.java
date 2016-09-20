@@ -148,7 +148,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()){
             case R.id.btn_upload:
                 //uploadVideo();
-                uploadImage("1");
+                //uploadImage("1");
                 break;
         }
     }
@@ -167,7 +167,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 uploading.dismiss();
-                // uploadImage(s);
+                uploadImage(s);
                 //tvUrl.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
                 // tvUrl.setText(Html.fromHtml(s));
                 //uploadImage(s);
@@ -444,7 +444,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         int id = item.getItemId();
 
         if(id == R.id.action_upload){
-            uploadImage("1");
+            uploadVideo();
         }
 
         if(id == R.id.home){
