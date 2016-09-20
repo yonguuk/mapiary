@@ -99,9 +99,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
-    //final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
-    final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_address.php";
-    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/location3.json";
+    final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
+    //final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_address.php";
+    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/upload/location_content/stress.json";
 
     //ArrayList<LatLng> points;
     ArrayList<Position> points;
@@ -117,7 +117,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         requestQueue = volleySingleton.getRequestQueue();
 
         setView();
-        //getJSONFromUrl(URL_LOCATION);
+        getJSONFromUrl(URL_LOCATION);
         Intent intent = getIntent();
         userID = intent.getStringExtra(KEY_ID);
         path = intent.getStringExtra(KEY_PATH);
@@ -147,8 +147,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_upload:
-                //uploadVideo();
-                uploadImage("1");
+                uploadVideo();
+                //uploadImage("1");
                 break;
         }
     }
@@ -170,7 +170,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 // uploadImage(s);
                 //tvUrl.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
                 // tvUrl.setText(Html.fromHtml(s));
-                //uploadImage(s);
+                uploadImage(s);
             }
 
             @Override
@@ -266,7 +266,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         protected List<Position> doInBackground(Void... voids) {
-            ArrayList<Position> points = parseJson(json);
+            ArrayList<Position> points = parseJson(resultJson);
             //tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
             return points;
         }
@@ -300,7 +300,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
 
 */
-            drawSimplify(points);
+            //drawSimplify(points);
+            drawBeforeSimplify(points);
             Log.i(TAG, "onPostExecute()");
         }
     }
@@ -319,12 +320,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         tvLocation.setText(address);
         mapboxMap.addPolyline(new PolylineOptions()
                 .add(result)
-                .color(Color.parseColor(emotionColor))
-                .width(6));
+                .color(Color.parseColor("#4CAF50"))
+                .width(4));
 
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(result[0])
-                .zoom(19)
+                .zoom(15)
                 .tilt(20)
                 .build()
 
@@ -344,13 +345,40 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         ));
 */
+    }
 
+    private void drawBeforeSimplify(List<Position> points) {
+
+        LatLng[] pointsArray = new LatLng[points.size()];
+        for (int i = 0; i < points.size(); i++)
+            pointsArray[i] = new LatLng(points.get(i).getLatitude(), points.get(i).getLongitude());
+        address = getAddress(pointsArray[0].getLatitude(),pointsArray[0].getLongitude());
+        tvLocation.setText(address);
+        mapboxMap.addPolyline(new PolylineOptions()
+                .add(pointsArray)
+                .color(Color.parseColor("#4CAF50"))
+                .alpha(0.65f)
+                .width(4));
+
+        mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                .target(pointsArray[0])
+                .zoom(15)
+                .tilt(20)
+                .build()
+
+        ));
+        mapboxMap.addMarker(new MarkerOptions()
+                .position(pointsArray[0])
+                .title("Hello World!")
+                .snippet("Welcome to my marker."));
 
     }
 
 
 
-/*
+
+
+
 
     public void getJSONFromUrl(String url){
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -373,7 +401,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-*/
+
 
 
 

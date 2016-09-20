@@ -123,6 +123,7 @@
                 android:paddingBottom="8dp"
                 >
                     <ImageView
+                        android:id="@+id/iv_like"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:tint="@color/iron_dark"
@@ -131,6 +132,7 @@
                         android:src="@drawable/ic_favorite_border_white_48dp" />
 
                     <ImageView
+                        android:id="@+id/iv_re"
                         android:layout_gravity="center"
                         android:layout_width="30dp"
                         android:layout_height="30dp"

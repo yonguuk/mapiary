@@ -34,6 +34,7 @@ import com.yonguk.test.activity.mapiary.fragment.MainFragment;
 import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy;
 import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, RecordActivity.class);
+                Intent intent = new Intent(mContext, SampleTrackingAtcitivy.class);
                 intent.putExtra(KEY_ID, userID);
                 startActivityForResult(intent,REQUEST_CODE_RECORD);
 

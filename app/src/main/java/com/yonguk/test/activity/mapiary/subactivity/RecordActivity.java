@@ -302,6 +302,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
         profile.videoFrameWidth = optimalSize.width ;
         profile.videoFrameHeight = optimalSize.height;
+        //profile.duration = 15;
         //profile.video
 
         // likewise for the camera object itself.
@@ -328,6 +329,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         // Step 2: Set sources
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT );
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+        mMediaRecorder.setMaxDuration(10000);
         //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         //mMediaRecorder.setVideoSize(420,420);
         // mMediaRecorder.setVideoFrameRate(30);
