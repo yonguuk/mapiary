@@ -67,7 +67,7 @@ public class CardActivity extends AppCompatActivity implements View.OnClickListe
         //contentImageUrl = intent.getStringExtra(CONTENT_IMAGE_URL);
         videoUrl = intent.getStringExtra("video_url");
         Log.i("Video Url : ", videoUrl);
-        like = intent.getStringExtra(LIKE);
+        //like = intent.getStringExtra(LIKE);
         title = intent.getStringExtra(TITLE);
         textContent = intent.getStringExtra(TEXT_CONTENT);
         date = intent.getStringExtra(Date);

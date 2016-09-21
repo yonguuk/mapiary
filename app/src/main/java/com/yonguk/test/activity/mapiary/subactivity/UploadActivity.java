@@ -99,7 +99,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private VolleySingleton volleySingleton = null;
     private RequestQueue requestQueue = null;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoieW9uZ3VrIiwiYSI6ImNpcnBtYXE4eDAwOXBocG5oZjVrM3Q0MGQifQ.BjzIAl6Kcsdn3KYdtjk26g";
-    //final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
+  //  final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
     final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_address.php";
     final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/location3.json";
 
@@ -213,7 +213,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 textContent = etText.getText().toString();
                 params.put(KEY_ID,userID);
                 params.put(KEY_IMAGE, image);
-                //params.put(KEY_CARD_ID, cardId);
+                params.put(KEY_CARD_ID, cardId);
                 params.put(KEY_LOCATION, json.toString());
                 params.put(KEY_TEXT,textContent);
                 params.put(KEY_EMOTION,emotion+"");
