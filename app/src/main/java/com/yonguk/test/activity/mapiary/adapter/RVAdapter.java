@@ -23,8 +23,10 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
+import com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy;
 import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
 import com.yonguk.test.activity.mapiary.subactivity.MapboxActivity;
+import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -269,6 +271,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
         CircleImageView ivProfile;
         ImageView ivContent;
         ImageView ivShare;
+        ImageView ivRe;
         TextView userID;
         TextView date;
         TextView textContent;
@@ -287,6 +290,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             textContent = (TextView) itemView.findViewById(R.id.tv_text_content);
             location = (TextView)itemView.findViewById(R.id.tv_location);
             ivShare = (ImageView) itemView.findViewById(R.id.share);
+            ivRe = (ImageView) itemView.findViewById(R.id.iv_re);
             //like = (TextView) itemView.findViewById(R.id.tv_like);
             //btnLike = (ImageView) itemView.findViewById(R.id.btn_like);
             //btnRe = (ImageView)itemView.findViewById(R.id.btn_re);
@@ -294,6 +298,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
             ivProfile.setOnClickListener(this);
             ivContent.setOnClickListener(this);
             ivShare.setOnClickListener(this);
+            ivRe.setOnClickListener(this);
             //btnLike.setOnClickListener(this);
             //btnRe.setOnClickListener(this);
         }
@@ -331,6 +336,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                     intent.putExtra(EMOTiON,selectedCard.getEmotion());
                     context.startActivity(intent);
                     break;
+                }
+
+                case R.id.iv_re:{
+                    Intent intent = new Intent(context, RecordActivity.class);
+                    context.startActivity(intent);
+                }
+
+                case R.id.iv_like:{
+                    Intent intent = new Intent(context, SampleTrackingAtcitivy.class);
+                    intent.putExtra("ok","ok");
+                    context.startActivity(intent);
                 }
             }
         }

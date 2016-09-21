@@ -29,5 +29,11 @@
         mapbox:style_url="@string/style_mapbox_streets"
         mapbox:zoom="16"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_tracking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.design.widget.CoordinatorLayout>

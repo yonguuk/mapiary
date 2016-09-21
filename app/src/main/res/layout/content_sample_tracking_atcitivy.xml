@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy"
+    tools:showIn="@layout/activity_sample_tracking_atcitivy"
+    android:orientation="vertical"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    >
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        mapbox:style_url="@string/style_mapbox_streets"
+        mapbox:zoom="12"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="내 기록"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right|bottom"
+            >
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="서울시 마포구 성산2동"
+                android:textColor="@color/text_second"
+                android:gravity="center"
+                android:textSize="12sp"/>
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_place_black_24dp"
+                android:tint="@color/text_second"
+                android:baselineAlignBottom="true"
+                android:layout_gravity="bottom"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
