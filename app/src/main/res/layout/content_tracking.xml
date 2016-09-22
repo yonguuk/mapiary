@@ -4,7 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     tools:context="com.yonguk.test.activity.mapiary.subactivity.TrackingActivity"
     tools:showIn="@layout/activity_tracking">
 
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        mapbox:style_url="@string/style_mapbox_streets"
+        mapbox:zoom="16"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:text="내 기록"/>
+
+
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시발"/>
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="clear"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_capture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_tracking"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+        >
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

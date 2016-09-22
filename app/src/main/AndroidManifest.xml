@@ -62,7 +62,6 @@
             android:label="@string/title_activity_mapiary_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".subactivity.MapiaryUploadActivity" />
-        <activity android:name=".subactivity.RecordActivity" />
         <activity
             android:name=".subactivity.MapiaryCardActivity"
             android:label="@string/title_activity_mapiary_card"
@@ -93,6 +92,7 @@
             android:name=".sample.SampleTrackingAtcitivy"
             android:label="@string/title_activity_sample_tracking_atcitivy"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".subactivity.CameraActivity"></activity>
     </application>
 
 </manifest>

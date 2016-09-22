@@ -127,11 +127,12 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         emotion = intent.getIntExtra(KEY_EMOTION,1);
         emotionColor = getEmotionColor(emotion);
         Log.i(TAG, locationJsonString);
-        try {
+
+/*        try {
             json = new JSONObject(locationJsonString);
         }catch (JSONException e){
             Log.d(TAG,e.toString());
-        }
+        }*/
         //points = parseJson(json);
         //Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());
         thumbnail = ThumbnailUtils.createVideoThumbnail(path,
@@ -240,7 +241,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         // Load and Draw the GeoJSON
-        new DrawGeoJSON().execute();
+       // new DrawGeoJSON().execute();
 /*
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(points.get(0))

@@ -24,9 +24,9 @@ import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.data.RVCardData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy;
+import com.yonguk.test.activity.mapiary.subactivity.CameraActivity;
 import com.yonguk.test.activity.mapiary.subactivity.CardActivity;
 import com.yonguk.test.activity.mapiary.subactivity.MapboxActivity;
-import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -339,14 +339,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 }
 
                 case R.id.iv_re:{
-                    Intent intent = new Intent(context, RecordActivity.class);
+                    Intent intent = new Intent(context, CameraActivity.class);
                     context.startActivity(intent);
+                    break;
                 }
 
                 case R.id.iv_like:{
                     Intent intent = new Intent(context, SampleTrackingAtcitivy.class);
                     intent.putExtra("ok","ok");
                     context.startActivity(intent);
+                    break;
                 }
             }
         }

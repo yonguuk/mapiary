@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +34,7 @@ import com.yonguk.test.activity.mapiary.fragment.NewsFragment;
 import com.yonguk.test.activity.mapiary.fragment.ProfileFragment;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy;
-import com.yonguk.test.activity.mapiary.subactivity.RecordActivity;
+import com.yonguk.test.activity.mapiary.subactivity.TrackingActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
@@ -120,29 +119,16 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
 
             }
         });
-        //mBottomBar = BottomBar.attach(this, savedInstanceState);
-        //setBottomBar();
-
-        //Service
-    /*    try {
-            Intent serviceIntent = new Intent(this,BluetoothService.class);
-            startService(serviceIntent);
-        }catch(Exception e){
-            Log.d("uks",e.getMessage());
-        }
-*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, SampleTrackingAtcitivy.class);
+                Intent intent = new Intent(mContext, TrackingActivity.class);
                 intent.putExtra(KEY_ID, userID);
                 startActivityForResult(intent,REQUEST_CODE_RECORD);
-
             }
         });
-
     }
 
     @Override
