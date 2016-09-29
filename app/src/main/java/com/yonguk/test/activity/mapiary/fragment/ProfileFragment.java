@@ -70,7 +70,7 @@ public class ProfileFragment extends Fragment{
     private final String UPLOAD_PROFILE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_profile.php";
     private final String KEY_ID = "user_id";
     private final String KEY_STATE = "state_message";
-    private final String KEY_CARDS = "cards";
+    private final String KEY_CARDS = "card";
     private final String KEY_FOLLOWING = "following";
     private final String KEY_FOLLOWER ="follower";
     private final String KEY_PROFILE_URL = "profile_url";
@@ -241,7 +241,7 @@ public class ProfileFragment extends Fragment{
                         JSONObject currentResult = arrayResult.getJSONObject(i);
                         user_id = currentResult.getString(KEY_ID);
                         state_message = currentResult.getString(KEY_STATE);
-                        //cards = currentResult.getString(KEY_CARDS);
+                        cards = currentResult.getString(KEY_CARDS);
                         following = currentResult.getString(KEY_FOLLOWING);
                         follower = currentResult.getString(KEY_FOLLOWER);
                         profile_url = currentResult.getString(KEY_PROFILE_URL);
@@ -251,6 +251,7 @@ public class ProfileFragment extends Fragment{
                         profile.setFollower(follower);
                         profile.setFollowing(following);
                         profile.setProfile_url(profile_url);
+                        profile.setCard(cards);
                     }
                 }
             }catch (Exception e){

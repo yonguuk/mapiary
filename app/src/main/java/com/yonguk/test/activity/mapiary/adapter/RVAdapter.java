@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.data.RVCardData;
+import com.yonguk.test.activity.mapiary.data.RVTrackingData;
 import com.yonguk.test.activity.mapiary.network.VolleySingleton;
 import com.yonguk.test.activity.mapiary.sample.SampleTrackingAtcitivy;
 import com.yonguk.test.activity.mapiary.subactivity.CameraActivity;
@@ -312,7 +316,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
 
                 case R.id.iv_content:{
                     try {
-                        Intent intent = new Intent(context, CardActivity.class);
+                       /* Intent intent = new Intent(context, CardActivity.class);
                         RVCardData selectedCard = cardData.get(getAdapterPosition());
                         intent.putExtra(USER_ID, selectedCard.getUserID());
                         intent.putExtra(Date, selectedCard.getDate());
@@ -323,6 +327,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                         intent.putExtra(LIKE, selectedCard.getLike());
                         intent.putExtra("video_url", selectedCard.getVideoUrl());
                         //intent.putExtra("location_url", selectedCard.getLocationUrl());
+                        context.startActivity(intent);*/
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        RVCardData selectedCard  = cardData.get(getAdapterPosition());
+                        Uri data = Uri.parse(selectedCard.getVideoUrl());
+                        intent.setDataAndType(data, "video/mp4");
                         context.startActivity(intent);
                     }catch(Exception e){
                         Log.d(TAG,e.getMessage());
@@ -339,15 +348,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder> {
                 }
 
                 case R.id.iv_re:{
-                    Intent intent = new Intent(context, CameraActivity.class);
-                    context.startActivity(intent);
+                    Toast.makeText(context,"준비중",Toast.LENGTH_LONG).show();
                     break;
                 }
 
                 case R.id.iv_like:{
-                    Intent intent = new Intent(context, SampleTrackingAtcitivy.class);
-                    intent.putExtra("ok","ok");
-                    context.startActivity(intent);
+                    Toast.makeText(context,"준비중",Toast.LENGTH_LONG).show();
                     break;
                 }
             }

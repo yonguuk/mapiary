@@ -12,7 +12,7 @@ public class RVProfileData {
     private String follower;
     private String profile_url;
     private Bitmap profile_bitmap;
-    private int card;
+    private String card;
 
 
     public Bitmap getProfile_bitmap() {
@@ -31,11 +31,11 @@ public class RVProfileData {
         this.userID = userID;
     }
 
-    public int getCard() {
+    public String getCard() {
         return card;
     }
 
-    public void setCard(int card) {
+    public void setCard(String card) {
         this.card = card;
     }
 

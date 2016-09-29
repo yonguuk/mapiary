@@ -23,6 +23,9 @@ import com.yonguk.test.activity.mapiary.camera.CameraHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Handler;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -34,17 +37,55 @@ public class CameraActivity extends AppCompatActivity {
 
     private boolean isRecording = false;
     private static final String TAG = "Recorder";
+    static final String EMOTION = "emotion";
     private Button captureButton;
 
+    private String EMOTION_STATE="0";
+
+    private TimerTask mTask;
+    private Timer mTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-
+        Intent intent = getIntent();
+        EMOTION_STATE = intent.getStringExtra(EMOTION);
         mPreview = (TextureView) findViewById(R.id.surface_view);
         captureButton = (Button) findViewById(R.id.button_capture);
 
         new MediaPrepareTask().execute(null, null, null);
+
+        mTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    mMediaRecorder.stop();  // stop the recording
+                } catch (RuntimeException e) {
+                    // RuntimeException is thrown when stop() is called immediately after start().
+                    // In this case the output file is not properly constructed ans should be deleted.
+                    Log.d(TAG, "RuntimeException: stop() is called immediately after start()");
+                    //noinspection ResultOfMethodCallIgnored
+                    mOutputFile.delete();
+                }
+                releaseMediaRecorder(); // release the MediaRecorder object
+                mCamera.lock();         // take camera access back from MediaRecorder
+
+                // inform the user that recording has stopped
+                //setCaptureButtonText("Capture");
+                isRecording = false;
+                releaseCamera();
+                // END_INCLUDE(stop_release_media_recorder)
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE
+                        , Uri.parse("file://" + mOutputFile.getPath())));
+                Intent intent = new Intent();
+                intent.putExtra("file_path",mOutputFile.getPath());
+                intent.putExtra(EMOTION, EMOTION_STATE);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        };
+        mTimer = new Timer();
+        mTimer.schedule(mTask, 6000);
     }
 
     /**
@@ -81,6 +122,7 @@ public class CameraActivity extends AppCompatActivity {
                     , Uri.parse("file://" + mOutputFile.getPath())));
             Intent intent = new Intent();
             intent.putExtra("file_path",mOutputFile.getPath());
+            intent.putExtra(EMOTION, EMOTION_STATE);
             setResult(RESULT_OK, intent);
             finish();
 
@@ -143,7 +185,7 @@ public class CameraActivity extends AppCompatActivity {
                 mSupportedPreviewSizes, mPreview.getWidth(), mPreview.getHeight());
 
         // Use the same size for recording profile.
-        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+        CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
         profile.videoFrameWidth = optimalSize.width;
         profile.videoFrameHeight = optimalSize.height;
 

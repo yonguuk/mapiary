@@ -40,7 +40,13 @@
 
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".sample.SampleVideoActivity" />
         <activity
             android:name=".SignUpActivity"
@@ -77,13 +83,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".subactivity.MapboxActivity" />
-        <activity android:name=".StartActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".StartActivity"></activity>
         <activity
             android:name=".subactivity.TrackingActivity"
             android:label="@string/title_activity_tracking"
@@ -92,7 +92,12 @@
             android:name=".sample.SampleTrackingAtcitivy"
             android:label="@string/title_activity_sample_tracking_atcitivy"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".subactivity.CameraActivity"></activity>
+        <activity android:name=".subactivity.CameraActivity" />
+
+        <service
+            android:name=".service.FusedLocationService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

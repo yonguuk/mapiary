@@ -3,6 +3,7 @@ package com.yonguk.test.activity.mapiary.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -87,13 +88,27 @@ public class RVTrackingAdapter extends RecyclerView.Adapter<RVTrackingAdapter.Tr
 
     public void deleteItem(int position){
         try {
-            trackingDatas.remove(position);
             RVTrackingData selectedContent = trackingDatas.get(position);
             dbManager.delete("file_path=" + "'"+ selectedContent.getPath() + "'", null);
+            trackingDatas.remove(position);
             notifyItemRemoved(position);
         }catch (Exception e){
             Log.i(TAG,"틀렸다 임마");
         }
+    }
+
+    private String getEmotionColor(int emotion){
+        String color;
+        if(emotion == EMOTION_RELAX){
+            color = "#4CAF50";
+        }else if(emotion == EMOTION_ACTIVE){
+            color = "#9C27B0";
+        }else if(emotion == EMOTION_STRESS){
+            color = "#F44336";
+        }else{
+            color = "#9E9E9E";
+        }
+        return color;
     }
 
 
@@ -101,6 +116,7 @@ public class RVTrackingAdapter extends RecyclerView.Adapter<RVTrackingAdapter.Tr
         ImageView iv;
         ImageView ivPlay;
         ImageView ivDelete;
+        ImageView ivEmotion;
 
         public TrackingViewHolder(View itemView){
             super(itemView);
@@ -134,8 +150,8 @@ public class RVTrackingAdapter extends RecyclerView.Adapter<RVTrackingAdapter.Tr
                     RVTrackingData selectedContent = trackingDatas.get(getAdapterPosition());
                     intent.putExtra(KEY_ID, userID);
                     intent.putExtra(KEY_PATH, selectedContent.getPath());
-                    intent.putExtra(KEY_LOCATION, "no");
-                    intent.putExtra(KEY_EMOTION, EMOTION_STRESS);
+                    intent.putExtra(KEY_LOCATION, selectedContent.getLocation());
+                    intent.putExtra(KEY_EMOTION, selectedContent.getEmotion());
                     context.startActivity(intent);
                     break;
                 }

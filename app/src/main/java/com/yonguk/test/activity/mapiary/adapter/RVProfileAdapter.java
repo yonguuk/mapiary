@@ -112,6 +112,7 @@ public class RVProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holderHeader.tvStatus.setText(profileData.getStateMessage());
                 holderHeader.tvFollower.setText(profileData.getFollower());
                 holderHeader.tvFollowing.setText(profileData.getFollowing());
+                holderHeader.tvCards.setText(profileData.getCard());
                 String profileUrl = profileData.getProfile_url();
 
                 if (profileUrl != null) {

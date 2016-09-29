@@ -43,9 +43,14 @@ import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.services.commons.ServicesException;
+import com.mapbox.services.commons.geojson.LineString;
 import com.mapbox.services.commons.geojson.Point;
 import com.mapbox.services.commons.models.Position;
 import com.mapbox.services.commons.utils.PolylineUtils;
+import com.mapbox.services.directions.v4.DirectionsCriteria;
+import com.mapbox.services.mapmatching.v4.MapboxMapMatching;
+import com.mapbox.services.mapmatching.v4.models.MapMatchingResponse;
 import com.yonguk.test.activity.mapiary.MainActivity;
 import com.yonguk.test.activity.mapiary.R;
 import com.yonguk.test.activity.mapiary.camera.Upload;
@@ -61,6 +66,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
     ImageView iv;
@@ -80,7 +88,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     private String userID;
     private String path;
     private String address;
-    private int emotion;
+    private String emotion;
     private String emotionColor;
     private final String KEY_ID = "user_id";
     private final String KEY_PATH = "path";
@@ -102,7 +110,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_preview.php";
     //final String UPLOAD_IMAGE_URL = "http://kktt0202.dothome.co.kr/master/upload/upload_address.php";
-    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/upload/location_content/stress.json";
+    final String URL_LOCATION= "http://kktt0202.dothome.co.kr/master/location/sample.json";
 
 
     //ArrayList<LatLng> points;
@@ -124,15 +132,16 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         userID = intent.getStringExtra(KEY_ID);
         path = intent.getStringExtra(KEY_PATH);
         locationJsonString= intent.getStringExtra(KEY_LOCATION);
-        emotion = intent.getIntExtra(KEY_EMOTION,1);
+        emotion = intent.getStringExtra(KEY_EMOTION);
+        //emotion = 2;
         emotionColor = getEmotionColor(emotion);
         Log.i(TAG, locationJsonString);
 
-/*        try {
+        try {
             json = new JSONObject(locationJsonString);
         }catch (JSONException e){
             Log.d(TAG,e.toString());
-        }*/
+        }
         //points = parseJson(json);
         //Log.i(TAG,"lat: " + points.get(0).getLatitude()+ "," +"lon : " + points.get(0).getLongitude());
         thumbnail = ThumbnailUtils.createVideoThumbnail(path,
@@ -168,7 +177,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 uploadImage(s);
                 //tvUrl.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
                 // tvUrl.setText(Html.fromHtml(s));
-                uploadImage(s);
+                //uploadImage(s);
             }
 
             @Override
@@ -241,7 +250,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
         // Load and Draw the GeoJSON
-       // new DrawGeoJSON().execute();
+        new DrawGeoJSON().execute();
 /*
                 mapboxMap.addMarker(new MarkerOptions()
                         .position(points.get(0))
@@ -265,7 +274,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected List<Position> doInBackground(Void... voids) {
             ArrayList<Position> points = parseJson(resultJson);
-            //tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).getLongitude()));
+            //tvLocation.setText(getAddress(points.get(0).getLatitude(),points.get(0).gerestLongitude()));
             return points;
         }
 
@@ -299,11 +308,72 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
 */
             //drawSimplify(points);
-            drawBeforeSimplify(points);
+            //drawBeforeSimplify(points);
+            LineString lineString = LineString.fromCoordinates(points);
+            drawMapMatched(lineString, 8);
+            address = getAddress(points.get(0).getLatitude(),points.get(0).getLongitude());
+            tvLocation.setText(address);
             Log.i(TAG, "onPostExecute()");
         }
     }
 
+
+    private void drawMapMatched(LineString lineString, int precision){
+        try {
+            MapboxMapMatching client = new MapboxMapMatching.Builder()
+                    .setAccessToken(MapboxAccountManager.getInstance().getAccessToken())
+                    .setProfile(DirectionsCriteria.PROFILE_DRIVING)
+                    .setGpsPrecison(precision)
+                    .setTrace(lineString)
+                    .build();
+
+            client.enqueueCall(new Callback<MapMatchingResponse>() {
+                @Override
+                public void onResponse(Call<MapMatchingResponse> call, retrofit2.Response<MapMatchingResponse> response) {
+                    List<LatLng> mapMatchedPoints = new ArrayList<>();
+                    if(response.code() == 200){
+                        for(int i=0; i<response.body().getMatchedPoints().length; i++){
+                            mapMatchedPoints.add(new LatLng(response.body().getMatchedPoints()[i].getLatitude(),
+                                                            response.body().getMatchedPoints()[i].getLongitude()
+                                    ));
+                        }
+
+                        // Add the map matched route to the Mapbox map.
+                        mapboxMap.addPolyline(new PolylineOptions()
+                                .addAll(mapMatchedPoints)
+                                .color(Color.parseColor(emotionColor))
+                                .width(4));
+
+                        mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                                .target(mapMatchedPoints.get(0))
+                                .zoom(15)
+                                .tilt(20)
+                                .build()
+
+                        ));
+                        mapboxMap.addMarker(new MarkerOptions()
+                                .position(mapMatchedPoints.get(0))
+                                .title("Hello World!")
+                                .snippet("Welcome to my marker."));
+
+
+
+                    } else{
+                        Log.e(TAG, "Too many coordinates, Profile not found, invalid input, or no match");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MapMatchingResponse> call, Throwable t) {
+                    Log.e(TAG, "MapboxMapMatching error: " + t.getMessage());
+                }
+            });
+        }catch (ServicesException e){
+            Log.e(TAG, "MapboxMapMatching error: " + e.getMessage());
+        } catch (Exception e){
+
+        }
+    }
     private void drawSimplify(List<Position> points) {
 
         Position[] before = new Position[points.size()];
@@ -360,7 +430,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         mapboxMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(pointsArray[0])
-                .zoom(15)
+                .zoom(14)
                 .tilt(20)
                 .build()
 
@@ -421,7 +491,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                         JSONArray coord = coords.getJSONArray(i);
                         Position latLng = Position.fromCoordinates(coord.getDouble(1),coord.getDouble(0));
                         points.add(latLng);
-                        Log.i(TAG, "아" + points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
+                        //Log.i(TAG, "아" + points.get(i).getLatitude() + " , " +  points.get(i).getLongitude());
                     }
                 }
             }
@@ -501,13 +571,13 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         iv = (ImageView) findViewById(R.id.iv);
     }
 
-    private String getEmotionColor(int emotion){
+    private String getEmotionColor(String emotion){
         String color;
-        if(emotion == EMOTION_RELAX){
+        if(emotion.equals("1")){
             color = "#4CAF50";
-        }else if(emotion == EMOTION_ACTIVE){
+        }else if(emotion.equals("2")){
             color = "#9C27B0";
-        }else if(emotion == EMOTION_STRESS){
+        }else if(emotion.equals("3")){
             color = "#F44336";
         }else{
             color = "#9E9E9E";
